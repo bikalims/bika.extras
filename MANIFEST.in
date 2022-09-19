@@ -1,0 +1,4 @@
+graft src/bika
+graft docs
+include *.rst
+global-exclude *.pyc
