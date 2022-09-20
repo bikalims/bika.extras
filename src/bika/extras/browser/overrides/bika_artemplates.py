@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# This file is part of SENAITE.CORE.
+# This file is part of BIKA.EXTRAS.
 #
 # SENAITE.CORE is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -20,25 +20,14 @@
 
 import collections
 
-from Products.ATContentTypes.content import schemata
-from Products.Archetypes import atapi
 from bika.lims import api
 from bika.lims import bikaMessageFactory as _
-from bika.lims.browser.bika_listing import BikaListingView
-from bika.lims.config import PROJECTNAME
-from bika.lims.interfaces import IARTemplates
 from bika.lims.permissions import AddARTemplate
+from bika.lims.controlpanel.bika_artemplates import TemplatesView as TV
 from bika.lims.utils import get_link
-from plone.app.content.browser.interfaces import IFolderContentsView
-from plone.app.folder.folder import ATFolder
-from plone.app.folder.folder import ATFolderSchema
-from plone.app.layout.globals.interfaces import IViewView
-from senaite.core.interfaces import IHideActionsMenu
-from zope.interface.declarations import implements
 
 
-class TemplatesView(BikaListingView):
-    implements(IFolderContentsView, IViewView)
+class TemplatesView(TV):
 
     def __init__(self, context, request):
         super(TemplatesView, self).__init__(context, request)
@@ -76,19 +65,19 @@ class TemplatesView(BikaListingView):
             ("Description", {
                 "title": _("Description"),
                 "index": "Description",
-                "toggle": True,}),
+                "toggle": True, }),
             ("SamplePointTitle", {
                 "title": _("Sample Point"),
-                "toggle": True,}),
+                "toggle": True, }),
             ("SampleTypeTitle", {
                 "title": _("Sample Type"),
-                "toggle": True,}),
+                "toggle": True, }),
             ("NumberOfPartitions", {
                 "title": _("Number Of Partitions"),
-                "toggle": True,}),
+                "toggle": True, }),
             ("Profile", {
                 "title": _("Profile"),
-                "toggle": True,}),
+                "toggle": True, }),
         ))
 
         self.review_states = [
@@ -134,17 +123,3 @@ class TemplatesView(BikaListingView):
         profile = obj.getAnalysisProfile()
         item["Profile"] = profile.Title() if profile else ""
         return item
-
-
-schema = ATFolderSchema.copy()
-
-
-class ARTemplates(ATFolder):
-    implements(IARTemplates, IHideActionsMenu)
-    displayContentsTab = False
-    schema = schema
-
-
-schemata.finalizeATCTSchema(schema, folderish=True, moveDiscussion=False)
-atapi.registerType(ARTemplates, PROJECTNAME)
-

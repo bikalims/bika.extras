@@ -1,0 +1,16 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+       xmlns:zcml="http://namespaces.zope.org/browser"
+       xmlns:fss="http://namespaces.zope.org/browser"
+       xmlns:browser="http://namespaces.zope.org/browser"
+       xmlns:five="http://namespaces.zope.org/five"
+       i18n_domain="bika.extras">
+
+    <browser:page
+      for="bika.lims.interfaces.IARTemplates"
+      name="folder_view"
+      class=".bika_artemplates.TemplatesView"
+      permission="senaite.core.permissions.ManageBika"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+</configure>
+

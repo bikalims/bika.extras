@@ -19,9 +19,9 @@
 
   <genericsetup:registerProfile
       name="default"
-      title="bika.extras"
+      title="BIKA EXTRAS"
       directory="profiles/default"
-      description="Installs the bika.extras add-on."
+      description="Installs the BIKA EXTRAS add-on."
       provides="Products.GenericSetup.interfaces.EXTENSION"
       post_handler=".setuphandlers.post_install"
       />
