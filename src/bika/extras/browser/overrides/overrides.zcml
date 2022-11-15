@@ -12,5 +12,12 @@
       permission="senaite.core.permissions.ManageBika"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
+
+    <adapter
+      name="Analysis_Specifications"
+      factory="bika.extras.browser.overrides.setupdata.Analysis_Specifications"
+      provides="bika.lims.interfaces.ISetupDataImporter"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
 </configure>
 
