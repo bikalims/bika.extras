@@ -19,5 +19,35 @@
       provides="bika.lims.interfaces.ISetupDataImporter"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
+    <adapter
+      name="Methods"
+      factory="bika.extras.browser.overrides.setupdata.Methods"
+      provides="bika.lims.interfaces.ISetupDataImporter"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
+    <adapter
+      name="Analysis_Services"
+      factory="bika.extras.browser.overrides.setupdata.Analysis_Services"
+      provides="bika.lims.interfaces.ISetupDataImporter"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
+    <adapter
+      name="AR_Templates"
+      factory="bika.extras.browser.overrides.setupdata.AR_Templates"
+      provides="bika.lims.interfaces.ISetupDataImporter"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
+    <adapter
+      name="Reference_Definitions"
+      factory="bika.extras.browser.overrides.setupdata.Reference_Definitions"
+      provides="bika.lims.interfaces.ISetupDataImporter"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
+    <adapter
+      name="Worksheet_Templates"
+      factory="bika.extras.browser.overrides.setupdata.Worksheet_Templates"
+      provides="bika.lims.interfaces.ISetupDataImporter"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
 </configure>
 
