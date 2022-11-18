@@ -696,3 +696,34 @@ class Worksheet_Templates(WorksheetImporter):
                 obj.unmarkCreationFlag()
                 renameAfterCreation(obj)
                 notify(ObjectInitializedEvent(obj))
+
+class Supplier_Contacts(WorksheetImporter):
+
+    def Import(self):
+
+        bsc = getToolByName(self.context, 'senaite_catalog_setup')
+        for row in self.get_rows(3):
+            if not row['Supplier_Name']:
+                continue
+            if not row['Firstname']:
+                continue
+            folder = bsc(portal_type="Supplier",
+                         Title=row['Supplier_Name'])
+            if not folder:
+                continue
+            folder = folder[0].getObject()
+            obj = _createObjectByType("SupplierContact", folder, tmpID())
+            obj.edit(
+                Firstname=row['Firstname'],
+                Surname=row.get('Surname', ''),
+                Username=row.get('Username'),
+                Department=row.get('Department'),
+                JobTitle=row.get('JobTitle')
+            )
+            self.fill_contactfields(row, obj)
+            self.fill_addressfields(row, obj)
+            obj.unmarkCreationFlag()
+            renameAfterCreation(obj)
+            notify(ObjectInitializedEvent(obj))
+
+
