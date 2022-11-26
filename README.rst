@@ -91,4 +91,5 @@ We have a mailing list located at: project@example.com
 License
 -------
 
-The project is licensed under the GPLv2.
+The project is licensed under the GPLv2
+Copyright (C) 2019 Bika Lab Systems https://www.bikalabs.com/
