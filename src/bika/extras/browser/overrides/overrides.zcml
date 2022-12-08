@@ -29,6 +29,14 @@
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 
+    <browser:page
+        for="bika.lims.interfaces.IWorksheet"
+        name="print"
+        class="bika.extras.browser.overrides.worksheet.printview.PrintView"
+        permission="senaite.core.permissions.ViewResults"
+        layer="bika.lims.interfaces.IBikaLIMS"
+        />
+
     <adapter
       name="Analysis_Specifications"
       factory="bika.extras.browser.overrides.setupdata.Analysis_Specifications"
