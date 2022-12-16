@@ -5,4 +5,28 @@
 
 <!-- -*- extra stuff goes here -*- -->
 
+  <!-- Toolbar Logo -->
+  <record name="bika.extras.sticker_logo" interface="Products.CMFPlone.interfaces.controlpanel.ISiteSchema" field="sticker_logo">
+    <field type="plone.registry.field.TextLine">
+      <default>/sticker_logo.png</default>
+      <description xmlns:ns0="http://xml.zope.org/namespaces/i18n" ns0:domain="plone" ns0:translate="">This must be a URL relative to the site root.</description>
+      <required>False</required>
+      <title xmlns:ns0="http://xml.zope.org/namespaces/i18n" ns0:domain="plone" ns0:translate="">Relative URL for the BIKA.EXTRAS stickers logo</title>
+    </field>
+    <value>/sticker_logo.png</value>
+  </record>
+
+  <record name="bika.extras.sticker_logo_styles" interface="Products.CMFPlone.interfaces.controlpanel.ISiteSchema" field="sticker_logo_styles">
+    <field type="plone.registry.field.Dict">
+      <title>Sticker Logo CSS</title>
+      <description>CSS styles for bika sticker logo</description>
+      <key_type type="plone.registry.field.ASCIILine" />
+      <value_type type="plone.registry.field.ASCIILine" />
+    </field>
+    <value>
+      <element key="height">50</element>
+    </value>
+  </record>
+
+
 </registry>
