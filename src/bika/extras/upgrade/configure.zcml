@@ -6,7 +6,7 @@
  <genericsetup:upgradeStep
      title="Upgrade to BIKA.EXTRAS 1.0.1"
      description="Add sticker logo and logo styling on the registry"
-     source="*"
+     source="1.0.0"
      destination="1.0.1"
      handler="bika.extras.upgrade.v01_00_001.upgrade"
      profile="bika.extras:default"/>
