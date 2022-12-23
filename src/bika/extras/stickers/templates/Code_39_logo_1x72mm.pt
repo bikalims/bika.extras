@@ -54,14 +54,6 @@
         <th i18n:translate="">Sample Point</th>
         <td colspan='3' tal:content="sample_point"/>
       </tr>
-      <tr tal:condition="python:field_analyses">
-        <th colspan="4" i18n:translate="">Field Analyses</th>
-      </tr>
-      <tal:block repeat="analysis python:field_analyses">
-        <tr>
-          <td colspan="4" tal:content="python:analysis.Title()"/>
-        </tr>
-      </tal:block>
       <tr>
         <td colspan="4" class="barcode-container">
           <!-- Barcode -->
