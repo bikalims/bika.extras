@@ -88,7 +88,7 @@ class Sticker(SV):
         except (AttributeError, KeyError):
             styles["ac_styles"] = "max-height:68px;"
         css = map(lambda ac_style: "{}:{};".format(*ac_style), ac_style.items())
-        css.append("max-width:200px;")
+        # css.append("max-width:200px;")
         styles["ac_styles"] = " ".join(css)
 
         try:

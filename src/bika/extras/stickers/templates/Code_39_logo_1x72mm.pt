@@ -25,7 +25,7 @@
       <tr>
         <th i18n:translate="">Sample ID</th>
         <td><strong tal:content="string:${sample_id}"/></td>
-        <td colspan='3' rowspan='4'>
+        <td colspan='2' rowspan='4'>
           <div class="header-logo">
             <!-- <img tal:attributes="src string:${portal_url}/sticker_logo.png;style "/> -->
             <img tal:attributes="src python:view.get_sticker_logo();style python:view.get_sticker_styles().get('ac_styles')"/>
