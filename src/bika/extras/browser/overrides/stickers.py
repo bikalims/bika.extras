@@ -18,13 +18,6 @@
 # Copyright 2018-2021 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-import os
-import os.path
-import tempfile
-import traceback
-
-from bika.lims import api
-from bika.lims import bikaMessageFactory as _
 from bika.lims.browser.stickers import Sticker as SV
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
