@@ -1,11 +1,11 @@
 /*
-Sticker Dimensions: 103mm x 53mm
+Sticker Dimensions: 104mm x 53mm
 Sticker margins: 1mm, 1mm
 */
 .sticker {
     margin:0 auto;
     padding:1mm;
-    width: 101mm;    /* Total width  = 1 + 1 + 101 = 103mm */
+    width: 102mm;    /* Total width  = 1 + 1 + 102 = 104 */
     height: 50mm;   /* Total height = 1 + 1 + 50 = 52mm */
     font-family: Helvetica, Arial;
     font-size:7pt;
@@ -50,11 +50,11 @@ table.info-container td {
 
 @media print {
     @page {
-        size:  103mm 50mm !important;
+        size:  104mm 50mm !important;
         margin: 0mm !important;
     }
     html, body {
-        width: 103mm !important;
+        width: 104mm !important;
         height: 50mm !important;
         margin: 0mm !important;
     }
