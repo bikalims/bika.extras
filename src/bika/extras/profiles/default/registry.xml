@@ -24,8 +24,8 @@
       <value_type type="plone.registry.field.ASCIILine" />
     </field>
     <value>
-      <element key="width">50</element>
-      <element key="height">50</element>
+      <element key="width">50px</element>
+      <element key="height">65px</element>
     </value>
   </record>
 
