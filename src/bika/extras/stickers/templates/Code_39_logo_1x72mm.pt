@@ -41,8 +41,8 @@
         <td tal:content="client_sample_id"/>
       </tr>
       <tr>
-        <th i18n:translate="">Time</th>
-        <td tal:content="python:view.get_today_now()"/>
+        <th style='border-bottom:none' i18n:translate="">Time</th>
+        <td style='border-bottom:none' tal:content="python:view.get_today_now()"/>
       </tr>
       <tr>
       </tr>
