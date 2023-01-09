@@ -4,11 +4,11 @@ Sticker margins: 1mm, 1mm
 */
 .sticker {
     margin:0 auto;
-    padding:1mm;
+    padding:0mm;
     width: 102mm;    /* Total width  = 1 + 1 + 102 = 104 */
     height: 50mm;   /* Total height = 1 + 1 + 50 = 52mm */
     font-family: Helvetica, Arial;
-    font-size:6pt;
+    font-size:7pt;
     text-align:center;
     overflow: hidden;
 }
@@ -26,9 +26,9 @@ Sticker margins: 1mm, 1mm
 }
 
 table.info-container {
-    height:50mm;
+    height:48mm;
     border-collapse:collapse;
-    font-size: 6pt;
+    font-size: 7pt;
     width:100% !important;
 }
 
@@ -36,7 +36,7 @@ table.info-container th {
     text-align: left;
     text-transform: none;
     border: 1pt solid #888;
-    padding:1mm;
+    padding:0mm;
 }
 
 table.info-container tr {
