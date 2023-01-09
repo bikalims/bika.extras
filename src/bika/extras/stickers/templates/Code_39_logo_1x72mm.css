@@ -29,7 +29,7 @@ table.info-container {
     height:38mm;
     border-collapse:collapse;
     font-size: 6pt;
-    width:100%;
+    width:100% !important;
 }
 
 table.info-container th {

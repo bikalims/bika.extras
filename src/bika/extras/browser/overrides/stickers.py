@@ -18,9 +18,12 @@
 # Copyright 2018-2021 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-from bika.lims.browser.stickers import Sticker as SV
-from zope.component import getUtility
+from DateTime import DateTime
 from plone.registry.interfaces import IRegistry
+from zope.component import getUtility
+
+from bika.lims.browser.stickers import Sticker as SV
+from senaite.core.api import dtime
 
 
 class Sticker(SV):
@@ -91,3 +94,6 @@ class Sticker(SV):
         css = map(lambda logo_style: "{}:{};".format(*logo_style), logo_style.items())
         styles["logo_styles"] = " ".join(css)
         return styles
+
+    def get_today_now(self):
+        return dtime.date_to_string(DateTime(), fmt="%H:%M:%S")
