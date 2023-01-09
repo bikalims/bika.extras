@@ -8,7 +8,7 @@ Sticker margins: 1mm, 1mm
     width: 102mm;    /* Total width  = 1 + 1 + 102 = 104 */
     height: 50mm;   /* Total height = 1 + 1 + 50 = 52mm */
     font-family: Helvetica, Arial;
-    font-size:7pt;
+    font-size:9pt;
     text-align:center;
     overflow: hidden;
 }
@@ -26,9 +26,9 @@ Sticker margins: 1mm, 1mm
 }
 
 table.info-container {
-    height:38mm;
+    height:50mm;
     border-collapse:collapse;
-    font-size: 6pt;
+    font-size: 9pt;
     width:100% !important;
 }
 
@@ -36,7 +36,7 @@ table.info-container th {
     text-align: left;
     text-transform: none;
     border: 1pt solid #888;
-    padding:0.5mm;
+    padding:1mm;
 }
 
 table.info-container tr {
@@ -45,7 +45,7 @@ table.info-container tr {
 
 table.info-container td {
     border: 1pt solid #888;
-    padding:0.5mm;
+    padding:1mm;
 }
 
 @media print {
