@@ -59,7 +59,7 @@
           <!-- Barcode -->
           <div class="barcode"
                tal:attributes="data-id sample_id;"
-               data-barHeight="17"
+               data-barHeight="16"
                data-code="code39"
                data-addQuietZone="true"
                data-showHRI="false">
