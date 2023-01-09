@@ -8,7 +8,7 @@ Sticker margins: 1mm, 1mm
     width: 102mm;    /* Total width  = 1 + 1 + 102 = 104 */
     height: 50mm;   /* Total height = 1 + 1 + 50 = 52mm */
     font-family: Helvetica, Arial;
-    font-size:9pt;
+    font-size:8pt;
     text-align:center;
     overflow: hidden;
 }
@@ -28,7 +28,7 @@ Sticker margins: 1mm, 1mm
 table.info-container {
     height:50mm;
     border-collapse:collapse;
-    font-size: 9pt;
+    font-size: 8pt;
     width:100% !important;
 }
 
