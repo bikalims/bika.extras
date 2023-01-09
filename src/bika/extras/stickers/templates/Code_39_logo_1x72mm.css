@@ -1,12 +1,12 @@
 /*
-Sticker Dimensions: 72mm x 45mm
+Sticker Dimensions: 103mm x 53mm
 Sticker margins: 1mm, 1mm
 */
 .sticker {
     margin:0 auto;
     padding:1mm;
-    width: 70mm;    /* Total width  = 1 + 1 + 70 = 72mm */
-    height: 40mm;   /* Total height = 1 + 1 + 40 = 42mm */
+    width: 101mm;    /* Total width  = 1 + 1 + 101 = 103mm */
+    height: 50mm;   /* Total height = 1 + 1 + 50 = 52mm */
     font-family: Helvetica, Arial;
     font-size:7pt;
     text-align:center;
@@ -50,12 +50,12 @@ table.info-container td {
 
 @media print {
     @page {
-        size:  72mm 40mm !important;
+        size:  103mm 50mm !important;
         margin: 0mm !important;
     }
     html, body {
-        width: 72mm !important;
-        height: 40mm !important;
+        width: 103mm !important;
+        height: 50mm !important;
         margin: 0mm !important;
     }
 }
