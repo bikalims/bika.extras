@@ -19,7 +19,6 @@ sample_matrix_field = ExtUIDReferenceField(
     allowed_types=('SampleMatrix',),
     mode="rw",
     read_permission=View,
-    write_permission=FieldEditSampleType,
     widget=ReferenceWidget(
         label=_("Sample Matrix"),
         render_own_label=True,
