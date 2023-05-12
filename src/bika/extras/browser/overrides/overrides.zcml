@@ -37,6 +37,14 @@
         layer="bika.lims.interfaces.IBikaLIMS"
         />
 
+      <browser:page
+          for="*"
+          name="sticker"
+          class="bika.extras.browser.overrides.stickers.Sticker"
+          permission="zope2.View"
+          layer="bika.lims.interfaces.IBikaLIMS"
+          />
+
     <adapter
       name="Analysis_Specifications"
       factory="bika.extras.browser.overrides.setupdata.Analysis_Specifications"

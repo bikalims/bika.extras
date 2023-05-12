@@ -11,10 +11,11 @@ long_description = '\n\n'.join([
     open('CHANGES.rst').read(),
 ])
 
+version = "1.0.1"
 
 setup(
     name='bika.extras',
-    version='1.0a1',
+    version=version,
     description="BIKA Extras",
     long_description=long_description,
     # Get more from https://pypi.org/classifiers/
