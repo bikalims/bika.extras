@@ -8,7 +8,7 @@ from zope.interface import implementer
 
 from .fields import ExtUIDReferenceField
 from bika.lims.interfaces import IAnalysisRequest
-from bika.lims.permissions import FieldEditSampleType
+from bika.lims.permissions import FieldEditBatch
 from bika.lims.browser.widgets import ReferenceWidget
 from bika.extras import _
 from bika.extras.interfaces import IBikaExtrasLayer
@@ -18,6 +18,7 @@ sample_matrix_field = ExtUIDReferenceField(
     required=0,
     allowed_types=('SampleMatrix',),
     mode="rw",
+    write_permission=FieldEditBatch,
     read_permission=View,
     widget=ReferenceWidget(
         label=_("Sample Matrix"),
