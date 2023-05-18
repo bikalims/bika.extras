@@ -14,7 +14,11 @@
   <!--<includeDependencies package="." />-->
 
   <include package=".browser" />
+
+  <include package=".extenders" />
+
   <include package=".stickers" />
+  
   <include file="permissions.zcml" />
 
   <genericsetup:registerProfile
