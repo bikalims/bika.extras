@@ -1,0 +1,74 @@
+<tal:sticker define="item python:view.current_item;
+                     sample_id item/getId;
+                     sampler item/getSampler|nothing;
+                     sample_point item/getSamplePointTitle|nothing;
+                     sample_type item/getSampleTypeTitle|nothing;
+                     date_sampled python:view.ulocalized_time(item.getDateSampled());
+                     sampling_date python:view.ulocalized_time(item.getSamplingDate());
+                     client_sample_id item/getClientSampleID|nothing;
+                     client_order_num item/getClientOrderNumber|nothing;
+                     ar python:view.context;
+                     lab_title python:ar.bika_setup.laboratory.Title;
+                     portal_state context/@@plone_portal_state;
+                     portal_url portal_state/portal_url;
+                     composite item/getComposite|nothing;
+                     deviation item/getSamplingDeviationTitle|nothing;
+                     preservation item/getPreservationTitle|nothing;
+                     container item/getContainerTitle|nothing;
+                     analyses python:item.getAnalyses(full_objects=True);
+                     hazardous item/getHazardous|nothing;
+                     field_analyses python:[analysis for analysis in analyses if analysis.getPointOfCapture()=='field'];">
+
+
+  <div class="table-responsive">
+  <table cellpadding="0" cellspacing="0" class="info-container">
+      <tr>
+        <th i18n:translate="">Sample ID</th>
+        <td><strong tal:content="string:${sample_id}"/></td>
+        <td rowspan='4'>
+          <div class="header-logo">
+            <!-- <img tal:attributes="src string:${portal_url}/sticker_logo.png;style "/> -->
+            <img tal:attributes="src python:view.get_sticker_logo();style python:view.get_sticker_styles().get('ac_styles')"/>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th i18n:translate="">Date Sampled</th>
+        <td tal:content="date_sampled"/>
+      </tr>
+      <tr>
+        <th i18n:translate="">CSID</th>
+        <td tal:content="client_sample_id"/>
+      </tr>
+      <tr>
+        <th style='border-bottom:none' i18n:translate="">Time</th>
+        <td style='border-bottom:none' tal:content="python:view.get_today_now()"/>
+      </tr>
+      <tr>
+      </tr>
+      <tr>
+        <th i18n:translate="">Sample Type</th>
+        <td colspan='2' tal:content="sample_type"/>
+      </tr>
+      <tr>
+        <th i18n:translate="">Sample Point</th>
+        <td colspan='2' tal:content="sample_point"/>
+      </tr>
+      <tr>
+        <td colspan="3" class="barcode-container">
+          <!-- Barcode -->
+          <div class="barcode"
+               tal:attributes="data-id sample_id;"
+               data-barHeight="18"
+               data-code="code39"
+               data-addQuietZone="true"
+               data-showHRI="false">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan='3' tal:content="lab_title"/>
+      </tr>
+  </table>
+</div>
+</tal:sticker>
