@@ -45,6 +45,15 @@
           layer="bika.lims.interfaces.IBikaLIMS"
           />
 
+      <browser:page
+          for="bika.lims.interfaces.IWorksheet"
+          name="attachments_view"
+          class=".attachments.AttachmentsView"
+          permission="zope.Public"
+          layer="senaite.core.interfaces.ISenaiteCore"
+          />
+
+
     <adapter
       name="Analysis_Specifications"
       factory="bika.extras.browser.overrides.setupdata.Analysis_Specifications"
