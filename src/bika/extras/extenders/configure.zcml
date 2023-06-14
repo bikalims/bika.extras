@@ -7,5 +7,6 @@
   <adapter name='bika.extras'
           provides="archetypes.schemaextender.interfaces.ISchemaExtender"
           factory=".analysisrequest.AnalysisRequestSchemaExtender"/>
+    <adapter name='bika.extras' factory=".attachment.AttachmentSchemaModifier" />
 
 </configure>
