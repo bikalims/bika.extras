@@ -1,0 +1,24 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+       xmlns:zcml="http://namespaces.zope.org/browser"
+       xmlns:fss="http://namespaces.zope.org/browser"
+       xmlns:browser="http://namespaces.zope.org/browser"
+       xmlns:five="http://namespaces.zope.org/five"
+       i18n_domain="bika.extras">
+
+    <browser:page
+      for="bika.lims.interfaces.IReportFolder"
+      name="administration"
+      class="bika.extras.browser.overrides.reports.AdministrationView"
+      permission="zope2.View"
+      layer="bika.extras.interfaces.IBikaExtrasLayer"
+    />
+
+    <browser:page
+      for="bika.lims.interfaces.IReportFolder"
+      name="createreport"
+      class="bika.extras.browser.overrides.reports.SubmitForm"
+      permission="zope2.View"
+      layer="bika.extras.interfaces.IBikaExtrasLayer"
+    />
+
+</configure>
