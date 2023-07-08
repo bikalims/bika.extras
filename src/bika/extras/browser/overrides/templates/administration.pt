@@ -178,6 +178,9 @@
                       name="administration_all_clients">
                   <input type="hidden" name="report_id"
                          value="administration_allclients"/>
+                  <fieldset>
+                    <tal:x content="structure context/@@selection_macros/select_output_format"/>
+                  </fieldset>
                   <input tabindex=""
                          class="searchButton allowMultiSubmit"
                          type="submit"
