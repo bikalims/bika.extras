@@ -21,4 +21,12 @@
       layer="bika.extras.interfaces.IBikaExtrasLayer"
     />
 
+
+    <browser:page
+      for="*"
+      name="selection_macros"
+      class="bika.lims.browser.reports.selection_macros.SelectionMacrosView"
+      permission="zope.Public"
+    />
+
 </configure>
