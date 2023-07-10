@@ -240,6 +240,10 @@
                   <input type="hidden"
                          name="report_module"
                          tal:attributes="value string:bika.extras.browser.reports.administration_clientsamplepoints" />
+                  <fieldset>
+                    <tal:x content="structure context/@@selection_macros/select_client"/>
+                    <tal:x content="structure context/@@selection_macros/select_output_format"/>
+                  </fieldset>
                   <input tabindex=""
                          class="searchButton allowMultiSubmit"
                          type="submit"

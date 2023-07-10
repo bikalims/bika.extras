@@ -10,27 +10,32 @@ from bika.lims import api
 from bika.lims.browser.reports.administration_arsnotinvoiced import Report as RA
 from bika.lims.utils import t
 from senaite.core.catalog import CLIENT_CATALOG
+from senaite.core.catalog import SETUP_CATALOG
 
 
 class Report(RA):
 
     def __call__(self):
+        setup_catalog = api.get_tool(SETUP_CATALOG)
         client_catalog = api.get_tool(CLIENT_CATALOG)
         rc = api.get_tool('reference_catalog')
         self.report_content = {}
         parms = []
         headings = {}
-        headings['header'] = _("Client Contacts")
-        headings['subheader'] = _("Client Contacts")
+        headings['header'] = _("Client Sample Points")
+        headings['subheader'] = _("Client Sample Points")
 
         count_all = 0
-
-        query = {'portal_type': 'Client',
+        query = {'portal_type': 'SamplePoint',
                  'is_active': True,
                  'sort_order': 'reverse'}
+
+        client_query = {'portal_type': 'Client',
+                        'is_active': True,
+                        'sort_order': 'reverse'}
         if 'ClientUID' in self.request.form:
             client_uid = self.request.form['ClientUID']
-            query['UID'] = client_uid
+            client_query['UID'] = client_uid
             client = rc.lookupObject(client_uid)
             client_title = client.Title()
         else:
@@ -41,44 +46,57 @@ class Report(RA):
              'type': 'text'})
 
         # and now lets do the actual report lines
-        formats = {'columns': 9,
+        formats = {'columns': 5,
                    'col_heads': [_('Client'),
-                                 _('Salutation'),
-                                 _('First Name'),
-                                 _('Middle Name'),
-                                 _('Surname'),
-                                 _('Job Title'),
-                                 _('Email Address'),
-                                 _('Business Phone'),
-                                 _('Mobile Phone'),
+                                 _('Client ID'),
+                                 _('Sample Point Name'),
+                                 _('Sample Point Description'),
+                                 _('Sample Types'),
                                  ],
                    'class': '',
                    }
 
         datalines = []
 
-        for brain in client_catalog(query):
-            obj = brain.getObject()
-            contacts = obj.objectValues('Contact')
-            for contact in contacts:
+        if client_title != "All":
+            for brain in client_catalog(client_query):
+                client = brain.getObject()
+                path = {"query": api.get_path(client), "depth": 1}
+                query["path"] = path
+                for brain in setup_catalog(query):
+                    dataline = []
+                    sample_point = brain.getObject()
+                    dataitem = {'value': client.getName() if client else ""}
+                    dataline.append(dataitem)
+                    dataitem = {'value': client.getClientID() if client else ""}
+                    dataline.append(dataitem)
+                    dataitem = {'value': sample_point.Title()}
+                    dataline.append(dataitem)
+                    dataitem = {'value': sample_point.Description()}
+                    dataline.append(dataitem)
+                    sample_types = sample_point.getSampleTypes()
+                    dataitem = {'value': ','.join([i.Title() for i in sample_types])}
+                    dataline.append(dataitem)
+
+                    datalines.append(dataline)
+                    count_all += 1
+                query.pop("path")
+
+        if client_title == "All":
+            for brain in setup_catalog(query):
+                obj = brain.getObject()
                 dataline = []
-                dataitem = {'value': obj.getName()}
+                client = obj.getClient()
+                dataitem = {'value': client.getName() if client else ""}
                 dataline.append(dataitem)
-                dataitem = {'value': contact.getSalutation()}
+                dataitem = {'value': client.getClientID() if client else ""}
                 dataline.append(dataitem)
-                dataitem = {'value': contact.getFirstname()}
+                dataitem = {'value': obj.Title()}
                 dataline.append(dataitem)
-                dataitem = {'value': contact.getMiddlename()}
+                dataitem = {'value': obj.Description()}
                 dataline.append(dataitem)
-                dataitem = {'value': contact.getSurname()}
-                dataline.append(dataitem)
-                dataitem = {'value': contact.getJobTitle()}
-                dataline.append(dataitem)
-                dataitem = {'value': contact.getEmailAddress()}
-                dataline.append(dataitem)
-                dataitem = {'value': contact.getBusinessPhone()}
-                dataline.append(dataitem)
-                dataitem = {'value': contact.getMobilePhone()}
+                sample_types = obj.getSampleTypes()
+                dataitem = {'value': ','.join([i.Title() for i in sample_types])}
                 dataline.append(dataitem)
 
                 datalines.append(dataline)
@@ -90,8 +108,8 @@ class Report(RA):
         # table footer data
         footlines = []
         footline = []
-        footitem = {'value': _('Client Contacts'),
-                    'colspan': 8,
+        footitem = {'value': _('Client Sample Points'),
+                    'colspan': 4,
                     'class': 'total_label'}
         footline.append(footitem)
         footitem = {'value': count_all}
@@ -120,14 +138,10 @@ class Report(RA):
         for row in data_lines:
             dw.writerow({
                 'Client': safe_unicode(row[0]['value']).encode(t),
-                'Salutation': safe_unicode(row[1]['value']).encode(t),
-                'First Name': safe_unicode(row[2]['value']).encode(t),
-                'Middle Name': safe_unicode(row[3]['value']).encode(t),
-                'Surname': safe_unicode(row[4]['value']).encode(t),
-                'Job Title': safe_unicode(row[5]['value']).encode(t),
-                'Email Address': safe_unicode(row[6]['value']).encode(t),
-                'Business Phone': safe_unicode(row[7]['value']).encode(t),
-                'Mobile Phone': safe_unicode(row[8]['value']).encode(t),
+                'Client ID': safe_unicode(row[1]['value']).encode(t),
+                'Sample Point Name': safe_unicode(row[2]['value']).encode(t),
+                'Sample Point Description': safe_unicode(row[3]['value']).encode(t),
+                'Sample Types': safe_unicode(row[4]['value']).encode(t),
             })
         report_data = output.getvalue()
         output.close()
@@ -136,5 +150,5 @@ class Report(RA):
         setheader = self.request.RESPONSE.setHeader
         setheader('Content-Type', 'text/csv')
         setheader("Content-Disposition",
-                  "attachment;filename=\"client_contacts_%s.csv\"" % date)
+                  "attachment;filename=\"client_sample_points_%s.csv\"" % date)
         self.request.RESPONSE.write(report_data)
