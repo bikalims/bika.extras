@@ -14,15 +14,6 @@
     />
 
     <browser:page
-      for="bika.lims.interfaces.IReportFolder"
-      name="createreport"
-      class="bika.extras.browser.overrides.reports.SubmitForm"
-      permission="zope2.View"
-      layer="bika.extras.interfaces.IBikaExtrasLayer"
-    />
-
-
-    <browser:page
       for="*"
       name="selection_macros"
       class="bika.extras.browser.overrides.reports.SelectionMacrosView"
