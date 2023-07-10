@@ -25,7 +25,7 @@
     <browser:page
       for="*"
       name="selection_macros"
-      class="bika.lims.browser.reports.selection_macros.SelectionMacrosView"
+      class="bika.extras.browser.overrides.reports.SelectionMacrosView"
       permission="zope.Public"
     />
 
