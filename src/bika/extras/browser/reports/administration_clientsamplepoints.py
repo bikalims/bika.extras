@@ -9,7 +9,6 @@ from bika.extras import _
 from bika.lims import api
 from bika.lims.browser.reports.administration_arsnotinvoiced import Report as RA
 from bika.lims.utils import t
-from senaite.core.catalog import CLIENT_CATALOG
 from senaite.core.catalog import SETUP_CATALOG
 
 
@@ -17,31 +16,29 @@ class Report(RA):
 
     def __call__(self):
         setup_catalog = api.get_tool(SETUP_CATALOG)
-        client_catalog = api.get_tool(CLIENT_CATALOG)
         rc = api.get_tool('reference_catalog')
         self.report_content = {}
         parms = []
         headings = {}
         headings['header'] = _("Client Sample Points")
-        headings['subheader'] = _("Client Sample Points")
+        headings['subheader'] = _("Client: ")
 
         count_all = 0
         query = {'portal_type': 'SamplePoint',
                  'is_active': True,
-                 'sort_order': 'reverse'}
+                 'sort_order': 'ascending',
+                 "sort_on": "sortable_title",
+                 }
 
-        client_query = {'portal_type': 'Client',
-                        'is_active': True,
-                        'sort_order': 'reverse'}
         if 'ClientUID' in self.request.form:
             client_uid = self.request.form['ClientUID']
-            client_query['UID'] = client_uid
+            query['getClientUID'] = client_uid
             client = rc.lookupObject(client_uid)
             client_title = client.Title()
         else:
             client_title = 'All'
         parms.append(
-            {'title': _('Client'),
+            {'title': _('Client: '),
              'value': client_title,
              'type': 'text'})
 
@@ -58,49 +55,32 @@ class Report(RA):
 
         datalines = []
 
-        if client_title != "All":
-            for brain in client_catalog(client_query):
-                client = brain.getObject()
-                path = {"query": api.get_path(client), "depth": 1}
-                query["path"] = path
-                for brain in setup_catalog(query):
-                    dataline = []
-                    sample_point = brain.getObject()
-                    dataitem = {'value': client.getName() if client else ""}
-                    dataline.append(dataitem)
-                    dataitem = {'value': client.getClientID() if client else ""}
-                    dataline.append(dataitem)
-                    dataitem = {'value': sample_point.Title()}
-                    dataline.append(dataitem)
-                    dataitem = {'value': sample_point.Description()}
-                    dataline.append(dataitem)
-                    sample_types = sample_point.getSampleTypes()
-                    dataitem = {'value': ','.join([i.Title() for i in sample_types])}
-                    dataline.append(dataitem)
+        for brain in setup_catalog(query):
+            obj = brain.getObject()
+            dataline = []
+            client = obj.getClient()
+            dataitem = {'value': client.getName() if client else ""}
+            dataline.append(dataitem)
+            dataitem = {'value': client.getClientID() if client else ""}
+            dataline.append(dataitem)
+            dataitem = {'value': obj.Title()}
+            dataline.append(dataitem)
+            dataitem = {'value': obj.Description()}
+            dataline.append(dataitem)
+            sample_types = obj.getSampleTypes()
+            dataitem = {'value': ','.join([i.Title() for i in sample_types])}
+            dataline.append(dataitem)
 
-                    datalines.append(dataline)
-                    count_all += 1
-                query.pop("path")
+            datalines.append(dataline)
+            count_all += 1
 
-        if client_title == "All":
-            for brain in setup_catalog(query):
-                obj = brain.getObject()
-                dataline = []
-                client = obj.getClient()
-                dataitem = {'value': client.getName() if client else ""}
-                dataline.append(dataitem)
-                dataitem = {'value': client.getClientID() if client else ""}
-                dataline.append(dataitem)
-                dataitem = {'value': obj.Title()}
-                dataline.append(dataitem)
-                dataitem = {'value': obj.Description()}
-                dataline.append(dataitem)
-                sample_types = obj.getSampleTypes()
-                dataitem = {'value': ','.join([i.Title() for i in sample_types])}
-                dataline.append(dataitem)
+        # Sort by client name - first item dataline
+        datalines = sorted(datalines, key=lambda d: d[0]['value'])
 
-                datalines.append(dataline)
-                count_all += 1
+        # Blank line for PDF
+        if self.request.get('output_format', '') == 'PDF':
+            blank = [{"value": "."}] * formats.get("columns", 5)
+            datalines.append(blank)
 
         if self.request.get('output_format', '') == 'CSV':
             return self.generate_csv(formats["col_heads"], datalines)
@@ -146,9 +126,9 @@ class Report(RA):
         report_data = output.getvalue()
         output.close()
 
-        date = datetime.datetime.now().strftime("%Y%m%d%H%M")
+        date = datetime.datetime.now().strftime("%Y-%m-%d %H%M")
         setheader = self.request.RESPONSE.setHeader
         setheader('Content-Type', 'text/csv')
         setheader("Content-Disposition",
-                  "attachment;filename=\"client_sample_points_%s.csv\"" % date)
+                  "attachment;filename=\"Client Sample Points %s.csv\"" % date)
         self.request.RESPONSE.write(report_data)
