@@ -92,6 +92,11 @@ class Report(RA):
 
             count_all += 1
 
+        # Blank line for PDF
+        if self.request.get('output_format', '') == 'PDF':
+            blank = [{"value": "."}] * formats.get("columns", 7)
+            datalines.append(blank)
+
         if self.request.get('output_format', '') == 'CSV':
             return self.generate_csv(formats["col_heads"], datalines)
 
@@ -160,6 +165,7 @@ class Report(RA):
                 'Postal Code.': safe_unicode(row[17]['value']).encode(t),
                 'Country.': safe_unicode(row[18]['value']).encode(t),
             })
+
         report_data = output.getvalue()
         output.close()
 

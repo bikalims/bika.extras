@@ -27,7 +27,9 @@ class Report(RA):
 
         query = {'portal_type': 'Client',
                  'is_active': True,
-                 'sort_order': 'reverse'}
+                 "sort_on": "sortable_title",
+                 "sort_order": "ascending"}
+
         if 'ClientUID' in self.request.form:
             client_uid = self.request.form['ClientUID']
             query['UID'] = client_uid
@@ -36,7 +38,7 @@ class Report(RA):
         else:
             client_title = 'All'
         parms.append(
-            {'title': _('Client'),
+            {'title': _('Client: '),
              'value': client_title,
              'type': 'text'})
 
@@ -84,13 +86,18 @@ class Report(RA):
                 datalines.append(dataline)
                 count_all += 1
 
+        # Blank line for PDF
+        if self.request.get('output_format', '') == 'PDF':
+            blank = [{"value": "."}] * formats.get("columns", 9)
+            datalines.append(blank)
+
         if self.request.get('output_format', '') == 'CSV':
             return self.generate_csv(formats["col_heads"], datalines)
 
         # table footer data
         footlines = []
         footline = []
-        footitem = {'value': _('Client Contacts'),
+        footitem = {'value': _('Total Client Contacts'),
                     'colspan': 8,
                     'class': 'total_label'}
         footline.append(footitem)
@@ -129,12 +136,13 @@ class Report(RA):
                 'Business Phone': safe_unicode(row[7]['value']).encode(t),
                 'Mobile Phone': safe_unicode(row[8]['value']).encode(t),
             })
+
         report_data = output.getvalue()
         output.close()
 
-        date = datetime.datetime.now().strftime("%Y%m%d%H%M")
+        date = datetime.datetime.now().strftime("%Y-%m-%d %H%M")
         setheader = self.request.RESPONSE.setHeader
         setheader('Content-Type', 'text/csv')
         setheader("Content-Disposition",
-                  "attachment;filename=\"client_contacts_%s.csv\"" % date)
+                  "attachment;filename=\"Client Contacts %s.csv\"" % date)
         self.request.RESPONSE.write(report_data)
