@@ -26,7 +26,8 @@ class Report(RA):
 
         query = {'portal_type': 'Client',
                  'is_active': True,
-                 'sort_order': 'reverse'}
+                 "sort_on": "sortable_title",
+                 "sort_order": "ascending"}
 
         # and now lets do the actual report lines
         formats = {'columns': 7,
@@ -97,7 +98,7 @@ class Report(RA):
         # table footer data
         footlines = []
         footline = []
-        footitem = {'value': _('All Clients'),
+        footitem = {'value': _('Total Clients'),
                     'colspan': 6,
                     'class': 'total_label'}
         footline.append(footitem)
@@ -162,9 +163,9 @@ class Report(RA):
         report_data = output.getvalue()
         output.close()
 
-        date = datetime.datetime.now().strftime("%Y%m%d%H%M")
+        date = datetime.datetime.now().strftime("%Y-%m-%d %H%M")
         setheader = self.request.RESPONSE.setHeader
         setheader('Content-Type', 'text/csv')
         setheader("Content-Disposition",
-                  "attachment;filename=\"allclient_%s.csv\"" % date)
+                  "attachment;filename=\"Clients %s.csv\"" % date)
         self.request.RESPONSE.write(report_data)
