@@ -38,6 +38,15 @@
         layer="bika.lims.interfaces.IBikaLIMS"
         />
 
+      <!-- Analyses Classic View -->
+      <browser:page
+          for="bika.lims.interfaces.IWorksheet"
+          name="analyses_classic_view"
+          class="bika.extras.browser.overrides.worksheet.analyses.AnalysesView"
+          permission="senaite.core.permissions.ViewResults"
+          layer="bika.extras.interfaces.IBikaExtrasLayer"
+          />
+
       <browser:page
           for="*"
           name="sticker"
