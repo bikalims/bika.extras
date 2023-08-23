@@ -9,9 +9,9 @@ from zope.interface import implementer
 from .fields import ExtUIDReferenceField
 from bika.lims.interfaces import IAnalysisRequest
 from bika.lims.permissions import FieldEditBatch
-from bika.lims.browser.widgets import ReferenceWidget
 from bika.extras import _
 from bika.extras.interfaces import IBikaExtrasLayer
+from senaite.core.browser.widgets import ReferenceWidget
 
 sample_matrix_field = ExtUIDReferenceField(
     'SampleMatrix',
@@ -34,6 +34,7 @@ sample_matrix_field = ExtUIDReferenceField(
         showOn=True,
     ),
 )
+
 
 @implementer(ISchemaExtender, IBrowserLayerAwareExtender)
 class AnalysisRequestSchemaExtender(object):
