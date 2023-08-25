@@ -27,9 +27,12 @@ from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.utils import safe_unicode
 from zope.event import notify
 
+from bika.lims import api
 from bika.lims import logger
 from bika.lims.utils import tmpID
 from bika.lims.idserver import renameAfterCreation
+from senaite.core.catalog import CLIENT_CATALOG
+from senaite.core.catalog import SETUP_CATALOG
 from senaite.core.exportimport.setupdata import addDocument
 from senaite.core.exportimport.setupdata import read_file
 from senaite.core.exportimport.setupdata import Float
@@ -697,6 +700,7 @@ class Worksheet_Templates(WorksheetImporter):
                 renameAfterCreation(obj)
                 notify(ObjectInitializedEvent(obj))
 
+
 class Supplier_Contacts(WorksheetImporter):
 
     def Import(self):
@@ -727,3 +731,39 @@ class Supplier_Contacts(WorksheetImporter):
             notify(ObjectInitializedEvent(obj))
 
 
+class Sample_Points(WorksheetImporter):
+
+    def Import(self):
+        setup_folder = self.context.bika_setup.bika_samplepoints
+        bsc = api.get_tool(SETUP_CATALOG)
+        cat = api.get_tool(CLIENT_CATALOG)
+        for row in self.get_rows(1):
+            current_sp_name = row.get("Current Sample Point Name", "")
+            new_sp_name = row.get("New Sample Point Name", "")
+            if not current_sp_name or not new_sp_name:
+                error = "Missing Current or New Sample Point Name # %s - # %s'"
+                logger.error(error, current_sp_name, new_sp_name)
+                continue
+            if current_sp_name == new_sp_name:
+                error = "Same Current and New Sample Point Name %s - %s'"
+                logger.error(error, current_sp_name, new_sp_name)
+                continue
+            if row['Client']:
+                client_title = row['Client']
+                client = cat(portal_type="Client", getName=client_title)
+                if len(client) == 0:
+                    error = "Sample Point %s: Client invalid: '%s'. The Sample point will not be uploaded."
+                    logger.error(error, row['title'], client_title)
+                    continue
+                folder = client[0].getObject()
+            else:
+                folder = setup_folder
+            sp = bsc(portal_type="SamplePoint", title=current_sp_name)
+            if len(sp) != 1:
+                error = "Sample Point %s: Client invalid: '%s'."
+                logger.error(error, current_sp_name, client_title)
+                continue
+            obj = sp[0].getObject()
+            obj.setTitle(new_sp_name)
+            info = "Renamed Sample Point %s to '%s'."
+            logger.error(info, current_sp_name, new_sp_name)
