@@ -9,5 +9,6 @@ class IBikaExtrasLayer(IBikaLIMS):
     """Marker interface that defines a Zope 3 browser layer.
     """
 
+
 class IBikaExtrasBrowserLayer(IDefaultBrowserLayer):
     """Marker interface that defines a browser layer."""

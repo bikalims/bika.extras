@@ -1,0 +1,11 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser">
+
+    <!-- contacts list -->
+    <subscriber
+            for="bika.lims.browser.client.ClientContactsView
+                 zope.interface.Interface"
+            provides="senaite.app.listing.interfaces.IListingViewAdapter"
+            factory=".contacts.ClientContactsListingViewAdapter"/>
+
+</configure>
