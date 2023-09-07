@@ -15,4 +15,11 @@
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".analysisrequest.AnalysisRequestAnalysesListViewAdapter"/>
 
+    <!-- analysisprofile analyses list -->
+    <subscriber
+            for="bika.lims.browser.widgets.analysisprofileanalyseswidget.AnalysisProfileAnalysesView
+                 zope.interface.Interface"
+            provides="senaite.app.listing.interfaces.IListingViewAdapter"
+            factory=".analysisprofileanalyseswidget.AnalysisProfileAnalysesListingViewAdapter"/>
+
 </configure>
