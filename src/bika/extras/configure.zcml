@@ -20,6 +20,7 @@
   <include package=".stickers" />
   
   <include file="permissions.zcml" />
+  <include package=".catalog" />
 
   <genericsetup:registerProfile
       name="default"
@@ -38,6 +39,13 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       post_handler=".setuphandlers.uninstall"
       />
+
+  <!-- setup handler -->
+  <genericsetup:importStep
+      name="bika.extras.setupHandler"
+      title="BIKA EXTRAS: Run Setup Handler"
+      description="Run various configuration actions"
+      handler="bika.extras.setuphandlers.setup_handler"/>
 
   <utility
       factory=".setuphandlers.HiddenProfiles"

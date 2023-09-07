@@ -1,0 +1,8 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    i18n_domain="senaite.core">
+
+  <!-- AnalysisService Indexer -->
+  <adapter name="category_sort_key" factory=".analysisservice.category_sort_key"/>
+
+</configure>

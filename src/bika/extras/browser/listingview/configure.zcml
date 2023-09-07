@@ -8,4 +8,11 @@
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".contacts.ClientContactsListingViewAdapter"/>
 
+    <!-- analysisrequest list -->
+    <subscriber
+            for="bika.lims.browser.analysisrequest.AnalysisRequestAnalysesView
+                 zope.interface.Interface"
+            provides="senaite.app.listing.interfaces.IListingViewAdapter"
+            factory=".analysisrequest.AnalysisRequestAnalysesListViewAdapter"/>
+
 </configure>
