@@ -8,6 +8,34 @@
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".contacts.ClientContactsListingViewAdapter"/>
 
+    <!-- container types list -->
+    <subscriber
+            for="bika.lims.controlpanel.bika_containertypes.ContainerTypesView
+                 zope.interface.Interface"
+            provides="senaite.app.listing.interfaces.IListingViewAdapter"
+            factory=".bika_containertypes.ContainerTypesListingViewAdapter"/>
+
+    <!-- instrument types list -->
+    <subscriber
+            for="bika.lims.controlpanel.bika_instrumenttypes.InstrumentTypesView
+                 zope.interface.Interface"
+            provides="senaite.app.listing.interfaces.IListingViewAdapter"
+            factory=".bika_instrumenttypes.InstrumentTypesListingViewAdapter"/>
+
+    <!-- manufacturers list -->
+    <subscriber
+            for="bika.lims.controlpanel.bika_manufacturers.ManufacturersView
+                 zope.interface.Interface"
+            provides="senaite.app.listing.interfaces.IListingViewAdapter"
+            factory=".bika_manufacturers.ManufacturersListingViewAdapter"/>
+
+    <!--sample matrices list -->
+    <subscriber
+            for="bika.lims.controlpanel.bika_samplematrices.SampleMatricesView
+                 zope.interface.Interface"
+            provides="senaite.app.listing.interfaces.IListingViewAdapter"
+            factory=".bika_samplematrices.SampleMatricesListingViewAdapter"/>
+
     <!-- analysisrequest list -->
     <subscriber
             for="bika.lims.browser.analysisrequest.AnalysisRequestAnalysesView
@@ -35,5 +63,12 @@
                  zope.interface.Interface"
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".referenceresultswidget.ReferenceResultsListingViewAdapter"/>
+
+    <!-- Services list -->
+    <subscriber
+            for="bika.lims.browser.widgets.serviceswidget.ServicesView
+                 zope.interface.Interface"
+            provides="senaite.app.listing.interfaces.IListingViewAdapter"
+            factory=".serviceswidget.ServicesListingViewAdapter"/>
 
 </configure>
