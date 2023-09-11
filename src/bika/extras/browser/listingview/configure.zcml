@@ -22,4 +22,18 @@
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".analysisprofileanalyseswidget.AnalysisProfileAnalysesListingViewAdapter"/>
 
+    <!-- ARTemplate analyses list -->
+    <subscriber
+            for="bika.lims.browser.widgets.artemplateanalyseswidget.ARTemplateAnalysesView
+                 zope.interface.Interface"
+            provides="senaite.app.listing.interfaces.IListingViewAdapter"
+            factory=".artemplateanalyseswidget.ARTemplateAnalysesListingViewAdapter"/>
+
+    <!-- ReferenceResults list -->
+    <subscriber
+            for="bika.lims.browser.widgets.referenceresultswidget.ReferenceResultsView
+                 zope.interface.Interface"
+            provides="senaite.app.listing.interfaces.IListingViewAdapter"
+            factory=".referenceresultswidget.ReferenceResultsListingViewAdapter"/>
+
 </configure>
