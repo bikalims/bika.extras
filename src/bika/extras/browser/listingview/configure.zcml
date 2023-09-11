@@ -1,6 +1,13 @@
 <configure xmlns="http://namespaces.zope.org/zope"
            xmlns:browser="http://namespaces.zope.org/browser">
 
+    <!-- client folder listing -->
+    <subscriber
+            for="bika.lims.browser.clientfolder.ClientFolderContentsView
+                 zope.interface.Interface"
+            provides="senaite.app.listing.interfaces.IListingViewAdapter"
+            factory=".clientfolder.ClientFolderContentsListingViewAdapter"/>
+
     <!-- contacts list -->
     <subscriber
             for="bika.lims.browser.client.ClientContactsView
@@ -14,6 +21,7 @@
                  zope.interface.Interface"
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".bika_containertypes.ContainerTypesListingViewAdapter"/>
+
 
     <!-- instrument types list -->
     <subscriber
