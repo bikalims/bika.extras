@@ -8,12 +8,27 @@
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".clientfolder.ClientFolderContentsListingViewAdapter"/>
 
+    <!-- supplier contact listing -->
+    <subscriber
+            for="bika.lims.browser.supplier.ContactsView
+                 zope.interface.Interface"
+            provides="senaite.app.listing.interfaces.IListingViewAdapter"
+            factory=".supplier.ContactsListingViewAdapter"/>
+
+
     <!-- contacts list -->
     <subscriber
             for="bika.lims.browser.client.ClientContactsView
                  zope.interface.Interface"
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".contacts.ClientContactsListingViewAdapter"/>
+
+    <!-- container types list -->
+    <subscriber
+            for="bika.lims.controlpanel.bika_calculations.CalculationsView
+                 zope.interface.Interface"
+            provides="senaite.app.listing.interfaces.IListingViewAdapter"
+            factory=".bika_calculations.CalculationsListingViewAdapter"/>
 
     <!-- container types list -->
     <subscriber
