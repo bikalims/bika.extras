@@ -8,5 +8,6 @@
           provides="archetypes.schemaextender.interfaces.ISchemaExtender"
           factory=".analysisrequest.AnalysisRequestSchemaExtender"/>
     <adapter name='bika.extras' factory=".attachment.AttachmentSchemaModifier" />
+    <adapter name='bika.extras' factory=".worksheettemplate.WorksheetTemplateSchemaModifier" />
 
 </configure>
