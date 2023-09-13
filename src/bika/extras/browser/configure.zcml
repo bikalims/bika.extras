@@ -8,7 +8,7 @@
   <include package="z3c.jbot" file="meta.zcml" />
   <include package=".listingview"/>
   <browser:jbot
-      directory="overrides"
+      directory="jbot"
       layer="bika.extras.interfaces.IBikaExtrasLayer"
       />
 
