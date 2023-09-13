@@ -23,6 +23,7 @@
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".contacts.ClientContactsListingViewAdapter"/>
 
+
     <!-- container types list -->
     <subscriber
             for="bika.lims.controlpanel.bika_calculations.CalculationsView
@@ -44,6 +45,13 @@
                  zope.interface.Interface"
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".bika_instrumenttypes.InstrumentTypesListingViewAdapter"/>
+
+    <!-- instruments listing -->
+    <subscriber
+            for="bika.lims.controlpanel.bika_instruments.InstrumentsView
+                 zope.interface.Interface"
+            provides="senaite.app.listing.interfaces.IListingViewAdapter"
+            factory=".bika_instruments.InstrumentsListingViewAdapter"/>
 
     <!-- manufacturers list -->
     <subscriber
