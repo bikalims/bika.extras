@@ -21,11 +21,10 @@ class InstrumentsListingViewAdapter(object):
     def before_render(self):
         if not is_installed():
             return
-        if not self.context.bika_setup.getShowPrices():
-            for i in range(len(self.review_states)):
-                rmv = "WeeksToExpire"
-                self.listing.review_states[i]["columns"].remove(rmv)
-            del self.listing.columns["WeeksToExpire"]
+        for i in range(len(self.listing.review_states)):
+            rmv = "WeeksToExpire"
+            self.listing.review_states[i]["columns"].remove(rmv)
+        del self.listing.columns["WeeksToExpire"]
 
         import_interface = [
             ("ImportInterface",
