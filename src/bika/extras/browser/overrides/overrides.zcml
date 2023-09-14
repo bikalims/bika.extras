@@ -65,6 +65,14 @@
           layer="senaite.core.interfaces.ISenaiteCore"
           />
 
+      <browser:page
+          for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+          name="import"
+          class=".dataimport.ImportView"
+          permission="senaite.core.permissions.ImportInstrumentResults"
+          layer="senaite.core.interfaces.ISenaiteCore"
+          />
+
 
     <adapter
       name="Analysis_Specifications"
