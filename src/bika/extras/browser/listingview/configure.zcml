@@ -116,6 +116,13 @@
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".bika_worksheettemplates.WorksheetTemplatesListingViewAdapter"/>
 
+    <!-- analysisprofile list -->
+    <subscriber
+            for="bika.lims.controlpanel.bika_analysisprofiles.AnalysisProfilesView
+                 zope.interface.Interface"
+            provides="senaite.app.listing.interfaces.IListingViewAdapter"
+            factory=".bika_analysisprofiles.AnalysisProfilesListingViewAdapter"/>
+
     <!-- Samples list -->
     <subscriber
             for="senaite.core.browser.samples.view.SamplesView
