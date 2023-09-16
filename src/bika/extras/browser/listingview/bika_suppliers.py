@@ -24,7 +24,8 @@ class SuppliersListingViewAdapter(object):
             return
         for i in range(len(self.review_states)):
             self.listing.review_states[i]["columns"].remove("Fax")
-        del self.listing.columns["Fax"]
+        if "Fax" in self.listing.columns:
+            del self.listing.columns["Fax"]
 
         contacts = [
             ("Contacts",
