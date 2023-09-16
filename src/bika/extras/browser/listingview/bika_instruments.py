@@ -23,7 +23,8 @@ class InstrumentsListingViewAdapter(object):
             return
         for i in range(len(self.listing.review_states)):
             rmv = "WeeksToExpire"
-            self.listing.review_states[i]["columns"].remove(rmv)
+            if rmv in self.listing.review_states[i]["columns"]:
+                self.listing.review_states[i]["columns"].remove(rmv)
         if "WeeksToExpire" in self.listing.columns:
             del self.listing.columns["WeeksToExpire"]
 
