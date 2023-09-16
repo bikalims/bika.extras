@@ -13,7 +13,6 @@ class ImportView(IV):
         bsc = api.get_tool('senaite_catalog_setup')
         brains = bsc(portal_type='Instrument', is_active=True)
         items = [('', '...Choose an Instrument...')]
-        import pdb; pdb.set_trace()
         for item in brains:
             instrument = item.getObject()
             import_interface = instrument.getImportDataInterface()
