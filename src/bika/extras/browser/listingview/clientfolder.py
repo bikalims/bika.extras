@@ -25,12 +25,21 @@ class ClientFolderContentsListingViewAdapter(object):
             return
         if not self.context.bika_setup.getShowPrices():
             for i in range(len(self.review_states)):
-                self.listing.review_states[i]["columns"].remove("BulkDiscount")
-                self.listing.review_states[i]["columns"].remove("MemberDiscountApplies")
-            del self.listing.columns["MemberDiscountApplies"]
-            del self.listing.columns["BulkDiscount"]
-        self.listing.columns['MemberDiscountApplies']['title'] = \
-            _("Member Discount %")
+                bulk = "BulkDiscount"
+                if bulk in self.listing.review_states[i]["columns"]:
+                    self.listing.review_states[i]["columns"].remove(bulk)
+                member_disc = "MemberDiscountApplies"
+                if member_disc in self.listing.review_states[i]["columns"]:
+                    self.listing.review_states[i]["columns"].remove(member_disc)
+            if "MemberDiscountApplies" in self.listing.columns:
+                del self.listing.columns["MemberDiscountApplies"]
+            if "BulkDiscount" in self.listing.columns:
+                del self.listing.columns["BulkDiscount"]
+
+        if "MemberDiscountApplies" in self.listing.columns:
+            self.listing.columns['MemberDiscountApplies']['title'] = \
+                _("Member Discount %")
+
         contact = [
             ("Contacts",
              {"toggle": False, "sortable": False, "title": _("Contacts")},
