@@ -24,7 +24,7 @@ class ClientFolderContentsListingViewAdapter(object):
         if not is_installed():
             return
         if not self.context.bika_setup.getShowPrices():
-            for i in range(len(self.review_states)):
+            for i in range(len(self.listing.review_states)):
                 bulk = "BulkDiscount"
                 if bulk in self.listing.review_states[i]["columns"]:
                     self.listing.review_states[i]["columns"].remove(bulk)
