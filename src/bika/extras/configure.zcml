@@ -21,6 +21,7 @@
   
   <include file="permissions.zcml" />
   <include package=".catalog" />
+  <include package=".subscribers" />
 
   <genericsetup:registerProfile
       name="default"
