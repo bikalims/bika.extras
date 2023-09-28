@@ -23,12 +23,14 @@ class SamplesListingViewAdapter(object):
         if not is_installed():
             return
 
-        container = [
-                ("Container", {"toggle": False, "title": _("Container")},)
-                ]
+        container = [("Container", {"toggle": False, "title": _("Container")})]
         self.listing.columns.update(container)
         for i in range(len(self.listing.review_states)):
             self.listing.review_states[i]["columns"].append("Container")
+
+        for i in self.listing.review_states:
+            if i["title"] == "Dispatched":
+                i["title"] = "Disposed"
 
     def folder_item(self, obj, item, index):
         if not is_installed():
