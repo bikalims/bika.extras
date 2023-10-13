@@ -19,7 +19,6 @@ class AnalysisRequestAnalysesListViewAdapter(object):
     def before_render(self):
         if not is_installed():
             return
-        import pdb; pdb.set_trace()
         self.do_cats = self.context.bika_setup.getCategoriseAnalysisServices()
         if self.do_cats:
             self.listing.contentFilter["sort_on"] = "category_sort_key"
