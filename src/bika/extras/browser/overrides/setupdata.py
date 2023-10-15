@@ -118,8 +118,8 @@ class Instruments(WorksheetImporter):
                 or "Brand" not in row
             ):
                 logger.info(
-                    "Unable to import '%s'. Missing supplier, manufacturer or type"
-                    % row.get("title", "")
+                    "Unable to import '%s'. Missing supplier, "
+                    "manufacturer or type" % row.get("title", "")
                 )
                 continue
 
@@ -260,7 +260,8 @@ class Methods(WorksheetImporter):
                 methods_brains = catalog.searchResults(
                     {"portal_type": "Method"}
                 )
-                # If a the new method has the same MethodID as a created method, remove MethodID value.
+                # If a the new method has the same MethodID as a created
+                # method, remove MethodID value.
                 for methods in methods_brains:
                     if (
                         methods.getObject().get("MethodID", "") != ""
@@ -348,8 +349,8 @@ class Analysis_Services(WorksheetImporter):
             )
             if not service:
                 warning = (
-                    "Unable to load an Analysis Service uncertainty. Service '%s' not found."
-                    % row.get("Service_title")
+                    "Unable to load an Analysis Service uncertainty. "
+                    "Service '%s' not found." % row.get("Service_title")
                 )
                 logger.warning(warning)
                 continue
@@ -493,14 +494,14 @@ class Analysis_Services(WorksheetImporter):
             # Analysis Service - Instrument considerations:
             # By default, an Analysis Services will be associated automatically
             # with several Instruments due to the Analysis Service - Methods
-            # relation (an Instrument can be assigned to a Method and one Method
-            # can have zero or n Instruments associated). There is no need to
-            # set this assignment directly, the AnalysisService object will
-            # find those instruments.
+            # relation (an Instrument can be assigned to a Method and one
+            # Method can have zero or n Instruments associated). There
+            # is no need to set this assignment directly, the AnalysisService
+            # object will find those instruments.
             # Besides this 'automatic' behavior, an Analysis Service can also
-            # have 0 or n Instruments manually associated ('Instruments' field).
-            # In this case, the attribute 'AllowInstrumentEntryOfResults' should
-            # be set to True.
+            # have 0 or n Instruments manually associated
+            # ('Instruments' field). In this case, the attribute
+            # 'AllowInstrumentEntryOfResults' should be set to True.
             #
             # To make it easier, if a DefaultInstrument is declared in the
             # Analysis_Services spreadsheet, but the same AS has no instrument
@@ -525,8 +526,9 @@ class Analysis_Services(WorksheetImporter):
             )
 
             # Analysis Service - Calculation considerations:
-            # By default, the AnalysisService will use the Calculation associated
-            # to the Default Method (the field "UseDefaultCalculation"==True).
+            # By default, the AnalysisService will use the Calculation
+            # associated to the
+            # Default Method (the field "UseDefaultCalculation"==True).
             # If the Default Method for this AS doesn't have any Calculation
             # associated and the field "UseDefaultCalculation" is True, no
             # Calculation will be used for this AS ("_Calculation" field is

@@ -123,5 +123,6 @@ class ExtStringField(ExtensionField, public.StringField):
 class ExtTextField(ExtensionField, public.TextField):
     "Field extender"
 
+
 class ExtUIDReferenceField(ExtensionField, UIDReferenceField):
     "Field extender"

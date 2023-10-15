@@ -20,7 +20,6 @@
 
 import collections
 
-from AccessControl import ClassSecurityInfo
 from bika.lims import api
 from bika.lims import bikaMessageFactory as _
 from bika.lims.api.security import check_permission
@@ -33,8 +32,6 @@ from bika.lims.utils import get_image
 from bika.lims.utils import get_link
 from bika.lims.utils import to_choices
 from plone.memoize import view
-from Products.Archetypes.Registry import registerWidget
-from Products.Archetypes.Widget import TypesWidget
 from Products.CMFCore.utils import getToolByName
 
 
@@ -219,7 +216,8 @@ class AnalysisSpecificationView(BikaListingView):
             item["before"]["Keyword"] = get_image(
                 "dynamic_analysisspec.png",
                 title=_(
-                    "Found Dynamic Analysis Specification for '{}' in '{}'".format(
+                    "Found Dynamic Analysis Specification "
+                    "for '{}' in '{}'".format(
                         keyword, self.dynamic_spec.Title()
                     )
                 ),

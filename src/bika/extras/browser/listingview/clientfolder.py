@@ -30,7 +30,9 @@ class ClientFolderContentsListingViewAdapter(object):
                     self.listing.review_states[i]["columns"].remove(bulk)
                 member_disc = "MemberDiscountApplies"
                 if member_disc in self.listing.review_states[i]["columns"]:
-                    self.listing.review_states[i]["columns"].remove(member_disc)
+                    self.listing.review_states[i]["columns"].remove(
+                        member_disc
+                    )
             if "MemberDiscountApplies" in self.listing.columns:
                 del self.listing.columns["MemberDiscountApplies"]
             if "BulkDiscount" in self.listing.columns:
