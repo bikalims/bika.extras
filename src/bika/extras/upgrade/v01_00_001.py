@@ -37,11 +37,15 @@ def upgrade(tool):
 
     if ut.isOlderVersion(PRODUCT_NAME, version):
         logger.info(
-            "Skipping upgrade of {0}: {1} > {2}".format(PRODUCT_NAME, ver_from, version)
+            "Skipping upgrade of {0}: {1} > {2}".format(
+                PRODUCT_NAME, ver_from, version
+            )
         )
         return True
 
-    logger.info("Upgrading {0}: {1} -> {2}".format(PRODUCT_NAME, ver_from, version))
+    logger.info(
+        "Upgrading {0}: {1} -> {2}".format(PRODUCT_NAME, ver_from, version)
+    )
 
     # -------- ADD YOUR STUFF BELOW --------
 

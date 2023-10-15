@@ -37,16 +37,21 @@ class ClientFolderContentsListingViewAdapter(object):
                 del self.listing.columns["BulkDiscount"]
 
         if "MemberDiscountApplies" in self.listing.columns:
-            self.listing.columns['MemberDiscountApplies']['title'] = \
-                _("Member Discount %")
+            self.listing.columns["MemberDiscountApplies"]["title"] = _(
+                "Member Discount %"
+            )
 
         contact = [
-            ("Contacts",
-             {"toggle": False, "sortable": False, "title": _("Contacts")},
-             )
+            (
+                "Contacts",
+                {"toggle": False, "sortable": False, "title": _("Contacts")},
+            )
         ]
         fax = [
-            ("Fax", {"toggle": False, "sortable": False, "title": _("Fax")},)
+            (
+                "Fax",
+                {"toggle": False, "sortable": False, "title": _("Fax")},
+            )
         ]
         self.listing.columns.update(contact)
         self.listing.columns.update(fax)

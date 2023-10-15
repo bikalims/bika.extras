@@ -38,10 +38,8 @@ from Products.Archetypes.Widget import TypesWidget
 from Products.CMFCore.utils import getToolByName
 
 
-
 class AnalysisSpecificationView(BikaListingView):
-    """Listing table to display Analysis Specifications
-    """
+    """Listing table to display Analysis Specifications"""
 
     def __init__(self, context, request):
         super(AnalysisSpecificationView, self).__init__(context, request)
@@ -73,52 +71,52 @@ class AnalysisSpecificationView(BikaListingView):
         self.min_operator_choices = to_choices(MIN_OPERATORS)
         self.max_operator_choices = to_choices(MAX_OPERATORS)
 
-        self.columns = collections.OrderedDict((
-            ("Title", {
-                "title": _("Service"),
-                "index": "sortable_title",
-                "sortable": False}),
-            ("Keyword", {
-                "title": _("Keyword"),
-                "sortable": False}),
-            ("Methods", {
-                "title": _("Methods"),
-                "sortable": False}),
-            ("Unit", {
-                "title": _("Unit"),
-                "sortable": False}),
-            ("warn_min", {
-                "title": _("Min warn"),
-                "sortable": False}),
-            ("min_operator", {
-                "title": _("Min operator"),
-                "type": "choices",
-                "sortable": False}),
-            ("min", {
-                "title": _("Min"),
-                "sortable": False}),
-            ("max_operator", {
-                "title": _("Max operator"),
-                "type": "choices",
-                "sortable": False}),
-            ("max", {
-                "title": _("Max"),
-                "sortable": False}),
-            ("warn_max", {
-                "title": _("Max warn"),
-                "sortable": False}),
-            ("hidemin", {
-                "title": _("< Min"),
-                "sortable": False}),
-            ("hidemax", {
-                "title": _("> Max"),
-                "sortable": False}),
-            ("rangecomment", {
-                "title": _("Range comment"),
-                "sortable": False,
-                "type": "remarks",
-                "toggle": False}),
-        ))
+        self.columns = collections.OrderedDict(
+            (
+                (
+                    "Title",
+                    {
+                        "title": _("Service"),
+                        "index": "sortable_title",
+                        "sortable": False,
+                    },
+                ),
+                ("Keyword", {"title": _("Keyword"), "sortable": False}),
+                ("Methods", {"title": _("Methods"), "sortable": False}),
+                ("Unit", {"title": _("Unit"), "sortable": False}),
+                ("warn_min", {"title": _("Min warn"), "sortable": False}),
+                (
+                    "min_operator",
+                    {
+                        "title": _("Min operator"),
+                        "type": "choices",
+                        "sortable": False,
+                    },
+                ),
+                ("min", {"title": _("Min"), "sortable": False}),
+                (
+                    "max_operator",
+                    {
+                        "title": _("Max operator"),
+                        "type": "choices",
+                        "sortable": False,
+                    },
+                ),
+                ("max", {"title": _("Max"), "sortable": False}),
+                ("warn_max", {"title": _("Max warn"), "sortable": False}),
+                ("hidemin", {"title": _("< Min"), "sortable": False}),
+                ("hidemax", {"title": _("> Max"), "sortable": False}),
+                (
+                    "rangecomment",
+                    {
+                        "title": _("Range comment"),
+                        "sortable": False,
+                        "type": "remarks",
+                        "toggle": False,
+                    },
+                ),
+            )
+        )
 
         self.review_states = [
             {
@@ -131,8 +129,7 @@ class AnalysisSpecificationView(BikaListingView):
         ]
 
     def update(self):
-        """Update hook
-        """
+        """Update hook"""
         super(AnalysisSpecificationView, self).update()
         self.allow_edit = self.is_edit_allowed()
         results_range = self.context.getResultsRange()
@@ -141,26 +138,31 @@ class AnalysisSpecificationView(BikaListingView):
 
     @view.memoize
     def is_edit_allowed(self):
-        """Check if edit is allowed
-        """
+        """Check if edit is allowed"""
         return check_permission(FieldEditSpecification, self.context)
 
     @view.memoize
     def show_categories_enabled(self):
-        """Check in the setup if categories are enabled
-        """
+        """Check in the setup if categories are enabled"""
         return self.context.bika_setup.getCategoriseAnalysisServices()
 
     def get_editable_columns(self):
-        """Return editable fields
-        """
-        columns = ["min", "max", "warn_min", "warn_max", "hidemin", "hidemax",
-                   "rangecomment", "min_operator", "max_operator"]
+        """Return editable fields"""
+        columns = [
+            "min",
+            "max",
+            "warn_min",
+            "warn_max",
+            "hidemin",
+            "hidemax",
+            "rangecomment",
+            "min_operator",
+            "max_operator",
+        ]
         return columns
 
     def get_required_columns(self):
-        """Return required editable fields
-        """
+        """Return required editable fields"""
         columns = []
         return columns
 
@@ -171,23 +173,22 @@ class AnalysisSpecificationView(BikaListingView):
         return self.dynamic_spec.get_by_keyword()
 
     def folderitems(self):
-        """Sort by Categories
-        """
+        """Sort by Categories"""
 
         bsc = getToolByName(self.context, "senaite_catalog_setup")
         self.an_cats = bsc(
-            portal_type="AnalysisCategory",
-            sort_on="sortable_title")
-        self.an_cats_order = dict([
-            (b.Title, "{:04}".format(a))
-            for a, b in enumerate(self.an_cats)])
+            portal_type="AnalysisCategory", sort_on="sortable_title"
+        )
+        self.an_cats_order = dict(
+            [(b.Title, "{:04}".format(a)) for a, b in enumerate(self.an_cats)]
+        )
 
         items = super(AnalysisSpecificationView, self).folderitems()
 
-
         if self.show_categories_enabled():
-            self.categories = map(lambda x: x[0],
-                                    sorted(self.categories, key=lambda x: x[1]))
+            self.categories = map(
+                lambda x: x[0], sorted(self.categories, key=lambda x: x[1])
+            )
         else:
             self.categories.sort()
         return items
@@ -209,7 +210,6 @@ class AnalysisSpecificationView(BikaListingView):
         keyword = obj.getKeyword()
         cat = obj.getCategoryTitle()
         cat_order = self.an_cats_order.get(cat)
-        
 
         # dynamic analysisspecs
         dspecs = self.get_dynamic_analysisspecs()
@@ -218,14 +218,18 @@ class AnalysisSpecificationView(BikaListingView):
         if dspec:
             item["before"]["Keyword"] = get_image(
                 "dynamic_analysisspec.png",
-                title=_("Found Dynamic Analysis Specification for '{}' in '{}'"
-                        .format(keyword, self.dynamic_spec.Title())))
+                title=_(
+                    "Found Dynamic Analysis Specification for '{}' in '{}'".format(
+                        keyword, self.dynamic_spec.Title()
+                    )
+                ),
+            )
 
         # get the category
         if self.show_categories_enabled():
             category = obj.getCategoryTitle()
-            if (category,cat_order)  not in self.categories:
-                self.categories.append((category,cat_order))
+            if (category, cat_order) not in self.categories:
+                self.categories.append((category, cat_order))
             item["category"] = category
 
         item["Title"] = title
@@ -262,8 +266,10 @@ class AnalysisSpecificationView(BikaListingView):
         if methods:
             links = map(
                 lambda m: get_link(
-                    m.absolute_url(), value=m.Title(), css_class="link"),
-                methods)
+                    m.absolute_url(), value=m.Title(), css_class="link"
+                ),
+                methods,
+            )
             item["replace"]["Methods"] = ", ".join(links)
         else:
             item["methods"] = ""
@@ -271,13 +277,12 @@ class AnalysisSpecificationView(BikaListingView):
         # Icons
         after_icons = ""
         if obj.getAccredited():
-            after_icons += get_image(
-                "accredited.png", title=_("Accredited"))
+            after_icons += get_image("accredited.png", title=_("Accredited"))
         if obj.getAttachmentRequired():
             after_icons += get_image(
-                "attach_reqd.png", title=_("Attachment required"))
+                "attach_reqd.png", title=_("Attachment required")
+            )
         if after_icons:
             item["after"]["Title"] = after_icons
 
         return item
-
