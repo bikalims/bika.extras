@@ -32,3 +32,6 @@ jobs:
         run: |
           bin/pip install flake8
           bin/flake8 --config ci_flake8.cfg src/bika/
+      - name: test
+        run: |
+          bin/test -s bika.extras.tests
