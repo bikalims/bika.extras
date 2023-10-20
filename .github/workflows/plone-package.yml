@@ -34,4 +34,4 @@ jobs:
           bin/flake8 --config ci_flake8.cfg src/bika/
       - name: test
         run: |
-          bin/test -s bika.extras.tests
+          bin/test -s bika.extras
