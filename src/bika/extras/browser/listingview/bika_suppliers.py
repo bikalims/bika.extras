@@ -22,7 +22,7 @@ class SuppliersListingViewAdapter(object):
     def before_render(self):
         if not is_installed():
             return
-        for i in range(len(self.review_states)):
+        for i in range(len(self.listing.review_states)):
             if "Fax" in self.listing.review_states[i]["columns"]:
                 self.listing.review_states[i]["columns"].remove("Fax")
         if "Fax" in self.listing.columns:
