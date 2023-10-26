@@ -35,6 +35,8 @@ class SuppliersListingViewAdapter(object):
              )
         ]
         self.listing.columns.update(contacts)
+        for i in range(len(self.listing.review_states)):
+            self.listing.review_states[i]["columns"].append("Contacts")
 
     def folder_item(self, obj, item, index):
         if not is_installed():
