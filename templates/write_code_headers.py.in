@@ -13,9 +13,9 @@ SRC_DIR = "${buildout:directory}/src/senaite"
 YEAR_FROM = "2018"
 TEMPLATE = """# -*- coding: utf-8 -*-
 #
-# This file is part of SENAITE.CORE.
+# This file is part of BIKA.EXTRAS.
 #
-# SENAITE.CORE is free software: you can redistribute it and/or modify it under
+# BIKA.EXTRAS is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
 # Foundation, version 2.
 #
