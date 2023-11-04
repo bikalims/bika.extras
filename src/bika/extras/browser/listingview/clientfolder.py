@@ -57,6 +57,9 @@ class ClientFolderContentsListingViewAdapter(object):
         ]
         self.listing.columns.update(contact)
         self.listing.columns.update(fax)
+        for i in range(len(self.listing.review_states)):
+            self.listing.review_states[i]["columns"].append("Contacts")
+            self.listing.review_states[i]["columns"].append("Fax")
 
     def folder_item(self, obj, item, index):
         if not is_installed():
