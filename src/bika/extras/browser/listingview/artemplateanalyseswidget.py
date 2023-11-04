@@ -33,19 +33,19 @@ class ARTemplateAnalysesListingViewAdapter(object):
         return item
 
     def folderitems(self):
-        """Sort by Categories
-        """
+        """Sort by Categories"""
         bsc = getToolByName(self.context, "senaite_catalog_setup")
         self.an_cats = bsc(
-            portal_type="AnalysisCategory",
-            sort_on="sortable_title")
-        self.an_cats_order = dict([
-            (b.Title, "{:04}".format(a))
-            for a, b in enumerate(self.an_cats)])
+            portal_type="AnalysisCategory", sort_on="sortable_title"
+        )
+        self.an_cats_order = dict(
+            [(b.Title, "{:04}".format(a)) for a, b in enumerate(self.an_cats)]
+        )
         items = super(ARTemplateAnalysesListingViewAdapter, self).folderitems()
         if self.show_categories_enabled():
-            self.categories = map(lambda x: x[0],
-                                    sorted(self.categories, key=lambda x: x[1]))
+            self.categories = map(
+                lambda x: x[0], sorted(self.categories, key=lambda x: x[1])
+            )
         else:
             self.categories.sort()
         return items

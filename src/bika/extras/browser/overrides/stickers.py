@@ -28,40 +28,40 @@ from senaite.core.api import dtime
 
 class Sticker(SV):
     """Invoked via URL on an object or list of objects from the types
-       AnalysisRequest, Sample or ReferenceSample.
+    AnalysisRequest, Sample or ReferenceSample.
 
-       Renders a preview for the objects, a control to allow the user to
-       select the sticker template to be invoked and print.
+    Renders a preview for the objects, a control to allow the user to
+    select the sticker template to be invoked and print.
 
-       In order to create a sticker inside an Add-on you have to create a
-       directory inside the resource directory
+    In order to create a sticker inside an Add-on you have to create a
+    directory inside the resource directory
 
-       This defines the resource folder to look for:
+    This defines the resource folder to look for:
 
-       - path: addon/stickers/configure.zcml
-           ...
-           **Defining stickers for samples and partitions
-           <plone:static
-             directory="templates"
-             type="stickers"
-             name="ADDON stickers" />
-           ...
+    - path: addon/stickers/configure.zcml
+        ...
+        **Defining stickers for samples and partitions
+        <plone:static
+          directory="templates"
+          type="stickers"
+          name="ADDON stickers" />
+        ...
 
-       This is how to add general stickers for samples:
+    This is how to add general stickers for samples:
 
-       - addon/stickers/templates/
+    - addon/stickers/templates/
 
-           -- code_39_40x20mm.{css,pt}
-           -- other_{sample,ar,partition}_stickers_...
+        -- code_39_40x20mm.{css,pt}
+        -- other_{sample,ar,partition}_stickers_...
 
-       This is the way to create specific sticker for a content type.
+    This is the way to create specific sticker for a content type.
 
-       Note that in this case the directory '/worksheet' should contain the
-       sticker templates for worksheet objects.
+    Note that in this case the directory '/worksheet' should contain the
+    sticker templates for worksheet objects.
 
-       - addon/stickers/templates/worksheet
-           -- code_...mm.{css,pt}
-           -- other_worksheet_stickers_...
+    - addon/stickers/templates/worksheet
+        -- code_...mm.{css,pt}
+        -- other_worksheet_stickers_...
     """
 
     def get_sticker_logo(self):
@@ -83,7 +83,9 @@ class Sticker(SV):
             ac_style = registry["bika.extras.sticker_logo_styles"]
         except (AttributeError, KeyError):
             styles["ac_styles"] = "max-height:68px;"
-        css = map(lambda ac_style: "{}:{};".format(*ac_style), ac_style.items())
+        css = map(
+            lambda ac_style: "{}:{};".format(*ac_style), ac_style.items()
+        )
         # css.append("max-width:200px;")
         styles["ac_styles"] = " ".join(css)
 
@@ -91,7 +93,9 @@ class Sticker(SV):
             logo_style = registry["bika.extras.sticker_logo_styles"]
         except (AttributeError, KeyError):
             styles["logo_styles"] = "height:15px;"
-        css = map(lambda logo_style: "{}:{};".format(*logo_style), logo_style.items())
+        css = map(
+            lambda logo_style: "{}:{};".format(*logo_style), logo_style.items()
+        )
         styles["logo_styles"] = " ".join(css)
         return styles
 

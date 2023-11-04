@@ -23,22 +23,32 @@ class WorksheetTemplatesListingViewAdapter(object):
         if not is_installed():
             return
 
-        import pdb; pdb.set_trace()
+        import pdb
+
+        pdb.set_trace()
         number_of_positions = [
-            ("NumberOfPositions",
-             {"toggle": True,
-              "title": _("Number of Positions")},
-             )
+            (
+                "NumberOfPositions",
+                {"toggle": True, "title": _("Number of Positions")},
+            )
         ]
         blanks = [
-            ("Blanks", {"toggle": True, "title": _("Blank")},)
+            (
+                "Blanks",
+                {"toggle": True, "title": _("Blank")},
+            )
         ]
         controls = [
-            ("Controls", {"toggle": True, "title": _("Controls")},)
+            (
+                "Controls",
+                {"toggle": True, "title": _("Controls")},
+            )
         ]
-        number_of_duplicates= [
-            ("NumberOfDuplicates",
-             {"toggle": True, "title": _("Number Of Duplicates")},)
+        number_of_duplicates = [
+            (
+                "NumberOfDuplicates",
+                {"toggle": True, "title": _("Number Of Duplicates")},
+            )
         ]
         self.listing.columns.update(number_of_positions)
         self.listing.columns.update(blanks)
@@ -61,18 +71,18 @@ class WorksheetTemplatesListingViewAdapter(object):
         controlUrls = []
         blankUrls = []
         for position in Raw_layout:
-            if position.get('type') == "d":
+            if position.get("type") == "d":
                 num = num + 1
-            if position.get('type') == "b":
-                blank_id = position.get('blank_ref')
+            if position.get("type") == "b":
+                blank_id = position.get("blank_ref")
                 blank_obj = api.get_object_by_uid(blank_id)
                 blank_title = blank_obj.Title()
                 blank_url = api.get_url(blank_obj)
                 if blank_title not in blanks:
                     blanks.append(blank_title)
                     blankUrls.append(get_link(blank_url, blank_title))
-            if position.get('type') == "c":
-                control_id = position.get('control_ref')
+            if position.get("type") == "c":
+                control_id = position.get("control_ref")
                 control_obj = api.get_object_by_uid(control_id)
                 control_title = control_obj.Title()
                 control_url = api.get_url(control_obj)

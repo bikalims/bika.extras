@@ -29,14 +29,15 @@ class ReferenceResultsListingViewAdapter(object):
 
         bsc = getToolByName(self.context, "senaite_catalog_setup")
         self.an_cats = bsc(
-            portal_type="AnalysisCategory",
-            sort_on="sortable_title")
-        self.an_cats_order = dict([
-            (b.Title, "{:04}".format(a))
-            for a, b in enumerate(self.an_cats)])
+            portal_type="AnalysisCategory", sort_on="sortable_title"
+        )
+        self.an_cats_order = dict(
+            [(b.Title, "{:04}".format(a)) for a, b in enumerate(self.an_cats)]
+        )
         if self.listing.show_categories_enabled():
-            self.categories = map(lambda x: x[0],
-                                    sorted(self.categories, key=lambda x: x[1]))
+            self.categories = map(
+                lambda x: x[0], sorted(self.categories, key=lambda x: x[1])
+            )
         else:
             self.categories.sort()
 
@@ -47,6 +48,6 @@ class ReferenceResultsListingViewAdapter(object):
         cat_order = self.an_cats_order.get(cat)
         if self.listing.show_categories_enabled():
             category = obj.getCategoryTitle
-            if (category,cat_order) not in self.categories:
-                self.categories.append((category,cat_order))
+            if (category, cat_order) not in self.categories:
+                self.categories.append((category, cat_order))
         return item

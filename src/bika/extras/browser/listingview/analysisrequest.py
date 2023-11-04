@@ -31,5 +31,7 @@ class AnalysisRequestAnalysesListViewAdapter(object):
         return item
 
     def folderitems(self):
-        items = super(AnalysisRequestAnalysesListViewAdapter, self).folderitems()
+        items = super(
+            AnalysisRequestAnalysesListViewAdapter, self
+        ).folderitems()
         return items
