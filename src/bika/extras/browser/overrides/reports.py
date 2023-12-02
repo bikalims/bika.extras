@@ -5,9 +5,9 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.memoize import ram
 
 from bika.lims import api
-from bika.lims.browser.reports import AdministrationView as AV
-from bika.lims.browser.reports.selection_macros import _cache_key_select_client
-from bika.lims.browser.reports.selection_macros import \
+from bika.reports.browser.reports import AdministrationView as AV
+from bika.reports.browser.reports.selection_macros import _cache_key_select_client
+from bika.reports.browser.reports.selection_macros import \
     SelectionMacrosView as SMV
 
 from senaite.core.catalog import CLIENT_CATALOG
