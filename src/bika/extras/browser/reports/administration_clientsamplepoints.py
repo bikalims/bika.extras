@@ -7,8 +7,8 @@ from six import StringIO
 
 from bika.extras import _
 from bika.lims import api
-from bika.lims.browser.reports.administration_arsnotinvoiced import Report as RA
 from bika.lims.utils import t
+from bika.reports.browser.reports.administration_arsnotinvoiced import Report as RA
 from senaite.core.catalog import SETUP_CATALOG
 
 
