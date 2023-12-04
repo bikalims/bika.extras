@@ -68,7 +68,7 @@ class Report(RA):
             dataitem = {'value': obj.Description()}
             dataline.append(dataitem)
             sample_types = obj.getSampleTypes()
-            dataitem = {'value': ','.join([i.Title() for i in sample_types])}
+            dataitem = {'value': ','.join([str(i.Title()) for i in sample_types])}
             dataline.append(dataitem)
 
             datalines.append(dataline)
