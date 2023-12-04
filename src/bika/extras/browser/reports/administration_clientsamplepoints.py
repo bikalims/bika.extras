@@ -61,14 +61,14 @@ class Report(RA):
             client = obj.getClient()
             dataitem = {'value': client.getName() if client else ""}
             dataline.append(dataitem)
-            dataitem = {'value': client.getClientID() if client else ""}
+            dataitem = {'value': str(client.getClientID()) if client else ""}
             dataline.append(dataitem)
             dataitem = {'value': obj.Title()}
             dataline.append(dataitem)
             dataitem = {'value': obj.Description()}
             dataline.append(dataitem)
             sample_types = obj.getSampleTypes()
-            dataitem = {'value': ','.join([str(i.Title()) for i in sample_types])}
+            dataitem = {'value': ','.join([i.Title() for i in sample_types])}
             dataline.append(dataitem)
 
             datalines.append(dataline)
