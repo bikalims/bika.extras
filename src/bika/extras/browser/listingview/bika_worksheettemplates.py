@@ -23,7 +23,6 @@ class WorksheetTemplatesListingViewAdapter(object):
         if not is_installed():
             return
 
-        import pdb; pdb.set_trace()
         number_of_positions = [
             ("NumberOfPositions",
              {"toggle": True,
@@ -36,7 +35,7 @@ class WorksheetTemplatesListingViewAdapter(object):
         controls = [
             ("Controls", {"toggle": True, "title": _("Controls")},)
         ]
-        number_of_duplicates= [
+        number_of_duplicates = [
             ("NumberOfDuplicates",
              {"toggle": True, "title": _("Number Of Duplicates")},)
         ]

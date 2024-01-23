@@ -52,7 +52,7 @@
 
           <div class="input-group my-4">
             <div class="input-group-prepend">
-              <span class="input-group-text" i18n:translate="">xxNumber of Positions</span>
+              <span class="input-group-text" i18n:translate="">Number of Positions</span>
             </div>
             <input name="NoOfPositions"
                    type="number"
