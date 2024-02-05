@@ -8,10 +8,10 @@ from zope.interface import implements
 from zope.component import adapts
 from zope.interface import implementer
 
-from bika.aquaculture.config import _
-from bika.aquaculture.config import is_installed
-from bika.extras.interfaces import IBikaExtrasLayer
+from bika.extras import _
+from bika.extras import is_installed
 from bika.extras.extenders.fields import ExtStringField
+from bika.extras.interfaces import IBikaExtrasLayer
 from bika.lims.interfaces import ISupplier
 
 
