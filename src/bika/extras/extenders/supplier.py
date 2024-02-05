@@ -56,8 +56,8 @@ class SupplierSchemaModifier(object):
         """
         """
         if is_installed():
-            schema['Website.'].widget.label = "Website"
-            schema['SWIFTcode.'].widget.label = "SWIFT code"
+            schema['Website'].widget.label = "Website"
+            schema['SWIFTcode'].widget.label = "SWIFT code"
             schema.moveField('LabAccountNumber', before='TaxNumber')
 
         return schema
