@@ -10,7 +10,7 @@ from zope.interface import implementer
 
 from bika.aquaculture.config import _
 from bika.aquaculture.config import is_installed
-from bika.aquaculture.interfaces import IBikaAquacultureLayer
+from bika.extras.interfaces import IBikaExtrasLayer
 from bika.extras.extenders.fields import ExtStringField
 from bika.lims.interfaces import ISupplier
 
@@ -28,7 +28,7 @@ lab_account_number = ExtStringField(
 @implementer(ISchemaExtender, IBrowserLayerAwareExtender)
 class SupplierSchemaExtender(object):
     adapts(ISupplier)
-    layer = IBikaAquacultureLayer
+    layer = IBikaExtrasLayer
 
     fields = [
         lab_account_number,
@@ -47,7 +47,7 @@ class SupplierSchemaExtender(object):
 class SupplierSchemaModifier(object):
     adapts(ISupplier)
     implements(ISchemaModifier)
-    layer = IBikaAquacultureLayer
+    layer = IBikaExtrasLayer
 
     def __init__(self, context):
         self.context = context
