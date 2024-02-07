@@ -78,6 +78,10 @@ class AnalysisSpecificationView(BikaListingView):
                 "title": _("Service"),
                 "index": "sortable_title",
                 "sortable": False}),
+            ("Title", {
+                "title": _("Our Feet"),
+                "index": "sortable_title",
+                "sortable": False}),
             ("Keyword", {
                 "title": _("Keyword"),
                 "sortable": False}),
