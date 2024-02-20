@@ -118,7 +118,7 @@
 
     <!-- analysisprofile list -->
     <subscriber
-            for="bika.lims.controlpanel.bika_analysisprofiles.AnalysisProfilesView
+            for="senaite.core.browser.widgets.analysisprofileswidget.AnalysisProfilesWidget
                  zope.interface.Interface"
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".bika_analysisprofiles.AnalysisProfilesListingViewAdapter"/>
