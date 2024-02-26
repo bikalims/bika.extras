@@ -415,7 +415,7 @@ class Analysis_Services(WorksheetImporter):
             # associated in the Analysis_Service_Methods spreadsheet, then make
             # the assumption that the DefaultMethod set in the former has to be
             # associated to the AS although the relation is missing.
-            defaultmethod = self.get_object(pc, 'Method', row.get('DefaultMethod_title'))
+            defaultmethod = self.get_object(bsc, 'Method', row.get('DefaultMethod_title'))
             methods = self.get_methods(row['title'], defaultmethod)
             if not defaultmethod and methods:
                 defaultmethod = methods[0]
