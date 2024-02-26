@@ -333,7 +333,7 @@ class Analysis_Services(WorksheetImporter):
         return self.get_relations(service_title,
                                 default_method,
                                 'Method',
-                                'portal_catalog',
+                                'senaite_catalog_setup',
                                 'AnalysisService Methods',
                                 'Method_title')
 
