@@ -107,6 +107,11 @@
       factory="bika.extras.browser.overrides.setupdata.Supplier_Contacts"
       provides="bika.lims.interfaces.ISetupDataImporter"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+    <adapter
+      name="Analysis_Categories"
+      factory="bika.extras.browser.overrides.setupdata.Analysis_Categories"
+      provides="bika.lims.interfaces.ISetupDataImporter"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
 </configure>
 

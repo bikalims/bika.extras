@@ -30,6 +30,7 @@ from zope.event import notify
 from bika.lims import logger
 from bika.lims.utils import tmpID
 from bika.lims.idserver import renameAfterCreation
+from senaite.core.catalog import SETUP_CATALOG
 from senaite.core.exportimport.setupdata import addDocument
 from senaite.core.exportimport.setupdata import read_file
 from senaite.core.exportimport.setupdata import Float
@@ -255,6 +256,37 @@ class Methods(WorksheetImporter):
                 notify(ObjectInitializedEvent(obj))
 
 
+class Analysis_Categories(WorksheetImporter):
+
+    def Import(self):
+        folder = self.context.bika_setup.bika_analysiscategories
+        bsc = getToolByName(self.context, SETUP_CATALOG)
+        for row in self.get_rows(3):
+            department = None
+            if row.get('Department_title', None):
+                department = self.get_object(bsc, 'Department',
+                                             row.get('Department_title'))
+            sortKey = float(row.get("SortKey")) if row.get("SortKey") else 0.0
+            if row.get('title', None) and department:
+                obj = _createObjectByType("AnalysisCategory", folder, tmpID())
+                obj.edit(
+                    title=row['title'],
+                    description=row.get('description', ''),
+                    )
+                obj.setDepartment(department)
+                obj.setSortKey(sortKey)
+                obj.unmarkCreationFlag()
+                renameAfterCreation(obj)
+                notify(ObjectInitializedEvent(obj))
+            elif not row.get('title', None):
+                logger.warning("Error in in " + self.sheetname + ". Missing Title field")
+            elif not row.get('Department_title', None):
+                logger.warning("Error in " + self.sheetname + ". Department field missing.")
+            else:
+                logger.warning("Error in " + self.sheetname + ". Department "
+                               + row.get('Department_title') + "is wrong.")
+
+
 class Analysis_Services(WorksheetImporter):
 
     def load_interim_fields(self):
@@ -402,6 +434,7 @@ class Analysis_Services(WorksheetImporter):
             department = self.get_object(bsc, 'Department', row.get('Department_title'))
             container = self.get_object(bsc, 'Container', row.get('Container_title'))
             preservation = self.get_object(bsc, 'Preservation', row.get('Preservation_title'))
+            sortKey = float(row.get("SortKey")) if row.get("SortKey") else 0.0
 
             # Analysis Service - Method considerations:
             # One Analysis Service can have 0 or n Methods associated (field
@@ -500,7 +533,8 @@ class Analysis_Services(WorksheetImporter):
                 Container=container,
                 Preservation=preservation,
                 CommercialID=row.get('CommercialID', ''),
-                ProtocolID=row.get('ProtocolID', '')
+                ProtocolID=row.get('ProtocolID', ''),
+                SortKey=sortKey,
             )
             obj.unmarkCreationFlag()
             renameAfterCreation(obj)
