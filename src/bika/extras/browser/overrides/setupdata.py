@@ -76,8 +76,8 @@ class Analysis_Specifications(WorksheetImporter):
                 bucket[parent][title]["description"] = description
             bucket[parent][title]["resultsrange"].append({
                 "keyword": service.getKeyword(),
-                "min": row["min"] if row["min"] else "0",
-                "max": row["max"] if row["max"] else "0",
+                "min": row["min"] if row["min"] else "",
+                "max": row["max"] if row["max"] else "",
             })
         # write objects.
         for parent in bucket.keys():
@@ -731,6 +731,7 @@ class Worksheet_Templates(WorksheetImporter):
                 renameAfterCreation(obj)
                 notify(ObjectInitializedEvent(obj))
 
+
 class Supplier_Contacts(WorksheetImporter):
 
     def Import(self):
@@ -759,5 +760,3 @@ class Supplier_Contacts(WorksheetImporter):
             obj.unmarkCreationFlag()
             renameAfterCreation(obj)
             notify(ObjectInitializedEvent(obj))
-
-
