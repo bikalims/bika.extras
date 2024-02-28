@@ -43,13 +43,9 @@ class Analysis_Specifications(WorksheetImporter):
         bsc = getToolByName(self.context, "senaite_catalog_setup")
         service = bsc(
             portal_type="AnalysisService",
-            title=safe_unicode(row["service"])
+            title=safe_unicode(row["service"]),
+            getKeyword=safe_unicode(row["Keyword"]),
         )
-        if not service:
-            service = bsc(
-                portal_type="AnalysisService",
-                getKeyword=safe_unicode(row["service"])
-            )
         service = service[0].getObject()
         return service
 
@@ -60,6 +56,9 @@ class Analysis_Specifications(WorksheetImporter):
         # collect up all values into the bucket
         for row in self.get_rows(3):
             title = row.get("Title", False)
+            keyword = row.get("Keyword", False)
+            if not keyword:
+                continue
             if not title:
                 title = row.get("title", False)
                 if not title:
