@@ -69,7 +69,7 @@
 
     <!--sample matrices list -->
     <subscriber
-            for="bika.lims.controlpanel.bika_samplematrices.SampleMatricesView
+            for="senaite.core.browser.controlpanel.samplematrices.view.SampleMatricesView
                  zope.interface.Interface"
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".bika_samplematrices.SampleMatricesListingViewAdapter"/>
