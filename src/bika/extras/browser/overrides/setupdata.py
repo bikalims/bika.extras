@@ -73,10 +73,19 @@ class Analysis_Specifications(WorksheetImporter):
             if title not in bucket[parent]:
                 bucket[parent][title] = {"sampletype": st, "resultsrange": []}
                 bucket[parent][title]["description"] = description
+            try:
+                row_min = float(row["min"])
+            except ValueError:
+                row_min = row["min"]
+            try:
+                row_max = float(row["max"])
+            except ValueError:
+                row_max = row["max"]
+
             bucket[parent][title]["resultsrange"].append({
                 "keyword": service.getKeyword(),
-                "min": row["min"] if row["min"] else "",
-                "max": row["max"] if row["max"] else "",
+                "min": row_min,
+                "max": row_max,
             })
         # write objects.
         for parent in bucket.keys():
