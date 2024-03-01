@@ -240,7 +240,7 @@ class Methods(WorksheetImporter):
 
                 )
                 # Obtain all created methods
-                catalog = getToolByName(self.context, 'portal_catalog')
+                catalog = getToolByName(self.context, 'senaite_catalog_setup')
                 methods_brains = catalog.searchResults({'portal_type': 'Method'})
                 # If a the new method has the same MethodID as a created method, remove MethodID value.
                 for methods in methods_brains:
