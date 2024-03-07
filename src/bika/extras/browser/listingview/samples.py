@@ -25,8 +25,11 @@ class SamplesListingViewAdapter(object):
 
         container = [("Container", {"toggle": False, "title": _("Container")})]
         self.listing.columns.update(container)
+        specification = [("Specification", {"toggle": False, "title": _("Specification")})]
+        self.listing.columns.update(specification)
         for i in range(len(self.listing.review_states)):
             self.listing.review_states[i]["columns"].append("Container")
+            self.listing.review_states[i]["columns"].append("Specification")
 
         for i in self.listing.review_states:
             if i["title"] == "Dispatched":
@@ -44,4 +47,15 @@ class SamplesListingViewAdapter(object):
             container_link = get_link(container_url, container_title)
             item["Container"] = container_title
             item["replace"]["Container"] = container_link
+        
+        import pdb;pdb.set_trace()
+
+        specification = full_object.getSpecification()
+        if specification:
+            spec_title = specification.Title()
+            spec_url = specification.absolute_url()
+            spec_link = get_link(spec_url, spec_title)
+            item["Specification"] = spec_title
+            item["replace"]["Specification"] =spec_link
+
         return item
