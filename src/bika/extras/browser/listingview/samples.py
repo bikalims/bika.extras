@@ -48,8 +48,6 @@ class SamplesListingViewAdapter(object):
             item["Container"] = container_title
             item["replace"]["Container"] = container_link
         
-        import pdb;pdb.set_trace()
-
         specification = full_object.getSpecification()
         if specification:
             spec_title = specification.Title()
