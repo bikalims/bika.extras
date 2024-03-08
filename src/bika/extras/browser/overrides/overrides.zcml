@@ -65,6 +65,23 @@
           layer="senaite.core.interfaces.ISenaiteCore"
           />
 
+      <!-- Table Lab Analyses -->
+      <browser:page
+          for="bika.lims.interfaces.IAnalysisRequest"
+          name="table_lab_analyses"
+          class=".analysisrequest.LabAnalysesTable"
+          permission="senaite.core.permissions.ManageAnalysisRequests"
+          layer="bika.lims.interfaces.IBikaLIMS"
+          />
+
+      <!-- Table Field Analyses -->
+      <browser:page
+          for="bika.lims.interfaces.IAnalysisRequest"
+          name="table_field_analyses"
+          class=".analysisrequest.FieldAnalysesTable"
+          permission="senaite.core.permissions.ManageAnalysisRequests"
+          layer="bika.lims.interfaces.IBikaLIMS"
+          />
 
     <adapter
       name="Analysis_Specifications"
@@ -114,4 +131,3 @@
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
 </configure>
-
