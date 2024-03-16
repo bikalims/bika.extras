@@ -23,9 +23,6 @@ class WorksheetTemplatesListingViewAdapter(object):
         if not is_installed():
             return
 
-        import pdb
-
-        pdb.set_trace()
         number_of_positions = [
             (
                 "NumberOfPositions",
