@@ -28,19 +28,16 @@ class InstrumentsListingViewAdapter(object):
         if "WeeksToExpire" in self.listing.columns:
             del self.listing.columns["WeeksToExpire"]
 
-        import_interface = [
-            ("ImportInterface",
-             {"toggle": True, "sortable": False,
-              "title": _("Import Interface")},
-             )
-        ]
-        export_interface = [
-            ("ExportInterface",
-                {"toggle": True, "sortable": False,
-                 "title": _("Export Interface")},)
-        ]
+        import_interface = [("ImportInterface", {"toggle": True, "sortable": False,"title": _("Import Interface")})]
+        export_interface = [("ExportInterface", {"toggle": True, "sortable": False, "title": _("Export Interface")})]
+        asset_number = [("AssetNumber", {"toggle": False, "sortable": False, "title": _("Asset Number")})]
         self.listing.columns.update(import_interface)
         self.listing.columns.update(export_interface)
+        self.listing.columns.update(asset_number)
+        for i in range(len(self.listing.review_states)):
+            self.listing.review_states[i]["columns"].append("ImportInterface")
+            self.listing.review_states[i]["columns"].append("ExportInterface")
+            self.listing.review_states[i]["columns"].append("AssetNumber")
 
     def folder_item(self, obj, item, index):
         if not is_installed():
@@ -60,4 +57,10 @@ class InstrumentsListingViewAdapter(object):
         if export_interface:
             item["replace"]["ExportInterface"] = \
                 export_interfaces_list.getValue(export_interface)
+
+        asset_number = obj.getAssetNumber()
+        if asset_number:
+            asset_title = asset_number.title()
+            item["AssetNumber"] = asset_title
+
         return item
