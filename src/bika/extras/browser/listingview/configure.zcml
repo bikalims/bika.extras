@@ -130,4 +130,11 @@
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".samples.SamplesListingViewAdapter"/>
 
+    <!-- SampleTemplates -->
+    <subscriber
+            for="senaite.core.browser.controlpanel.sampletemplates.view.SampleTemplatesView
+                 zope.interface.Interface"
+            provides="senaite.app.listing.interfaces.IListingViewAdapter"
+            factory=".sampletemplates.SampleTemplatesListingViewAdapter"/>
+
 </configure>
