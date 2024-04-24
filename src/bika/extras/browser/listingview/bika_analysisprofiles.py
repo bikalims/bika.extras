@@ -109,7 +109,6 @@ class AnalysisProfilesListingViewAdapter(object):
         price_list = str(price).split(self.decimal_mark)
 
         decimal_places = len(price_list[1])
-        print decimal_places
         if decimal_places < 2:
             output = u"{} {}{}{:02d}".format(
             self.currency_symbol,

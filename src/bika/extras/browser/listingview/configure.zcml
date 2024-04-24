@@ -137,4 +137,11 @@
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".sampletemplates.SampleTemplatesListingViewAdapter"/>
 
+    <!-- AnalysisServices -->
+    <subscriber
+            for="bika.lims.controlpanel.bika_analysisservices.AnalysisServicesView
+                 zope.interface.Interface"
+            provides="senaite.app.listing.interfaces.IListingViewAdapter"
+            factory=".analysisservices.AnalysisServicesListingViewAdapter"/>
+
 </configure>
