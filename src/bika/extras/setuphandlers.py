@@ -4,16 +4,19 @@ from zope.interface import implementer
 
 from bika.extras import PRODUCT_NAME
 from bika.extras import logger
-from senaite.core.catalog import SETUP_CATALOG
+from senaite.core.catalog import SETUP_CATALOG, WORKSHEET_CATALOG
 from senaite.core.setuphandlers import setup_other_catalogs
 
 # Tuples of (catalog, index_name, index_attribute, index_type)
 INDEXES = [
     (SETUP_CATALOG, "category_sort_key", "", "KeywordIndex"),
+    (WORKSHEET_CATALOG, "getAnalysesCategories", "", "KeywordIndex"),
 ]
 
 # Tuples of (catalog, column_name)
-COLUMNS = []
+COLUMNS = [
+    (WORKSHEET_CATALOG, "getAnalysesCategories"),
+]
 
 
 @implementer(INonInstallable)

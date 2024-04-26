@@ -13,15 +13,14 @@
   -->
   <!--<includeDependencies package="." />-->
 
-  <include package=".browser" />
-
-  <include package=".extenders" />
-
-  <include package=".stickers" />
-  
   <include file="permissions.zcml" />
+  <include package=".browser" />
+  <include package=".extenders" />
+  <include package=".stickers" />
   <include package=".catalog" />
   <include package=".subscribers" />
+  <include package=".workflow" />
+  <include package=".upgrade"/>
 
   <genericsetup:registerProfile
       name="default"
