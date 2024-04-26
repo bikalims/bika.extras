@@ -11,7 +11,7 @@ long_description = '\n\n'.join([
     open('CHANGES.rst').read(),
 ])
 
-version = "1.0.1"
+version = "1.0.2"
 
 setup(
     name='bika.extras',

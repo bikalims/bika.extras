@@ -130,4 +130,11 @@
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".samples.SamplesListingViewAdapter"/>
 
+    <!-- Worksheet List-->
+    <subscriber
+            for="bika.lims.browser.worksheet.views.folder.FolderView
+                 zope.interface.Interface"
+            provides="senaite.app.listing.interfaces.IListingViewAdapter"
+            factory=".worksheet.WorksheetsListingViewAdapter"/>
+
 </configure>

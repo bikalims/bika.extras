@@ -21,31 +21,34 @@
 from bika.extras.config import PRODUCT_NAME
 from bika.extras.config import PROFILE_ID
 from bika.extras.config import logger
-
+from bika.extras.setuphandlers import setup_catalogs
+from bika.lims import api
+from senaite.core.catalog import WORKSHEET_CATALOG
 from senaite.core.upgrade import upgradestep
 from senaite.core.upgrade.utils import UpgradeUtils
 
-version = "1.0.1"
+version = "1.0.2"
 
 
 @upgradestep(PRODUCT_NAME, version)
 def upgrade(tool):
     portal = tool.aq_inner.aq_parent
     setup = portal.portal_setup
+    portal = tool.aq_inner.aq_parent
     ut = UpgradeUtils(portal)
     ver_from = ut.getInstalledVersion(PRODUCT_NAME)
 
     if ut.isOlderVersion(PRODUCT_NAME, version):
-        logger.info(
-            "Skipping upgrade of {0}: {1} > {2}".format(PRODUCT_NAME, ver_from, version)
-        )
+        logger.info("Skipping upgrade of {0}: {1} > {2}".format(
+            PRODUCT_NAME, ver_from, version))
         return True
-
-    logger.info("Upgrading {0}: {1} -> {2}".format(PRODUCT_NAME, ver_from, version))
 
     # -------- ADD YOUR STUFF BELOW --------
 
-    setup.runImportStepFromProfile(PROFILE_ID, "plone.app.registry")
+    setup.runImportStepFromProfile(PROFILE_ID, "workflow")
+    setup_catalogs(portal)
+    worksheet_catalog = api.get_tool(WORKSHEET_CATALOG)
+    worksheet_catalog.clearFindAndRebuild()
 
     logger.info("{0} upgraded to version {1}".format(PRODUCT_NAME, version))
     return True

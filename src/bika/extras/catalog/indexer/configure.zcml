@@ -5,4 +5,7 @@
   <!-- AnalysisService Indexer -->
   <adapter name="category_sort_key" factory=".analysisservice.category_sort_key"/>
 
+  <!-- Worksheet Indexer -->
+  <adapter name="getAnalysesCategories" factory=".worksheet.getAnalysesCategories"/>
+
 </configure>
