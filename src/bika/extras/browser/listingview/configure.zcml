@@ -118,7 +118,7 @@
 
     <!-- analysisprofile list -->
     <subscriber
-            for="senaite.core.browser.widgets.analysisprofileswidget.AnalysisProfilesWidget
+            for="senaite.core.browser.controlpanel.analysisprofiles.view.AnalysisProfilesView
                  zope.interface.Interface"
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".bika_analysisprofiles.AnalysisProfilesListingViewAdapter"/>
@@ -129,6 +129,20 @@
                  zope.interface.Interface"
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".samples.SamplesListingViewAdapter"/>
+
+    <!-- SampleTemplates -->
+    <subscriber
+            for="senaite.core.browser.controlpanel.sampletemplates.view.SampleTemplatesView
+                 zope.interface.Interface"
+            provides="senaite.app.listing.interfaces.IListingViewAdapter"
+            factory=".sampletemplates.SampleTemplatesListingViewAdapter"/>
+
+    <!-- AnalysisServices -->
+    <subscriber
+            for="bika.lims.controlpanel.bika_analysisservices.AnalysisServicesView
+                 zope.interface.Interface"
+            provides="senaite.app.listing.interfaces.IListingViewAdapter"
+            factory=".analysisservices.AnalysisServicesListingViewAdapter"/>
 
     <!-- Worksheet List-->
     <subscriber

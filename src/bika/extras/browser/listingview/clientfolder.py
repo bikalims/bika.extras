@@ -48,11 +48,20 @@ class ClientFolderContentsListingViewAdapter(object):
         fax = [
             ("Fax", {"toggle": False, "sortable": False, "title": _("Fax")},)
         ]
+        physical_address = [("PhysicalAddress", {"toggle": False, "sortable": False, "title": _("Physical Address")})]
+        physical_address_city = [("PhysicalAddressCity", {"toggle": False, "sortable": False, "title": _("Physical Address City")})]
+        cc_emails = [("ClientCCEmails", {"toggle": False, "sortable": False, "title": _("CC Emails")})]
         self.listing.columns.update(contact)
         self.listing.columns.update(fax)
+        self.listing.columns.update(physical_address)
+        self.listing.columns.update(physical_address_city)
+        self.listing.columns.update(cc_emails)
         for i in range(len(self.listing.review_states)):
             self.listing.review_states[i]["columns"].append("Contacts")
             self.listing.review_states[i]["columns"].append("Fax")
+            self.listing.review_states[i]["columns"].append("PhysicalAddress")
+            self.listing.review_states[i]["columns"].append("PhysicalAddressCity")
+            self.listing.review_states[i]["columns"].append("ClientCCEmails")
 
     def folder_item(self, obj, item, index):
         if not is_installed():
@@ -83,4 +92,13 @@ class ClientFolderContentsListingViewAdapter(object):
         member_discount = api.get_setup().getMemberDiscount()
         if member_discount and obj.getMemberDiscountApplies():
             item["replace"]["MemberDiscountApplies"] = member_discount
+
+        # Physical address and city
+        physical_address = obj.getPhysicalAddress()
+        if physical_address:
+            address_value = physical_address['address']
+            item["PhysicalAddress"] = address_value
+            city_value = physical_address['city']
+            item["PhysicalAddressCity"] = city_value
+
         return item

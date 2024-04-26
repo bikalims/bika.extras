@@ -36,14 +36,25 @@ class AnalysisProfilesListingViewAdapter(object):
                 del self.listing.columns['Price']
             return
 
+        use_price = [("UsePrice", {"toggle": False, "title": _("Use Price")})]
+        self.listing.columns.update(use_price)
+
         price = [
             ("Price",
              {"toggle": False, "sortable": False, "title": _("Price")},
              )
         ]
         self.listing.columns.update(price)
+        commercialID = [("CommercialID", {"toggle": False, "title": _("Commercial ID")})]
+        self.listing.columns.update(commercialID)
+        vat = [("Vat", {"toggle": False, "title": _("VAT %")})]
+        self.listing.columns.update(vat)
+
         for i in range(len(self.listing.review_states)):
+            self.listing.review_states[i]["columns"].append("UsePrice")
             self.listing.review_states[i]["columns"].append("Price")
+            self.listing.review_states[i]["columns"].append("CommercialID")
+            self.listing.review_states[i]["columns"].append("Vat")
         self.currency_symbol = self.get_currency_symbol()
         self.decimal_mark = self.get_decimal_mark()
 
@@ -56,9 +67,24 @@ class AnalysisProfilesListingViewAdapter(object):
         if "Manager" in user_roles:
             financial_permissions = True
 
+        # Price
         obj = api.get_object(obj)
         if financial_permissions:
             item["Price"] = self.format_price(obj.AnalysisProfilePrice)
+
+        # Commercial ID
+        commercialID = obj.getCommercialID()
+        item["CommercialID"] = commercialID
+
+        # VAT
+        vat = obj.getAnalysisProfileVAT()
+        item["Vat"] = vat
+
+        # Use Analysis Profile Price
+        use_price = obj.getUseAnalysisProfilePrice()
+        use_price_value = _("Yes") if use_price else _("No")
+        item["UsePrice"] = use_price_value
+
         return item
 
     def get_decimal_mark(self):
@@ -79,9 +105,20 @@ class AnalysisProfilesListingViewAdapter(object):
     def format_price(self, price):
         """Formats the price with the set decimal mark and correct currency
         """
-        return u"{} {}{}{:02d}".format(
+        #convert float price to list
+        price_list = str(price).split(self.decimal_mark)
+
+        decimal_places = len(price_list[1])
+        if decimal_places < 2:
+            output = u"{} {}{}{:02d}".format(
             self.currency_symbol,
-            price[0],
+            int(price_list[0]),
             self.decimal_mark,
-            price[1],
-        )
+            int(price_list[1]))
+        else:
+            output = u"{} {}{}{}".format(
+            self.currency_symbol,
+            int(price_list[0]),
+            self.decimal_mark,
+            int(price_list[1]))
+        return output
