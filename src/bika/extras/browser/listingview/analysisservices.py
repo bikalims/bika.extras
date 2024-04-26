@@ -88,25 +88,25 @@ class AnalysisServicesListingViewAdapter(object):
         description = obj.Description()
         if description:
             description_value = description
-            item["replace"]["Description"] = description_value
+            item["Description"] = description_value
 
         # CommercialID
         commercial_id = obj.getCommercialID()
         if commercial_id:
             commercial_id_value = commercial_id
-            item["replace"]["CommercialID"] = commercial_id_value
+            item["CommercialID"] = commercial_id_value
 
         # DecimalPrecision
         decimal_precision = obj.Precision
         if decimal_precision:
             decimal_precision_value = decimal_precision
-            item["replace"]["DecimalPrecision"] = decimal_precision_value
+            item["DecimalPrecision"] = decimal_precision_value
 
         # ProtocolID
         protocol_id = obj.ProtocolID
         if protocol_id:
             protocol_id_value = protocol_id
-            item["replace"]["ProtocolID"] = protocol_id_value
+            item["ProtocolID"] = protocol_id_value
 
         # Vat
         vat = obj.VAT
@@ -115,18 +115,18 @@ class AnalysisServicesListingViewAdapter(object):
                 vat_value = u"{}{}{}".format(vat[0], self.decimal_mark, vat[1])
             else:
                 vat_value = vat[0]
-            item["replace"]["Vat"] = vat_value
+            item["Vat"] = vat_value
 
         # BulkPrice
         bulk_price = obj.getBulkPrice()
         if bulk_price:
             bulk_price_value = bulk_price
-            item["replace"]["BulkPrice"] = self.format_price(bulk_price_value)
+            item["BulkPrice"] = self.format_price(bulk_price_value)
 
         # Hidden
         hidden = obj.Hidden
         hidden_value = _("Yes") if hidden else _("No")
-        item["replace"]["Hidden"] = hidden_value
+        item["Hidden"] = hidden_value
 
         return item
 

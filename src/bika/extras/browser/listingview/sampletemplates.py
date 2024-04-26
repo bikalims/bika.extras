@@ -80,17 +80,17 @@ class SampleTemplatesListingViewAdapter(object):
             sample_type_url = sample_type.absolute_url()
             sample_type_link = get_link(sample_type_url, sample_type_title)
             item["SampleTypeTitle"] = sample_type_title
-            item["replace"]["SampleTypeTitle    "] = sample_type_link
+            item["replace"]["SampleTypeTitle"] = sample_type_link
 
         # Composite
         composite = obj.getComposite()
         composite_value = _("Yes") if composite else _("No")
-        item["replace"]["Composite"] = composite_value
+        item["Composite"] = composite_value
 
         # Lab Sample
         lab_sample = obj.getSamplingRequired()
         lab_sample_value = _("Yes") if lab_sample else _("No")
-        item["replace"]["LabSample"] = lab_sample_value
+        item["LabSample"] = lab_sample_value
 
         # Partitions
         all_partitions = obj.getPartitions()
