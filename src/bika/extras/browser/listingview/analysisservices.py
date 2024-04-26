@@ -13,7 +13,6 @@ from senaite.app.listing.interfaces import IListingViewAdapter
 
 
 class AnalysisServicesListingViewAdapter(object):
-
     def __init__(self, listing, context):
         self.listing = listing
         self.context = context
@@ -24,14 +23,41 @@ class AnalysisServicesListingViewAdapter(object):
         if not is_installed():
             return
 
-        description = [("Description", {"toggle": False, "sortable": False,"title": _("Description")})]
-        commercial_id = [("CommercialID", {"toggle": False, "sortable": False,"title": _("Commercial ID")})]
-        decimal_precision = [("DecimalPrecision", {"toggle": False, "sortable": False,"title": _("Decimal Precision")})]
-        protocol_id = [("ProtocolID", {"toggle": False, "sortable": False,"title": _("Protocol ID")})]
-        price = [("Price", {"toggle": False, "sortable": False,"title": _("Price")})]
-        vat = [("Vat", {"toggle": False, "sortable": False,"title": _("VAT %")})]
-        bulk_price = [("BulkPrice", {"toggle": False, "sortable": False,"title": _("Bulk Price")})]
-        hidden = [("Hidden", {"toggle": False, "sortable": False,"title": _("Hidden")})]
+        description = [
+            (
+                "Description",
+                {"toggle": False, "sortable": False, "title": _("Description")},
+            )
+        ]
+        commercial_id = [
+            (
+                "CommercialID",
+                {"toggle": False, "sortable": False, "title": _("Commercial ID")},
+            )
+        ]
+        decimal_precision = [
+            (
+                "DecimalPrecision",
+                {"toggle": False, "sortable": False, "title": _("Decimal Precision")},
+            )
+        ]
+        protocol_id = [
+            (
+                "ProtocolID",
+                {"toggle": False, "sortable": False, "title": _("Protocol ID")},
+            )
+        ]
+        price = [("Price", {"toggle": False, "sortable": False, "title": _("Price")})]
+        vat = [("Vat", {"toggle": False, "sortable": False, "title": _("VAT %")})]
+        bulk_price = [
+            (
+                "BulkPrice",
+                {"toggle": False, "sortable": False, "title": _("Bulk Price")},
+            )
+        ]
+        hidden = [
+            ("Hidden", {"toggle": False, "sortable": False, "title": _("Hidden")})
+        ]
 
         self.listing.columns.update(description)
         self.listing.columns.update(commercial_id)
@@ -85,11 +111,8 @@ class AnalysisServicesListingViewAdapter(object):
         # Vat
         vat = obj.VAT
         if vat:
-            if vat[1] !=0:
-                vat_value = u"{}{}{}".format(
-                vat[0],
-                self.decimal_mark,
-                vat[1])
+            if vat[1] != 0:
+                vat_value = u"{}{}{}".format(vat[0], self.decimal_mark, vat[1])
             else:
                 vat_value = vat[0]
             item["replace"]["Vat"] = vat_value
@@ -107,15 +130,12 @@ class AnalysisServicesListingViewAdapter(object):
 
         return item
 
-
     def get_decimal_mark(self):
-        """Returns the decimal mark
-        """
+        """Returns the decimal mark"""
         return self.context.bika_setup.getDecimalMark()
 
     def get_currency_symbol(self):
-        """Returns the locale currency symbol
-        """
+        """Returns the locale currency symbol"""
         currency = self.context.bika_setup.getCurrency()
         locale = locales.getLocale("en")
         locale_currency = locale.numbers.currencies.get(currency)
@@ -124,22 +144,23 @@ class AnalysisServicesListingViewAdapter(object):
         return locale_currency.symbol
 
     def format_price(self, price):
-        """Formats the price with the set decimal mark and correct currency
-        """
-        #convert float price to list
+        """Formats the price with the set decimal mark and correct currency"""
+        # convert float price to list
         price_list = str(price).split(self.decimal_mark)
 
         decimal_places = len(price_list[1])
         if decimal_places < 2:
             output = u"{} {}{}{:02d}".format(
-            self.currency_symbol,
-            int(price_list[0]),
-            self.decimal_mark,
-            int(price_list[1]))
+                self.currency_symbol,
+                int(price_list[0]),
+                self.decimal_mark,
+                int(price_list[1]),
+            )
         else:
             output = u"{} {}{}{}".format(
-            self.currency_symbol,
-            int(price_list[0]),
-            self.decimal_mark,
-            int(price_list[1]))
+                self.currency_symbol,
+                int(price_list[0]),
+                self.decimal_mark,
+                int(price_list[1]),
+            )
         return output

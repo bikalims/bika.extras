@@ -12,7 +12,6 @@ from senaite.app.listing.interfaces import IListingViewAdapter
 
 
 class SampleTemplatesListingViewAdapter(object):
-
     def __init__(self, listing, context):
         self.listing = listing
         self.context = context
@@ -20,11 +19,33 @@ class SampleTemplatesListingViewAdapter(object):
     def before_render(self):
         if not is_installed():
             return
-        sample_point = [("SamplePointTitle", {"toggle": False, "sortable": False,"title": _("Sample Point")})]
-        sample_type = [("SampleTypeTitle", {"toggle": False, "sortable": False,"title": _("Sample Type")})]
-        composite = [("Composite", {"toggle": False, "sortable": False,"title": _("Composite")})]
-        lab_sample = [("LabSample", {"toggle": False, "sortable": False, "title": _("Lab Sample")})]
-        partitions = [("Partitions", {"toggle": False, "sortable": False, "title": _("Partitions")})]
+        sample_point = [
+            (
+                "SamplePointTitle",
+                {"toggle": False, "sortable": False, "title": _("Sample Point")},
+            )
+        ]
+        sample_type = [
+            (
+                "SampleTypeTitle",
+                {"toggle": False, "sortable": False, "title": _("Sample Type")},
+            )
+        ]
+        composite = [
+            ("Composite", {"toggle": False, "sortable": False, "title": _("Composite")})
+        ]
+        lab_sample = [
+            (
+                "LabSample",
+                {"toggle": False, "sortable": False, "title": _("Lab Sample")},
+            )
+        ]
+        partitions = [
+            (
+                "Partitions",
+                {"toggle": False, "sortable": False, "title": _("Partitions")},
+            )
+        ]
         self.listing.columns.update(sample_point)
         self.listing.columns.update(sample_type)
         self.listing.columns.update(composite)
@@ -76,13 +97,15 @@ class SampleTemplatesListingViewAdapter(object):
         top_partitions = []
         if all_partitions:
             for partition in all_partitions:
-                top_partitions.append(partition['part_id'])
-                if len(top_partitions)>1 and len(all_partitions) > 2:
+                top_partitions.append(partition["part_id"])
+                if len(top_partitions) > 1 and len(all_partitions) > 2:
                     top_partitions.append("...")
                     break
-            formatted_top_partitions = ', '.join(top_partitions)
+            formatted_top_partitions = ", ".join(top_partitions)
             sample_template_url = obj.absolute_url()
-            top_partitions_link = get_link(sample_template_url, formatted_top_partitions)
+            top_partitions_link = get_link(
+                sample_template_url, formatted_top_partitions
+            )
             item["replace"]["Partitions"] = top_partitions_link
 
         return item
