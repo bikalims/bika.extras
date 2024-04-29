@@ -51,7 +51,9 @@ class MethodsListingViewAdapter(object):
             supplier_obj = api.get_object_by_uid(supplier_uid)
             subcontractor_title = supplier_obj.Title()
             subcontractor_url = supplier_obj.absolute_url()
-            subcontractor_link = get_link(subcontractor_url, subcontractor_title)
+            subcontractor_link = get_link(
+                subcontractor_url, subcontractor_title
+            )
             item["Subcontractor"] = subcontractor_title
             item["replace"]["Subcontractor"] = subcontractor_link
         return item
