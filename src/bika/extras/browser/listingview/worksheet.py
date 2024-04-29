@@ -21,6 +21,8 @@ class WorksheetsListingViewAdapter(object):
         if not is_installed():
             return
 
+        if not self.context.bika_setup.WorksheetTitle:
+            return
         categories = [("Categories", {"toggle": False, "title": _("Categories")})]
         self.listing.columns.update(categories)
         for i in range(len(self.listing.review_states)):
@@ -28,6 +30,8 @@ class WorksheetsListingViewAdapter(object):
 
     def folder_item(self, obj, item, index):
         if not is_installed():
+            return item
+        if not self.context.bika_setup.WorksheetTitle:
             return item
 
         item["Categories"] = ", ".join(obj.getAnalysesCategories)
