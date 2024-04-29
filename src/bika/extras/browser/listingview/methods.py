@@ -36,10 +36,7 @@ class MethodsListingViewAdapter(object):
     def folder_item(self, obj, item, index):
         if not is_installed():
             return item
-
         obj = api.get_object(obj)
-        # import pdb; pdb.set_trace()
-
         # MethodID
         method_id = obj.getMethodID()
         if method_id:
@@ -48,7 +45,6 @@ class MethodsListingViewAdapter(object):
             method_id_link = get_link(method_id_url, method_id_title)
             item["MethodID"] = method_id_title
             item["replace"]["MethodID"] = method_id_link
-
         # Subcontractor
         supplier_uid = obj["Supplier"]
         if supplier_uid:
@@ -58,5 +54,4 @@ class MethodsListingViewAdapter(object):
             subcontractor_link = get_link(subcontractor_url, subcontractor_title)
             item["Subcontractor"] = subcontractor_title
             item["replace"]["Subcontractor"] = subcontractor_link
-
         return item
