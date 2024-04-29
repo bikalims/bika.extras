@@ -125,7 +125,7 @@ class AnalysisServicesListingViewAdapter(object):
 
         # Hidden
         hidden = obj.Hidden
-        hidden_value = _("Yes") if hidden else _("No")
+        hidden_value = _("Yes") if hidden else _("")
         item["Hidden"] = hidden_value
 
         return item
