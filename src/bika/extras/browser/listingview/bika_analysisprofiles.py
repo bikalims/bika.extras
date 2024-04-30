@@ -82,7 +82,7 @@ class AnalysisProfilesListingViewAdapter(object):
 
         # Use Analysis Profile Price
         use_price = obj.getUseAnalysisProfilePrice()
-        use_price_value = _("Yes") if use_price else _("No")
+        use_price_value = _("Yes") if use_price else _("")
         item["UsePrice"] = use_price_value
 
         return item

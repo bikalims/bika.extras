@@ -84,12 +84,12 @@ class SampleTemplatesListingViewAdapter(object):
 
         # Composite
         composite = obj.getComposite()
-        composite_value = _("Yes") if composite else _("No")
+        composite_value = _("Yes") if composite else _("")
         item["Composite"] = composite_value
 
         # Lab Sample
         lab_sample = obj.getSamplingRequired()
-        lab_sample_value = _("Yes") if lab_sample else _("No")
+        lab_sample_value = _("Yes") if lab_sample else _("")
         item["LabSample"] = lab_sample_value
 
         # Partitions
