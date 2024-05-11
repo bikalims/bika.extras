@@ -47,7 +47,7 @@ def can_send_notification(sample):
     """Returns whether the batch email has been sent for received samples
     """
     batch = sample.getBatch()
-    if batch.NotifiedSamplesReceived:
+    if batch.Schema()["NotifiedSamplesReceived"].getAccessor(batch)():
         return False
 
     query = {
@@ -123,7 +123,8 @@ def get_invalidation_email(samples):
     batch_id = api.get_id(batch)
     batch_url = batch.absolute_url()
     client_batch_id = batch.getClientBatchID()
-    body = Template(setup.ReceivedSamplesEmailBody())
+    rseb = setup.Schema()["ReceivedSamplesEmailBody"].getAccessor(setup)()
+    body = Template(rseb)
     body = body.safe_substitute(
         {
             "case_id": get_link(batch_url, value=batch_id),

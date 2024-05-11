@@ -19,4 +19,12 @@
      handler="bika.extras.upgrade.v01_00_002.upgrade"
      profile="bika.extras:default"/>
 
+ <genericsetup:upgradeStep
+     title="Upgrade to BIKA.EXTRAS 1.0.3"
+     description="Re-index Batch objects"
+     source="1.0.2"
+     destination="1.0.3"
+     handler="bika.extras.upgrade.v01_00_003.upgrade"
+     profile="bika.extras:default"/>
+
 </configure>
