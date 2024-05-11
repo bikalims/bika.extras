@@ -17,6 +17,10 @@
              provides="archetypes.schemaextender.interfaces.ISchemaModifier"
              factory=".supplier.SupplierSchemaModifier" />
 
+    <adapter name='bika.extras.batch'
+             provides="archetypes.schemaextender.interfaces.ISchemaExtender"
+             factory=".batch.BatchSchemaExtender"/>
+
     <adapter name='bika.extras.bikasetup'
              provides="archetypes.schemaextender.interfaces.ISchemaExtender"
              factory=".bikasetup.BikaSetupSchemaExtender"/>
