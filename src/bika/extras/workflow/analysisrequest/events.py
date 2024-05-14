@@ -56,6 +56,8 @@ def can_send_notification(sample):
         "getDateReceived": {"query": "", "range": "min"},
     }
     brains = api.search(query, SAMPLE_CATALOG)
+    if not brains:
+        return False
 
     samples = batch.getAnalysisRequests()
     if len(samples) == len(brains):
