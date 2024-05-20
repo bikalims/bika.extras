@@ -132,6 +132,12 @@ def get_invalidation_email(samples):
             "batch_id": get_link(batch_url, value=batch_id),
             "batch_title": get_link_for(batch, csrf=False),
             "client_batch_number": get_link(batch_url, value=client_batch_id),
+            # Translation for bika.aquaculture, need to find a way to put this
+            # on bika.aquaculture
+            "case_id": get_link(batch_url, value=batch_id),
+            "case_title": get_link_for(batch, csrf=False),
+            "batch_number": get_link(batch_url, value=client_batch_id),
+            # End of Translation bika.aquaculture
             "client_name": client_name,
             "lab_name": lab_name,
             "lab_address": "<br/>".join(lab_address),
