@@ -111,7 +111,7 @@ def get_invalidation_email(samples):
     # Compose the email
     subject = samples[0].translate(
         _(
-            "Samples received for case: ${batch_id}",
+            "Samples received for batch: ${batch_id}",
             mapping={"batch_id": api.get_id(batch)},
         )
     )
@@ -129,9 +129,9 @@ def get_invalidation_email(samples):
     body = Template(rseb)
     body = body.safe_substitute(
         {
-            "case_id": get_link(batch_url, value=batch_id),
-            "case_title": get_link_for(batch, csrf=False),
-            "case_number": get_link(batch_url, value=client_batch_id),
+            "batch_id": get_link(batch_url, value=batch_id),
+            "batch_title": get_link_for(batch, csrf=False),
+            "client_batch_number": get_link(batch_url, value=client_batch_id),
             "client_name": client_name,
             "lab_name": lab_name,
             "lab_address": "<br/>".join(lab_address),

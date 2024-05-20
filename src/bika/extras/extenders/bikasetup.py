@@ -39,16 +39,16 @@ received_samples_email_body_field = ExtTextField(
     # Needed to fetch the default value from the registry
     default=_(
         "Dear $recipients,"
-        "br/>"
-        "br/>"
+        "<br/>"
+        "<br/>"
         "We received $number_of_samples samples and they were submitted "
-        "to the lab for Analysis in case $case_number, $case_title, "
-        "$case_id"
-        "br/>"
-        "br/>"
+        "to the lab for Analysis in batch $client_batch_number, $batch_title, "
+        "$batch_id"
+        "<br/>"
+        "<br/>"
         "Much appreciated"
-        "br/>"
-        "br/>"
+        "<br/>"
+        "<br/>"
         "$lab_name"
     ),
     widget=RichWidget(
@@ -61,7 +61,7 @@ received_samples_email_body_field = ExtTextField(
             default="Set the email body text to be used by default when "
             "sending out received samples notification to the selected recipients. "
             "You can use reserved keywords: "
-            "$case_id, $case_title, $case_number, $client_name, $lab_name, "
+            "$batch_id, $batch_title, $client_batch_number, $client_name, $lab_name, "
             "$lab_address, $number_of_samples, $recipients",
         ),
         default_mime_type="text/x-html",
