@@ -71,6 +71,23 @@ received_samples_email_body_field = ExtTextField(
     ),
 )
 
+email_samples_receive_notifications_field = ExtBooleanField(
+    "EmailSampleReceiveNotifications",
+    mode="rw",
+    schemata="Notifications",
+    default=False,
+    widget=BooleanWidget(
+        label=_(
+            "label_bikasetup_email_samples_receive_notifications",
+            "Email Samples Receive Notifications",
+        ),
+        description=_(
+            "description_bikasetup_email_samples_receive_notifications",
+            default="Send email notification on samples received on a batch"
+        ),
+    ),
+)
+
 
 @implementer(ISchemaExtender, IBrowserLayerAwareExtender)
 class BikaSetupSchemaExtender(object):
@@ -79,6 +96,7 @@ class BikaSetupSchemaExtender(object):
 
     fields = [
         worksheet_tite_field,
+        email_samples_receive_notifications_field,
         received_samples_email_body_field,
     ]
 
