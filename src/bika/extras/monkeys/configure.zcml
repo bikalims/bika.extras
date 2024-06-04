@@ -1,0 +1,20 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:monkey="http://namespaces.plone.org/monkey"
+    i18n_domain="bika.extra">
+
+  <monkey:patch
+    description="Abstract_Analysis"
+    class="bika.lims.content.abstractanalysis.AbstractAnalysis"
+    original="getEarliness"
+    ignoreOriginal="True"
+    replacement=".abstractanalysis.getEarliness" />
+
+  <monkey:patch
+    description="Abstract_Routine_Analysis"
+    class="bika.lims.content.abstractroutineanalysis.AbstractRoutineAnalysis"
+    original="getDueDate"
+    ignoreOriginal="True"
+    replacement=".abstractroutineanalysis.getDueDate" />
+</configure>
+
