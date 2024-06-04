@@ -21,6 +21,7 @@
   <include package=".subscribers" />
   <include package=".workflow" />
   <include package=".upgrade"/>
+  <include package=".monkeys"/>
 
   <genericsetup:registerProfile
       name="default"
