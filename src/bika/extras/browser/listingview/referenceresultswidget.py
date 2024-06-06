@@ -18,6 +18,7 @@ class ReferenceResultsListingViewAdapter(object):
         self.context = context
         self.an_cats = None
         self.an_cats_order = None
+        self.categories = []
 
     def before_render(self):
         if not is_installed():
@@ -36,7 +37,7 @@ class ReferenceResultsListingViewAdapter(object):
             for a, b in enumerate(self.an_cats)])
         if self.listing.show_categories_enabled():
             self.categories = map(lambda x: x[0],
-                                    sorted(self.categories, key=lambda x: x[1]))
+                                  sorted(self.categories, key=lambda x: x[1]))
         else:
             self.categories.sort()
 
@@ -47,6 +48,6 @@ class ReferenceResultsListingViewAdapter(object):
         cat_order = self.an_cats_order.get(cat)
         if self.listing.show_categories_enabled():
             category = obj.getCategoryTitle
-            if (category,cat_order) not in self.categories:
-                self.categories.append((category,cat_order))
+            if (category, cat_order) not in self.categories:
+                self.categories.append((category, cat_order))
         return item
