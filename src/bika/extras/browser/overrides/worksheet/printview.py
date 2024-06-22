@@ -2,11 +2,16 @@
 
 import os
 import traceback
-from plone.resource.utils import queryResourceDirectory
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from plone.registry.interfaces import IRegistry
+from plone.resource.utils import queryResourceDirectory
+from zope.component import getUtility
+
+from bika.extras import _
 from bika.lims.browser.worksheet.views.printview import PrintView as PV
 from bika.lims.config import WS_TEMPLATES_ADDON_DIR
-from bika.extras import _
+
+LOGO = "/++plone++bika.coa.static/images/bikalimslogo.png"
 
 
 class PrintView(PV):
@@ -18,6 +23,17 @@ class PrintView(PV):
 
     template = ViewPageTemplateFile("templates/print.pt")
     _TEMPLATES_DIR = 'templates/print'
+
+    def get_toolbar_logo(self):
+        registry = getUtility(IRegistry)
+        portal_url = self.portal_url
+        try:
+            logo = registry["senaite.toolbar_logo"]
+        except (AttributeError, KeyError):
+            logo = LOGO
+        if not logo:
+            logo = LOGO
+        return portal_url + logo
 
     def getCSS(self):
         """ Returns the css style to be used for the current template.

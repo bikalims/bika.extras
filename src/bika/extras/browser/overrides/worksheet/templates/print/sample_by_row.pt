@@ -13,7 +13,8 @@
 -->
 <tal:print
   i18n:domain="senaite.core"
-  tal:define="worksheet       python:view.getWorksheet();
+  tal:define="logo            python:view.get_toolbar_logo();
+              worksheet       python:view.getWorksheet();
               laboratory      worksheet/laboratory;
               portal          worksheet/portal;
               ars             worksheet/ars;
@@ -33,7 +34,7 @@
       <a tal:attributes="href laboratory/url">
         <img class="logo"
              height="25"
-             tal:attributes="src string:++plone++senaite.core.static/images/senaite.svg"/>
+             tal:attributes="src string:${logo}"/>
       </a>
     </div>
     <h1>
