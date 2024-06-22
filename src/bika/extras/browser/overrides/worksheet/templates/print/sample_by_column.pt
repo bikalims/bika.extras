@@ -29,6 +29,13 @@
            tal:attributes="data-id worksheet/id">
       </div>
     </div>
+    <div class='lab-logo'>
+      <a tal:attributes="href laboratory/url">
+        <img class="logo"
+             height="25"
+             tal:attributes="src string:++plone++senaite.core.static/images/senaite.svg"/>
+      </a>
+    </div>
     <h1>
       <a tal:attributes="href worksheet/url"
          tal:content="worksheet/id"></a>
