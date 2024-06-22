@@ -1,6 +1,7 @@
 <configure xmlns="http://namespaces.zope.org/zope"
        xmlns:zcml="http://namespaces.zope.org/browser"
        xmlns:fss="http://namespaces.zope.org/browser"
+       xmlns:plone="http://namespaces.plone.org/plone"
        xmlns:browser="http://namespaces.zope.org/browser"
        xmlns:five="http://namespaces.zope.org/five"
        i18n_domain="bika.extras">
@@ -13,6 +14,12 @@
       class=".analysisspecificationwidget.AnalysisSpecificationView"
       permission="zope2.View"
       layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+    <plone:static
+      directory="worksheet/templates/print"
+      type="worksheets"
+      name="Worksheet Print Templates"
     />
 
     <browser:page

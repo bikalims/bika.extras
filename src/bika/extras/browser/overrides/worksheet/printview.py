@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
 
 import os
-import glob
 import traceback
-from plone.resource.utils import iterDirectoriesOfType
-from plone.resource.utils import queryResourceDirectory
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from bika.lims.browser.worksheet.views.printview import PrintView as PV
+from plone.registry.interfaces import IRegistry
+from plone.resource.utils import queryResourceDirectory
+from zope.component import getUtility
+
 from bika.extras import _
+from bika.lims.browser.worksheet.views.printview import PrintView as PV
+from bika.lims.config import WS_TEMPLATES_ADDON_DIR
+
+LOGO = "/++plone++bika.coa.static/images/bikalimslogo.png"
 
 
 class PrintView(PV):
@@ -19,8 +23,17 @@ class PrintView(PV):
 
     template = ViewPageTemplateFile("templates/print.pt")
     _TEMPLATES_DIR = 'templates/print'
-    # Add-on folder to look for templates
-    _TEMPLATES_ADDON_DIR = 'worksheets'
+
+    def get_toolbar_logo(self):
+        registry = getUtility(IRegistry)
+        portal_url = self.portal_url
+        try:
+            logo = registry["senaite.toolbar_logo"]
+        except (AttributeError, KeyError):
+            logo = LOGO
+        if not logo:
+            logo = LOGO
+        return portal_url + logo
 
     def getCSS(self):
         """ Returns the css style to be used for the current template.
@@ -28,11 +41,11 @@ class PrintView(PV):
             return the content from 'default.css'. If no css file found
             for the current template, returns empty string
         """
-        template = self.request.get('template', self._DEFAULT_TEMPLATE)
+        template = self.request.get('template', self._TEMPLATES_LIST[0])
         content = ''
         if template.find(':') >= 0:
             prefix, template = template.split(':')
-            resource = queryResourceDirectory(self._TEMPLATES_ADDON_DIR, prefix)
+            resource = queryResourceDirectory(WS_TEMPLATES_ADDON_DIR, prefix)
             css = '{0}.css'.format(template[:-3])
             if css in resource.listDirectory():
                 content = resource.readFile(css)
@@ -48,21 +61,14 @@ class PrintView(PV):
         """ Returns a DisplayList with the available templates found in
             templates/worksheets
         """
-        this_dir = os.path.dirname(os.path.abspath(__file__))
-        templates_dir = os.path.join(this_dir, self._TEMPLATES_DIR)
-        tempath = '%s/%s' % (templates_dir, '*.pt')
-        templates = [t.split('/')[-1] for t in glob.glob(tempath)]
         out = []
-        for template in templates:
-            out.append({'id': template, 'title': template[:-3]})
-        for templates_resource in iterDirectoriesOfType(self._TEMPLATES_ADDON_DIR):
-            prefix = templates_resource.__name__
-            templates = [tpl for tpl in templates_resource.listDirectory() if tpl.endswith('.pt')]
-            for template in templates:
-                out.append({
-                    'id': '{0}:{1}'.format(prefix, template),
-                    'title': '{0} ({1})'.format(template[:-3], prefix),
-                })
+        for template_id in self._TEMPLATES_LIST:
+            name_parts = template_id.replace(".pt", "").split(":")
+            template_filename = " ".join(map(lambda p: p.capitalize(), name_parts[1].split("_")))
+            out.append({
+                "id": template_id,
+                "title": "{} ({})".format(template_filename, name_parts[0]),
+            })
         return out
 
     def renderWSTemplate(self):
@@ -71,10 +77,10 @@ class PrintView(PV):
             Moves the iterator to the next worksheet available.
         """
         templates_dir = self._TEMPLATES_DIR
-        embedt = self.request.get('template', self._DEFAULT_TEMPLATE)
+        embedt = self.request.get('template', self._TEMPLATES_LIST[0])
         if embedt.find(':') >= 0:
             prefix, embedt = embedt.split(':')
-            templates_dir = queryResourceDirectory(self._TEMPLATES_ADDON_DIR, prefix).directory
+            templates_dir = queryResourceDirectory(WS_TEMPLATES_ADDON_DIR, prefix).directory
         embed = ViewPageTemplateFile(os.path.join(templates_dir, embedt))
         reptemplate = ""
         try:

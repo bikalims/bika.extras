@@ -5,7 +5,7 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       tal:attributes="lang default_language|default;
                       xml:lang default_language|default;"
-      i18n:domain="senaite.core"
+      i18n:domain="bika.extras"
       tal:define="portal_state context/@@plone_portal_state;
                   portal_url portal_state/portal_url;
                   plone_view context/@@plone;
@@ -26,7 +26,6 @@
        padding: 10px 10px 0px 20px;
        margin: 10px auto;
        background-color:#fff;
-       height: auto
      }
      #worksheet-printview-head {
        margin:-10px -10px 60px -20px;
@@ -155,4 +154,3 @@
     </div>
   </body>
 </html>
-

@@ -13,7 +13,8 @@
 -->
 <tal:print
   i18n:domain="senaite.core"
-  tal:define="worksheet       python:view.getWorksheet();
+  tal:define="logo            python:view.get_toolbar_logo();
+              worksheet       python:view.getWorksheet();
               laboratory      worksheet/laboratory;
               portal          worksheet/portal;
               ars             worksheet/ars;
@@ -28,6 +29,13 @@
            data-addQuietZone='true'
            tal:attributes="data-id worksheet/id">
       </div>
+    </div>
+    <div class='lab-logo'>
+      <a tal:attributes="href laboratory/url">
+        <img class="logo"
+             height="25"
+             tal:attributes="src string:${logo}"/>
+      </a>
     </div>
     <h1>
       <a tal:attributes="href worksheet/url"
