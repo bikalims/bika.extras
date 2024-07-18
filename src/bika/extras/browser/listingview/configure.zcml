@@ -10,7 +10,7 @@
 
     <!-- suppliers listing -->
     <subscriber
-            for="bika.lims.controlpanel.bika_suppliers.SuppliersView
+            for="senaite.core.browser.controlpanel.suppliers.view.SuppliersView
                  zope.interface.Interface"
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".bika_suppliers.SuppliersListingViewAdapter"/>
