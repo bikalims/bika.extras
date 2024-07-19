@@ -27,7 +27,7 @@ from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.utils import safe_unicode
 from zope.event import notify
 
-from bika.lims import logger
+from bika.lims import api, logger
 from bika.lims.utils import tmpID
 from bika.lims.idserver import renameAfterCreation
 from senaite.core.catalog import SETUP_CATALOG
@@ -266,8 +266,19 @@ class Methods(WorksheetImporter):
 
 class Analysis_Categories(WorksheetImporter):
 
+    def get_setup_folder(self, folder_id):
+        """Returns the folder from setup with the given name
+        """
+        setup = api.get_senaite_setup()
+        folder = setup.get(folder_id)
+        if not folder:
+            portal = api.get_portal()
+            add_senaite_setup_items(portal)
+            folder = setup.get(folder_id)
+        return folder
+
     def Import(self):
-        folder = self.context.bika_setup.bika_analysiscategories
+        folder = self.get_setup_folder("analysiscategories")
         bsc = getToolByName(self.context, SETUP_CATALOG)
         for row in self.get_rows(3):
             department = None
@@ -283,7 +294,6 @@ class Analysis_Categories(WorksheetImporter):
                     )
                 obj.setDepartment(department)
                 obj.setSortKey(sortKey)
-                obj.unmarkCreationFlag()
                 renameAfterCreation(obj)
                 notify(ObjectInitializedEvent(obj))
             elif not row.get('title', None):
@@ -516,7 +526,7 @@ class Analysis_Services(WorksheetImporter):
                 Category=category,
                 Department=department,
                 Unit=row['Unit'] and row['Unit'] or None,
-                Precision=row['Precision'] and str(row['Precision']) or '0',
+                Precision=row['Precision'] and str(int(row['Precision'])) or '0',
                 ExponentialFormatPrecision=str(self.to_int(row.get('ExponentialFormatPrecision',7),7)),
                 LowerDetectionLimit='%06f' % self.to_float(row.get('LowerDetectionLimit', '0.0'), 0),
                 UpperDetectionLimit='%06f' % self.to_float(row.get('UpperDetectionLimit', '1000000000.0'), 1000000000.0),
@@ -596,10 +606,21 @@ class AR_Templates(WorksheetImporter):
                 'Preservation': preservation.Title() if preservation else None,
                 'preservation_uid': preservation.UID()} if preservation else None)
 
+    def get_setup_folder(self, folder_id):
+        """Returns the folder from setup with the given name
+        """
+        setup = api.get_senaite_setup()
+        folder = setup.get(folder_id)
+        if not folder:
+            portal = api.get_portal()
+            add_senaite_setup_items(portal)
+            folder = setup.get(folder_id)
+        return folder
+
     def Import(self):
         self.load_artemplate_analyses()
         self.load_artemplate_partitions()
-        folder = self.context.bika_setup.bika_artemplates
+        folder = self.get_setup_folder("sampletemplates")
         bsc = getToolByName(self.context, 'senaite_catalog_setup')
         pc = getToolByName(self.context, 'portal_catalog')
         for row in self.get_rows(3):
