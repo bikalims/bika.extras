@@ -27,10 +27,11 @@ from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.utils import safe_unicode
 from zope.event import notify
 
-from bika.lims import api, logger
+from bika.lims import logger
 from bika.lims.utils import tmpID
 from bika.lims.idserver import renameAfterCreation
 from senaite.core.catalog import SETUP_CATALOG
+from senaite.core.catalog import CLIENT_CATALOG
 from senaite.core.exportimport.setupdata import addDocument
 from senaite.core.exportimport.setupdata import read_file
 from senaite.core.exportimport.setupdata import Float
@@ -266,19 +267,8 @@ class Methods(WorksheetImporter):
 
 class Analysis_Categories(WorksheetImporter):
 
-    def get_setup_folder(self, folder_id):
-        """Returns the folder from setup with the given name
-        """
-        setup = api.get_senaite_setup()
-        folder = setup.get(folder_id)
-        if not folder:
-            portal = api.get_portal()
-            add_senaite_setup_items(portal)
-            folder = setup.get(folder_id)
-        return folder
-
     def Import(self):
-        folder = self.get_setup_folder("analysiscategories")
+        container = self.context.setup.analysiscategories
         bsc = getToolByName(self.context, SETUP_CATALOG)
         for row in self.get_rows(3):
             department = None
@@ -287,7 +277,7 @@ class Analysis_Categories(WorksheetImporter):
                                              row.get('Department_title'))
             sortKey = float(row.get("SortKey")) if row.get("SortKey") else 0.0
             if row.get('title', None) and department:
-                obj = _createObjectByType("AnalysisCategory", folder, tmpID())
+                obj = _createObjectByType("AnalysisCategory", container, tmpID())
                 obj.edit(
                     title=row['title'],
                     description=row.get('description', ''),
@@ -580,7 +570,7 @@ class AR_Templates(WorksheetImporter):
             if row['ARTemplate'] not in self.artemplate_analyses.keys():
                 self.artemplate_analyses[row['ARTemplate']] = []
             self.artemplate_analyses[row['ARTemplate']].append(
-                {'service_uid': service.UID(),
+                {'uid': service.UID(),
                  'partition': row['partition']
                  }
             )
@@ -606,23 +596,12 @@ class AR_Templates(WorksheetImporter):
                 'Preservation': preservation.Title() if preservation else None,
                 'preservation_uid': preservation.UID()} if preservation else None)
 
-    def get_setup_folder(self, folder_id):
-        """Returns the folder from setup with the given name
-        """
-        setup = api.get_senaite_setup()
-        folder = setup.get(folder_id)
-        if not folder:
-            portal = api.get_portal()
-            add_senaite_setup_items(portal)
-            folder = setup.get(folder_id)
-        return folder
-
     def Import(self):
         self.load_artemplate_analyses()
         self.load_artemplate_partitions()
-        folder = self.get_setup_folder("sampletemplates")
-        bsc = getToolByName(self.context, 'senaite_catalog_setup')
-        pc = getToolByName(self.context, 'portal_catalog')
+        container = self.context.setup.sampletemplates
+        scs = getToolByName(self.context, 'senaite_catalog_setup')
+        scc = getToolByName(self.context, 'senaite_catalog_client')
         for row in self.get_rows(3):
             if not row['title']:
                 continue
@@ -636,26 +615,24 @@ class AR_Templates(WorksheetImporter):
                                'preservation': ''}]
 
             if client_title == 'lab':
-                folder = self.context.bika_setup.bika_artemplates
+                container = self.context.setup.sampletemplates
             else:
-                folder = pc(portal_type='Client',
+                container = scc(portal_type='Client',
                             getName=client_title)[0].getObject()
 
-            sampletype = self.get_object(bsc, 'SampleType',
+            sampletype = self.get_object(scs, 'SampleType',
                                          row.get('SampleType_title'))
-            samplepoint = self.get_object(bsc, 'SamplePoint',
+            samplepoint = self.get_object(scs, 'SamplePoint',
                                          row.get('SamplePoint_title'))
 
-            obj = _createObjectByType("ARTemplate", folder, tmpID())
+            obj = _createObjectByType("SampleTemplate", container, tmpID())
             obj.edit(
                 title=str(row['title']),
-                description=row.get('description', ''),
-                Remarks=row.get('Remarks', ''),)
+                description=row.get('description', ''),)
             obj.setSampleType(sampletype)
             obj.setSamplePoint(samplepoint)
             obj.setPartitions(partitions)
-            obj.setAnalyses(analyses)
-            obj.unmarkCreationFlag()
+            obj.setServices(analyses)
             renameAfterCreation(obj)
             notify(ObjectInitializedEvent(obj))
 
