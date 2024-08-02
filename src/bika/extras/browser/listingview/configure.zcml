@@ -17,7 +17,7 @@
 
     <!-- supplier contact listing -->
     <subscriber
-            for="bika.lims.browser.supplier.ContactsView
+            for="senaite.core.browser.controlpanel.suppliers.contacts.ContactsView
                  zope.interface.Interface"
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".supplier.ContactsListingViewAdapter"/>
