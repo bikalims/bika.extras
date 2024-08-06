@@ -63,14 +63,6 @@
           layer="bika.lims.interfaces.IBikaLIMS"
           />
 
-      <browser:page
-          for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-          name="import"
-          class=".dataimport.ImportView"
-          permission="senaite.core.permissions.ImportInstrumentResults"
-          layer="senaite.core.interfaces.ISenaiteCore"
-          />
-
       <!-- Table Lab Analyses -->
       <browser:page
           for="bika.lims.interfaces.IAnalysisRequest"
