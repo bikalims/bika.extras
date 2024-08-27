@@ -147,6 +147,9 @@ class AnalysisServicesListingViewAdapter(object):
         """Formats the price with the set decimal mark and correct currency"""
         # convert float price to list
         price_list = str(price).split(self.decimal_mark)
+        # LIMS-1052
+        if not price_list:
+            return
 
         decimal_places = len(price_list[1])
         if decimal_places < 2:
