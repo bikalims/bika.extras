@@ -89,6 +89,24 @@
           layer="bika.lims.interfaces.IBikaLIMS"
           />
 
+      <!-- Listing widget for Analysis Profiles -->
+      <browser:page
+          for="*"
+          name="analysisprofile_services_widget"
+          class=".analysis_profile_services_widget.AnalysisProfileServicesWidget"
+          permission="zope2.View"
+          layer="senaite.core.interfaces.ISenaiteCore"
+          />
+
+      <!-- Listing widget for Worksheet Template -->
+       <browser:page
+          for="*"
+          name="table_analyses_services"
+          class=".worksheet_template_services_widget.ServicesView"
+          permission="zope2.View"
+          layer="bika.lims.interfaces.IBikaLIMS"
+          />
+
     <adapter
       name="Analysis_Specifications"
       factory="bika.extras.browser.overrides.setupdata.Analysis_Specifications"
