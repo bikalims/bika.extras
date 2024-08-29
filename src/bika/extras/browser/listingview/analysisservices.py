@@ -5,7 +5,6 @@ from zope.interface import implements
 from zope.i18n.locales import locales
 
 from bika.lims import api
-from bika.lims.utils import get_link
 from bika.extras import is_installed
 from bika.extras.config import _
 from senaite.app.listing.interfaces import IListingView
@@ -13,6 +12,9 @@ from senaite.app.listing.interfaces import IListingViewAdapter
 
 
 class AnalysisServicesListingViewAdapter(object):
+    adapts(IListingView)
+    implements(IListingViewAdapter)
+
     def __init__(self, listing, context):
         self.listing = listing
         self.context = context
@@ -151,19 +153,23 @@ class AnalysisServicesListingViewAdapter(object):
         if not price_list:
             return
 
-        decimal_places = len(price_list[1])
-        if decimal_places < 2:
-            output = u"{} {}{}{:02d}".format(
-                self.currency_symbol,
-                int(price_list[0]),
-                self.decimal_mark,
-                int(price_list[1]),
-            )
-        else:
-            output = u"{} {}{}{}".format(
-                self.currency_symbol,
-                int(price_list[0]),
-                self.decimal_mark,
-                int(price_list[1]),
-            )
+        try:
+            decimal_places = len(price_list[1])
+            if decimal_places < 2:
+                output = u"{} {}{}{:02d}".format(
+                    self.currency_symbol,
+                    int(price_list[0]),
+                    self.decimal_mark,
+                    int(price_list[1]),
+                )
+            else:
+                output = u"{} {}{}{}".format(
+                    self.currency_symbol,
+                    int(price_list[0]),
+                    self.decimal_mark,
+                    int(price_list[1]),
+                )
+        except Exception:
+            return
+
         return output
