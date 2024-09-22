@@ -9,6 +9,7 @@ from Products.PlonePAS.tools.memberdata import MemberData
 
 from bika.extras.config import _
 from bika.lims import api
+from senaite.core.api.dtime import to_localized_time
 from senaite.core.catalog import SAMPLE_CATALOG
 from bika.lims.api.mail import compose_email
 from bika.lims.api.mail import is_valid_email_address
@@ -65,7 +66,9 @@ def can_send_notification(sample):
         return False
 
     samples = batch.getAnalysisRequests()
-    if len(samples) == len(brains):
+    # if there are 4 samples there are 3 getDateReceived brains hence the + 1
+    # maybe this is a bug, needs more time investigating
+    if len(samples) == len(brains) + 1:
         # all samples have been received
         return True
 
@@ -129,6 +132,9 @@ def get_invalidation_email(samples):
     client_name = batch.getClient().Title() if batch.getClient() else ""
     batch_id = api.get_id(batch)
     batch_url = batch.absolute_url()
+    batch_due_date = to_localized_time(
+            batch.Schema()["DueDate"].getAccessor(batch)(),
+            long_format=False)
     client_batch_id = batch.getClientBatchID()
     rseb = setup.Schema()["ReceivedSamplesEmailBody"].getAccessor(setup)()
     body = Template(rseb)
@@ -142,6 +148,7 @@ def get_invalidation_email(samples):
             "case_id": get_link(batch_url, value=batch_id),
             "case_title": get_link_for(batch, csrf=False),
             "case_number": get_link(batch_url, value=client_batch_id),
+            "case_due_date": batch_due_date,
             # End of Translation bika.aquaculture
             "client_name": client_name,
             "lab_name": lab_name,
