@@ -126,6 +126,7 @@ def get_invalidation_email(samples):
 
     setup = api.get_setup()
     lab_name = setup.laboratory.Title()
+    lab_url = setup.laboratory.absolute_url()
     lab_email = setup.laboratory.getEmailAddress()
     lab_address = setup.laboratory.getPrintAddress()
     number_of_samples = len(samples)
@@ -151,7 +152,7 @@ def get_invalidation_email(samples):
             "case_due_date": batch_due_date,
             # End of Translation bika.aquaculture
             "client_name": client_name,
-            "lab_name": lab_name,
+            "lab_name": get_link(lab_url, value=lab_name),
             "lab_address": "<br/>".join(lab_address),
             "number_of_samples": number_of_samples,
             "recipients": ", ".join([i.getFullname() for i in contacts]),
