@@ -5,6 +5,7 @@ from zope.component import adapts
 from zope.interface import implements
 
 from bika.extras import is_installed
+from bika.lims import api
 from senaite.app.listing.interfaces import IListingView
 from senaite.app.listing.interfaces import IListingViewAdapter
 
@@ -44,10 +45,11 @@ class ReferenceResultsListingViewAdapter(object):
     def folder_item(self, obj, item, index):
         if not is_installed():
             return item
-        cat = obj.getCategoryTitle
+        obj = api.get_object(obj)
+        cat = obj.getCategoryTitle()
         cat_order = self.an_cats_order.get(cat)
         if self.listing.show_categories_enabled():
-            category = obj.getCategoryTitle
+            category = obj.getCategoryTitle()
             if (category, cat_order) not in self.categories:
                 self.categories.append((category, cat_order))
         return item
