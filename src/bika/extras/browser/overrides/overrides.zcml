@@ -136,4 +136,12 @@
       provides="bika.lims.interfaces.ISetupDataImporter"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
+    <!-- Custom Form: Instrument Import -->
+    <adapter
+        name="data_import_form"
+        for="Products.CMFCore.interfaces.ISiteRoot
+             zope.publisher.interfaces.browser.IBrowserRequest"
+        factory=".dataimport.EditForm"/>
+
+
 </configure>

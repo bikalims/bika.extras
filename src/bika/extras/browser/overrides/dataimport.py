@@ -1,8 +1,21 @@
 # -*- coding: utf-8 -*-
 
+import os
 from Products.Archetypes.public import DisplayList
 from senaite.core.exportimport.dataimport import ImportView as IV
+from senaite.core.browser.form.adapters.data_import import EditForm as EF
 from bika.lims import api
+
+
+class EditForm(EF):
+
+    def get_default_import_template(self):
+        """Returns the path of the default import template
+        """
+        import bika.extras.browser.overrides.dataimport
+        path = os.path.dirname(bika.extras.browser.overrides.dataimport.__file__)
+        template = "templates/instrument.pt"
+        return os.path.join(path, template)
 
 
 class ImportView(IV):
