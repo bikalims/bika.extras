@@ -98,12 +98,20 @@ def get_invalidation_email(samples):
     """
     managers = api.get_users_by_roles("LabManager")
     contacts = []
+    csids = []
+    received_dates = set()
     for sample in samples:
         if sample.getContact() not in contacts:
             contacts.append(sample.getContact())
         for cc_contact in sample.getCCContact():
             if cc_contact not in contacts:
                 contacts.append(cc_contact)
+        received_date = to_localized_time(
+            sample.getDateReceived(),
+            long_format=True)
+        received_dates.add(received_date)
+        if sample.getClientSampleID():
+            csids.append(sample.getClientSampleID())
     recipients = managers + contacts
     recipients = filter(None, map(get_email_address, recipients))
     # Get the recipients
@@ -156,6 +164,8 @@ def get_invalidation_email(samples):
             "lab_address": "<br/>".join(lab_address),
             "number_of_samples": number_of_samples,
             "recipients": ", ".join([i.getFullname() for i in contacts]),
+            "client_sample_ids": ", ".join(csids),
+            "date_time_received": sorted(received_dates)[0],
         }
     )
 
