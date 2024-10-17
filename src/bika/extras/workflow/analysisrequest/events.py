@@ -9,7 +9,6 @@ from Products.PlonePAS.tools.memberdata import MemberData
 
 from bika.extras.config import _
 from bika.lims import api
-from senaite.core.api.dtime import to_localized_time
 from senaite.core.catalog import SAMPLE_CATALOG
 from bika.lims.api.mail import compose_email
 from bika.lims.api.mail import is_valid_email_address
@@ -106,9 +105,8 @@ def get_invalidation_email(samples):
         for cc_contact in sample.getCCContact():
             if cc_contact not in contacts:
                 contacts.append(cc_contact)
-        received_date = to_localized_time(
-            sample.getDateReceived(),
-            long_format=True)
+        # Forcing American format: MM/DD/YYYY
+        received_date = sample.getDateReceived().strftime("%d %B %Y %H:%M")
         received_dates.add(received_date)
         if sample.getClientSampleID():
             csids.append(sample.getClientSampleID())
@@ -124,13 +122,17 @@ def get_invalidation_email(samples):
 
     # TODO: Get Batch and see if the unique batch
     batch = samples[0].getBatch()
+    client_batch_id = batch.getClientBatchID()
     # Compose the email
+
     subject = samples[0].translate(
-        _(
-            "Samples received for batch: ${batch_id}",
-            mapping={"batch_id": api.get_id(batch)},
-        )
-    )
+        _("Samples received for batch: ${batch_id}",
+          mapping={"batch_id": api.get_id(batch)},))
+    qi = api.get_tool("portal_quickinstaller")
+    if qi.isProductInstalled("bika.aquaculture"):
+        subject = samples[0].translate(
+            _("Samples received for case: ${batch_id}",
+              mapping={"batch_id": api.get_id(batch)},))
 
     setup = api.get_setup()
     lab_name = setup.laboratory.Title()
@@ -141,9 +143,8 @@ def get_invalidation_email(samples):
     client_name = batch.getClient().Title() if batch.getClient() else ""
     batch_id = api.get_id(batch)
     batch_url = batch.absolute_url()
-    batch_due_date = to_localized_time(
-        batch.Schema()["DueDate"].getAccessor(batch)(),
-        long_format=False)
+    batch_due_date = batch.Schema()["DueDate"].getAccessor(batch)()
+    batch_due_date = batch_due_date.strftime("%d %B %Y")
     client_batch_id = batch.getClientBatchID()
     rseb = setup.Schema()["ReceivedSamplesEmailBody"].getAccessor(setup)()
     body = Template(rseb)
