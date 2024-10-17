@@ -126,7 +126,7 @@ def get_invalidation_email(samples):
     # Compose the email
 
     subject = samples[0].translate(
-        _("Samples received for batch: ${batch_id}",
+        _("Samples received for batch ${batch_id}",
           mapping={"batch_id": api.get_id(batch)},))
     qi = api.get_tool("portal_quickinstaller")
     if qi.isProductInstalled("bika.aquaculture"):
