@@ -31,7 +31,6 @@ from bika.lims import logger
 from bika.lims.utils import tmpID
 from bika.lims.idserver import renameAfterCreation
 from senaite.core.catalog import SETUP_CATALOG
-from senaite.core.catalog import CLIENT_CATALOG
 from senaite.core.exportimport.setupdata import addDocument
 from senaite.core.exportimport.setupdata import read_file
 from senaite.core.exportimport.setupdata import Float
@@ -681,61 +680,6 @@ class Reference_Definitions(WorksheetImporter):
             obj.unmarkCreationFlag()
             renameAfterCreation(obj)
             notify(ObjectInitializedEvent(obj))
-
-
-class Worksheet_Templates(WorksheetImporter):
-
-    def load_wst_layouts(self):
-        sheetname = 'Worksheet Template Layouts'
-        worksheet = self.workbook[sheetname]
-        self.wst_layouts = {}
-        if not worksheet:
-            return
-        for row in self.get_rows(3, worksheet=worksheet):
-            if row['WorksheetTemplate_title'] \
-               not in self.wst_layouts.keys():
-                self.wst_layouts[
-                    row['WorksheetTemplate_title']] = []
-            self.wst_layouts[
-                row['WorksheetTemplate_title']].append({
-                    'pos': row['pos'],
-                    'type': row['type'],
-                    'blank_ref': row['blank_ref'],
-                    'control_ref': row['control_ref'],
-                    'dup': row['dup']})
-
-    def load_wst_services(self):
-        sheetname = 'Worksheet Template Services'
-        worksheet = self.workbook[sheetname]
-        self.wst_services = {}
-        if not worksheet:
-            return
-        bsc = getToolByName(self.context, 'senaite_catalog_setup')
-        for row in self.get_rows(3, worksheet=worksheet):
-            service = self.get_object(bsc, 'AnalysisService',
-                                      row.get('service'))
-            if row['WorksheetTemplate_title'] not in self.wst_services.keys():
-                self.wst_services[row['WorksheetTemplate_title']] = []
-            if not service:
-                continue
-            self.wst_services[
-                row['WorksheetTemplate_title']].append(service.UID())
-
-    def Import(self):
-        self.load_wst_services()
-        self.load_wst_layouts()
-        folder = self.context.bika_setup.bika_worksheettemplates
-        for row in self.get_rows(3):
-            if row['title']:
-                obj = _createObjectByType("WorksheetTemplate", folder, tmpID())
-                obj.edit(
-                    title=row['title'],
-                    description=row.get('description', ''),
-                    Layout=self.wst_layouts[row['title']])
-                obj.setService(self.wst_services[row['title']])
-                obj.unmarkCreationFlag()
-                renameAfterCreation(obj)
-                notify(ObjectInitializedEvent(obj))
 
 
 class Supplier_Contacts(WorksheetImporter):

@@ -120,12 +120,6 @@
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
     <adapter
-      name="Worksheet_Templates"
-      factory="bika.extras.browser.overrides.setupdata.Worksheet_Templates"
-      provides="bika.lims.interfaces.ISetupDataImporter"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-
-    <adapter
       name="Supplier_Contacts"
       factory="bika.extras.browser.overrides.setupdata.Supplier_Contacts"
       provides="bika.lims.interfaces.ISetupDataImporter"
