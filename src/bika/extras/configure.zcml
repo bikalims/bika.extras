@@ -20,6 +20,7 @@
   <include package=".catalog" />
   <include package=".subscribers" />
   <include package=".workflow" />
+  <include package=".monkeys"/>
   <include package=".upgrade"/>
 
   <genericsetup:registerProfile

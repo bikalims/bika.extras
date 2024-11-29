@@ -1,0 +1,31 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:monkey="http://namespaces.plone.org/monkey"
+    i18n_domain="bika.extras">
+
+  <monkey:patch
+    description="Get Flush Settings"
+    class="bika.lims.browser.analysisrequest.add2.ajaxAnalysisRequestAddView"
+    original="ajax_get_flush_settings"
+    ignoreOriginal="True"
+    replacement=".analysisrequest.ajax_get_flush_settings"
+    order="1001" />
+
+  <monkey:patch
+    description="Get Flush Settings"
+    class="bika.lims.browser.analysisrequest.add2.ajaxAnalysisRequestAddView"
+    original="get_client_queries"
+    ignoreOriginal="True"
+    replacement=".analysisrequest.get_client_queries"
+    order="1001" />
+
+  <monkey:patch
+    description="Get Flush Settings"
+    class="bika.lims.browser.analysisrequest.add2.ajaxAnalysisRequestAddView"
+    original="get_sampletype_queries"
+    ignoreOriginal="True"
+    replacement=".analysisrequest.get_sampletype_queries"
+    order="1001" />
+
+</configure>
+
