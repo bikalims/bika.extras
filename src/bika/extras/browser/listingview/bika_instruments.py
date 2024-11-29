@@ -60,7 +60,7 @@ class InstrumentsListingViewAdapter(object):
 
         asset_number = obj.getAssetNumber()
         if asset_number:
-            asset_title = asset_number.title()
+            asset_title = asset_number
             item["AssetNumber"] = asset_title
 
         return item
