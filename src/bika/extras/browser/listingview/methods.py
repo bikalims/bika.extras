@@ -40,10 +40,9 @@ class MethodsListingViewAdapter(object):
         # MethodID
         method_id = obj.getMethodID()
         if method_id:
-            method_id_title = method_id.title()
             method_id_url = obj.absolute_url()
-            method_id_link = get_link(method_id_url, method_id_title)
-            item["MethodID"] = method_id_title
+            method_id_link = get_link(method_id_url, method_id)
+            item["MethodID"] = method_id
             item["replace"]["MethodID"] = method_id_link
         # Subcontractor
         supplier_uid = obj["Supplier"]
