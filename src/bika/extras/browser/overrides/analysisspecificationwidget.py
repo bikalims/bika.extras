@@ -1,175 +1,23 @@
 # -*- coding: utf-8 -*-
-#
-# This file is part of SENAITE.CORE.
-#
-# SENAITE.CORE is free software: you can redistribute it and/or modify it under
-# the terms of the GNU General Public License as published by the Free Software
-# Foundation, version 2.
-#
-# This program is distributed in the hope that it will be useful, but WITHOUT
-# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
-# details.
-#
-# You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 51
-# Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# Copyright 2018-2021 by it's authors.
-# Some rights reserved, see README and LICENSE.
 
 import collections
 
-from AccessControl import ClassSecurityInfo
 from bika.lims import api
 from bika.lims import bikaMessageFactory as _
-from bika.lims.api.security import check_permission
-from bika.lims.browser.bika_listing import BikaListingView
 from bika.lims.config import MAX_OPERATORS
 from bika.lims.config import MIN_OPERATORS
-from bika.lims.permissions import FieldEditSpecification
 from bika.lims.utils import dicts_to_dict
 from bika.lims.utils import get_image
 from bika.lims.utils import get_link
 from bika.lims.utils import to_choices
-from plone.memoize import view
-from Products.Archetypes.Registry import registerWidget
-from Products.Archetypes.Widget import TypesWidget
 from Products.CMFCore.utils import getToolByName
+from bika.lims.browser.widgets.analysisspecificationwidget import \
+    AnalysisSpecificationView as ASV
 
 
-
-class AnalysisSpecificationView(BikaListingView):
+class AnalysisSpecificationView(ASV):
     """Listing table to display Analysis Specifications
     """
-
-    def __init__(self, context, request):
-        super(AnalysisSpecificationView, self).__init__(context, request)
-        self.catalog = "senaite_catalog_setup"
-        self.contentFilter = {
-            "portal_type": "AnalysisService",
-            "is_active": True,
-            "sort_on": "sortable_title",
-            "sort_order": "ascending",
-        }
-        self.context_actions = {}
-
-        self.show_column_toggles = False
-        self.show_select_column = True
-        self.show_select_all_checkbox = False
-        self.pagesize = 999999
-        self.allow_edit = True
-        self.show_search = True
-        self.omit_form = True
-        self.fetch_transitions_on_select = False
-
-        # Categories
-        if self.show_categories_enabled():
-            self.categories = []
-            self.show_categories = True
-            self.expand_all_categories = False
-
-        # Operator Choices
-        self.min_operator_choices = to_choices(MIN_OPERATORS)
-        self.max_operator_choices = to_choices(MAX_OPERATORS)
-
-        self.columns = collections.OrderedDict((
-            ("Title", {
-                "title": _("Service"),
-                "index": "sortable_title",
-                "sortable": False}),
-            ("Keyword", {
-                "title": _("Keyword"),
-                "sortable": False}),
-            ("Methods", {
-                "title": _("Methods"),
-                "sortable": False}),
-            ("Unit", {
-                "title": _("Unit"),
-                "sortable": False}),
-            ("warn_min", {
-                "title": _("Min warn"),
-                "sortable": False}),
-            ("min_operator", {
-                "title": _("Min operator"),
-                "type": "choices",
-                "sortable": False}),
-            ("min", {
-                "title": _("Min"),
-                "sortable": False}),
-            ("max_operator", {
-                "title": _("Max operator"),
-                "type": "choices",
-                "sortable": False}),
-            ("max", {
-                "title": _("Max"),
-                "sortable": False}),
-            ("warn_max", {
-                "title": _("Max warn"),
-                "sortable": False}),
-            ("hidemin", {
-                "title": _("< Min"),
-                "sortable": False}),
-            ("hidemax", {
-                "title": _("> Max"),
-                "sortable": False}),
-            ("rangecomment", {
-                "title": _("Range comment"),
-                "sortable": False,
-                "type": "remarks",
-                "toggle": False}),
-        ))
-
-        self.review_states = [
-            {
-                "id": "default",
-                "title": _("All"),
-                "contentFilter": {},
-                "transitions": [{"id": "disallow-all-possible-transitions"}],
-                "columns": self.columns.keys(),
-            },
-        ]
-
-    def update(self):
-        """Update hook
-        """
-        super(AnalysisSpecificationView, self).update()
-        self.allow_edit = self.is_edit_allowed()
-        results_range = self.context.getResultsRange()
-        self.specification = dicts_to_dict(results_range, "keyword")
-        self.dynamic_spec = self.context.getDynamicAnalysisSpec()
-
-    @view.memoize
-    def is_edit_allowed(self):
-        """Check if edit is allowed
-        """
-        return check_permission(FieldEditSpecification, self.context)
-
-    @view.memoize
-    def show_categories_enabled(self):
-        """Check in the setup if categories are enabled
-        """
-        return self.context.bika_setup.getCategoriseAnalysisServices()
-
-    def get_editable_columns(self):
-        """Return editable fields
-        """
-        columns = ["min", "max", "warn_min", "warn_max", "hidemin", "hidemax",
-                   "rangecomment", "min_operator", "max_operator"]
-        return columns
-
-    def get_required_columns(self):
-        """Return required editable fields
-        """
-        columns = []
-        return columns
-
-    @view.memoize
-    def get_dynamic_analysisspecs(self):
-        if not self.dynamic_spec:
-            return {}
-        return self.dynamic_spec.get_by_keyword()
-
     def folderitems(self):
         """Sort by Categories
         """
@@ -183,7 +31,6 @@ class AnalysisSpecificationView(BikaListingView):
             for a, b in enumerate(self.an_cats)])
 
         items = super(AnalysisSpecificationView, self).folderitems()
-
 
         if self.show_categories_enabled():
             self.categories = map(lambda x: x[0],
@@ -209,7 +56,6 @@ class AnalysisSpecificationView(BikaListingView):
         keyword = obj.getKeyword()
         cat = obj.getCategoryTitle()
         cat_order = self.an_cats_order.get(cat)
-        
 
         # dynamic analysisspecs
         dspecs = self.get_dynamic_analysisspecs()
@@ -224,8 +70,8 @@ class AnalysisSpecificationView(BikaListingView):
         # get the category
         if self.show_categories_enabled():
             category = obj.getCategoryTitle()
-            if (category,cat_order)  not in self.categories:
-                self.categories.append((category,cat_order))
+            if (category, cat_order) not in self.categories:
+                self.categories.append((category, cat_order))
             item["category"] = category
 
         item["Title"] = title
@@ -280,4 +126,3 @@ class AnalysisSpecificationView(BikaListingView):
             item["after"]["Title"] = after_icons
 
         return item
-
