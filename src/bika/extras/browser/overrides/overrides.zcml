@@ -16,6 +16,15 @@
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 
+  <!-- Listing widget for Analysis Profiles -->
+  <browser:page
+      for="*"
+      name="analysisprofile_services_widget"
+      class=".analysisprofile_services_widget.AnalysisProfileServicesWidget"
+      permission="zope2.View"
+      layer="senaite.core.interfaces.ISenaiteCore"
+      />
+
     <plone:static
       directory="worksheet/templates/print"
       type="worksheets"
