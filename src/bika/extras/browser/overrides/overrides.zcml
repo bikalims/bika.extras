@@ -16,6 +16,15 @@
         layer="senaite.core.interfaces.ISenaiteCore"
         />
 
+    <!-- Listing widget for Worksheet Template-->
+    <browser:page
+        for="*"
+        name="worksheettemplate_services_widget"
+        class=".worksheettemplate_services_widget.WorksheetTemplateServicesWidget"
+        permission="zope2.View"
+        layer="senaite.core.interfaces.ISenaiteCore"
+        />
+
     <!-- Listing widget for Analysis Specification -->
     <browser:page
         for="bika.lims.interfaces.IAnalysisSpec"
