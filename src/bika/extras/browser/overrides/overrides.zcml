@@ -7,23 +7,32 @@
        i18n_domain="bika.extras">
 
     <include file="reports.zcml"/>
-
+    <!-- Listing widget for Sample Template-->
     <browser:page
-      for="bika.lims.interfaces.IAnalysisSpec"
-      name="table_analysis_specifications"
-      class=".analysisspecificationwidget.AnalysisSpecificationView"
-      permission="zope2.View"
-      layer="bika.lims.interfaces.IBikaLIMS"
-    />
+        for="*"
+        name="sampletemplate_services_widget"
+        class=".sampletemplate_services_widget.SampleTemplateServicesWidget"
+        permission="zope2.View"
+        layer="senaite.core.interfaces.ISenaiteCore"
+        />
 
-  <!-- Listing widget for Analysis Profiles -->
-  <browser:page
-      for="*"
-      name="analysisprofile_services_widget"
-      class=".analysisprofile_services_widget.AnalysisProfileServicesWidget"
-      permission="zope2.View"
-      layer="senaite.core.interfaces.ISenaiteCore"
+    <!-- Listing widget for Analysis Specification -->
+    <browser:page
+        for="bika.lims.interfaces.IAnalysisSpec"
+        name="table_analysis_specifications"
+        class=".analysisspecificationwidget.AnalysisSpecificationView"
+        permission="zope2.View"
+        layer="bika.lims.interfaces.IBikaLIMS"
       />
+
+    <!-- Listing widget for Analysis Profiles -->
+    <browser:page
+        for="*"
+        name="analysisprofile_services_widget"
+        class=".analysisprofile_services_widget.AnalysisProfileServicesWidget"
+        permission="zope2.View"
+        layer="senaite.core.interfaces.ISenaiteCore"
+        />
 
     <plone:static
       directory="worksheet/templates/print"
