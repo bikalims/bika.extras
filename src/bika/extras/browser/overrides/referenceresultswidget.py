@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from Products.CMFCore.utils import getToolByName
+from bika.extras.config import _
 from bika.lims import api
-from bika.lims import bikaMessageFactory as _
 from bika.lims.utils import get_image
 from bika.lims.utils import get_link
 from bika.lims.browser.widgets.referenceresultswidget import \

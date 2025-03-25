@@ -51,6 +51,15 @@
         layer="bika.lims.interfaces.IBikaLIMS"
         />
 
+    <!-- Manage Analyses View -->
+    <browser:page
+        for="bika.lims.interfaces.IAnalysisRequest"
+        name="analyses"
+        class=".manage_analyses.AnalysisRequestAnalysesView"
+        permission="senaite.core.permissions.AddAnalysis"
+        layer="bika.lims.interfaces.IBikaLIMS"
+        />
+
     <plone:static
       directory="worksheet/templates/print"
       type="worksheets"

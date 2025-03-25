@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from bika.lims import api
-from bika.lims import bikaMessageFactory as _
+from bika.extras.config import _
 from bika.lims.utils import format_supsub
 from bika.lims.utils import get_image
 from bika.lims.utils import get_link
@@ -28,8 +28,9 @@ class ServicesWidget(SW):
         items = super(ServicesWidget, self).folderitems()
 
         if self.show_categories_enabled():
-            self.categories = map(lambda x: x[0],
-                                    sorted(self.categories, key=lambda x: x[1]))
+            self.categories = map(
+                lambda x: x[0], sorted(self.categories, key=lambda x: x[1])
+            )
         else:
             self.categories.sort()
         return items
