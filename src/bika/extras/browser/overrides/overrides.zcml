@@ -42,6 +42,14 @@
         permission="zope2.View"
         layer="senaite.core.interfaces.ISenaiteCore"
         />
+    <!-- Table Reference Results -->
+    <browser:page
+        for="*"
+        name="table_reference_results"
+        class=".referenceresultswidget.ReferenceResultsView"
+        permission="zope2.View"
+        layer="bika.lims.interfaces.IBikaLIMS"
+        />
 
     <plone:static
       directory="worksheet/templates/print"
