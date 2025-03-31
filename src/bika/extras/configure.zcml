@@ -19,7 +19,6 @@
   <include package=".stickers" />
   <include package=".catalog" />
   <include package=".subscribers" />
-  <include package=".workflow" />
   <include package=".monkeys"/>
   <include package=".upgrade"/>
 
