@@ -19,7 +19,7 @@
   <include package=".stickers" />
   <include package=".catalog" />
   <include package=".subscribers" />
-  <include package=".monkeys"/>
+  <include package=".workflow" />
   <include package=".upgrade"/>
 
   <genericsetup:registerProfile
