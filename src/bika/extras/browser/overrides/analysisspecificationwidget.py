@@ -56,6 +56,7 @@ class AnalysisSpecificationView(ASV):
         keyword = obj.getKeyword()
         cat = obj.getCategoryTitle()
         cat_order = self.an_cats_order.get(cat)
+        unit = obj.Unit
 
         # dynamic analysisspecs
         dspecs = self.get_dynamic_analysisspecs()
@@ -75,6 +76,7 @@ class AnalysisSpecificationView(ASV):
             item["category"] = category
 
         item["Title"] = title
+        item["Unit"] = unit
         item["replace"]["Title"] = get_link(url, value=title)
         item["choices"]["min_operator"] = self.min_operator_choices
         item["choices"]["max_operator"] = self.max_operator_choices
