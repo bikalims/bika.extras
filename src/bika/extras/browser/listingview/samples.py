@@ -40,9 +40,6 @@ class SamplesListingViewAdapter(object):
             self.listing.review_states[i]["columns"].append("Specification")
             self.listing.review_states[i]["columns"].append("BatchTitle")
             self.listing.review_states[i]["columns"].append("ClientBatchID")
-        for i in self.listing.review_states:
-            if i["title"] == "Dispatched":
-                i["title"] = "Disposed"
 
     def folder_item(self, obj, item, index):
         if not is_installed():
