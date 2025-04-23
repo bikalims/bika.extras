@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import collections
+from collections import OrderedDict
 
 from Products.CMFCore.utils import getToolByName
 from bika.extras.config import _
@@ -10,6 +12,22 @@ from bika.lims.browser.widgets.referenceresultswidget import \
 
 
 class ReferenceResultsView(RRV):
+
+    def __init__(self, context, request, fieldvalue=[], allow_edit=True):
+        super(ReferenceResultsView, self).__init__(context, request, fieldvalue, allow_edit)
+
+        new_column = {"Unit": {
+                "title": _("Unit"),
+                "sortable": False}}
+
+        columns_list = list(self.columns.items())
+        columns_list.insert(2, ("Unit", new_column["Unit"]))
+        self.columns = OrderedDict(columns_list)
+
+        for state in self.review_states:
+            if "Unit" not in state["columns"]:
+                state["columns"].insert(2, "Unit")
+
     def folderitems(self):
         bsc = getToolByName(self.context, "senaite_catalog_setup")
         self.an_cats = bsc(portal_type="AnalysisCategory",
@@ -44,6 +62,7 @@ class ReferenceResultsView(RRV):
         title = api.get_title(obj)
         cat = obj.getCategoryTitle()
         cat_order = self.an_cats_order.get(cat)
+        unit = obj.Unit
 
         # get the category
         if self.show_categories_enabled():
@@ -55,6 +74,7 @@ class ReferenceResultsView(RRV):
         rr = self.referenceresults.get(uid, {})
         item["Title"] = title
         item["replace"]["Title"] = get_link(url, value=title)
+        item["Unit"] = unit
         item["allow_edit"] = self.get_editable_columns()
         item["required"] = self.get_required_columns()
         item["selected"] = rr and True or False
