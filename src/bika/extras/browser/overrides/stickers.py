@@ -22,7 +22,7 @@ from DateTime import DateTime
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
 
-from bika.lims.browser.stickers import Sticker as SV
+from senaite.core.browser.stickers.view import StickerView as SV
 from senaite.core.api import dtime
 
 
