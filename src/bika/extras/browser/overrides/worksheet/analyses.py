@@ -13,6 +13,11 @@ from bika.lims.utils import get_image
 
 
 class AnalysesView(AV):
+    def __init__(self, context, request):
+        super(AnalysesView, self).__init__(context, request)
+        self.show_column_toggles = True
+        self.columns['Attachments']["toggle"] = False
+
     @view.memoize
     def get_slot_header_data(self, obj):
         """Prepare the data for the slot header template
