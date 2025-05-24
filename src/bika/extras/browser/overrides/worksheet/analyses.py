@@ -17,6 +17,7 @@ class AnalysesView(AV):
         super(AnalysesView, self).__init__(context, request)
         self.show_column_toggles = True
         self.columns['Attachments']["toggle"] = False
+        self.columns['retested']["title"] = _("Retested")
 
     @view.memoize
     def get_slot_header_data(self, obj):
