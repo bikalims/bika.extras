@@ -20,6 +20,7 @@ class FieldAnalysesTable(FAT):
         self.show_select_column = True
         self.show_search = False
         self.expand_all_categories = False
+        self.show_column_toggles = True
         self.reorder_analysis_columns()
 
 
@@ -37,5 +38,6 @@ class LabAnalysesTable(LAT):
         self.show_workflow_action_buttons = True
         self.show_select_column = True
         self.show_search = False
+        self.show_column_toggles = True
         self.expand_all_categories = False
         self.reorder_analysis_columns()
