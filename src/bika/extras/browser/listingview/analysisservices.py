@@ -9,6 +9,7 @@ from bika.extras import is_installed
 from bika.extras.config import _
 from senaite.app.listing.interfaces import IListingView
 from senaite.app.listing.interfaces import IListingViewAdapter
+from bika.lims.utils import get_link_for
 
 
 class AnalysisServicesListingViewAdapter(object):
@@ -60,6 +61,15 @@ class AnalysisServicesListingViewAdapter(object):
         hidden = [
             ("Hidden", {"toggle": False, "sortable": False, "title": _("Hidden")})
         ]
+        instruments = [
+            (
+                "Instruments", {
+                    "toggle": False,
+                    "sortable": False,
+                    "title": _("Instruments")
+                }
+            )
+        ]
 
         self.listing.columns.update(description)
         self.listing.columns.update(commercial_id)
@@ -69,6 +79,7 @@ class AnalysisServicesListingViewAdapter(object):
         self.listing.columns.update(vat)
         self.listing.columns.update(bulk_price)
         self.listing.columns.update(hidden)
+        self.listing.columns.update(instruments)
 
         for i in range(len(self.listing.review_states)):
             self.listing.review_states[i]["columns"].append("Description")
@@ -79,6 +90,7 @@ class AnalysisServicesListingViewAdapter(object):
             self.listing.review_states[i]["columns"].append("Vat")
             self.listing.review_states[i]["columns"].append("BulkPrice")
             self.listing.review_states[i]["columns"].append("Hidden")
+            self.listing.review_states[i]["columns"].append("Instruments")
 
     def folder_item(self, obj, item, index):
         if not is_installed():
@@ -129,6 +141,14 @@ class AnalysisServicesListingViewAdapter(object):
         hidden = obj.Hidden
         hidden_value = _("Yes") if hidden else _("")
         item["Hidden"] = hidden_value
+
+        # Instruments
+        instruments = obj.getInstruments()
+        if instruments:
+            titles = map(api.get_title, instruments)
+            links = map(get_link_for, instruments)
+            item["Instruments"] = ",".join(titles)
+            item["replace"]["Instruments"] = ", ".join(links)
 
         return item
 
