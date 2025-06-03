@@ -147,10 +147,8 @@ class AnalysisServicesListingViewAdapter(object):
         if instruments:
             titles = map(api.get_title, instruments)
             links = map(get_link_for, instruments)
-            item["Insatruments"] = ",".join(titles)
+            item["Instruments"] = ",".join(titles)
             item["replace"]["Instruments"] = ", ".join(links)
-        else:
-            item["Instruments"] = ""
 
         return item
 
