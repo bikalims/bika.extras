@@ -34,5 +34,5 @@ class WorksheetsListingViewAdapter(object):
         if not self.context.bika_setup.WorksheetTitle:
             return item
 
-        item["Categories"] = ", ".join(obj.getAnalysesCategories)
+        item["Categories"] = ", ".join(obj.getAnalysesCategories or [])
         return item
