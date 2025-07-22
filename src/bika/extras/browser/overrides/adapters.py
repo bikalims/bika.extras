@@ -11,6 +11,10 @@ class AnalysisServiceEditForm(EF):
 
         Writable if no active analyses exist with the given keyword
         """
+
+        if self.context.bika_setup.CanChangeAnalysisKeyword:
+            return True
+
         query = {
             "portal_type": "Analysis",
             "is_active": True,

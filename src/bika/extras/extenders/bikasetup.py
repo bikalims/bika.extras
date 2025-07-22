@@ -13,7 +13,24 @@ from bika.extras.extenders.fields import ExtTextField
 from bika.extras.interfaces import IBikaExtrasLayer
 from bika.lims.interfaces import IBikaSetup
 
-worksheet_tite_field = ExtBooleanField(
+can_change_analysiskeyword_field = ExtBooleanField(
+    "CanChangeAnalysisKeyword",
+    mode="rw",
+    schemata="Analyses",
+    default=False,
+    widget=BooleanWidget(
+        label=_(
+            "label_bikasetup_can_change_analysiskeywordfield",
+            "Can Change Analysis Keyword",
+        ),
+        description=_(
+            "description_bikasetup_can_change_analysiskeyword",
+            default="Make Analysis Service Keywords writable/editable"
+        ),
+    ),
+)
+
+worksheet_title_field = ExtBooleanField(
     "WorksheetTitle",
     mode="rw",
     schemata="Analyses",
@@ -95,7 +112,8 @@ class BikaSetupSchemaExtender(object):
     layer = IBikaExtrasLayer
 
     fields = [
-        worksheet_tite_field,
+        worksheet_title_field,
+        can_change_analysiskeyword_field,
         email_samples_receive_notifications_field,
         received_samples_email_body_field,
     ]
