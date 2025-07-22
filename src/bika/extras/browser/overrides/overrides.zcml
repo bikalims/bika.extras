@@ -181,5 +181,10 @@
              zope.publisher.interfaces.browser.IBrowserRequest"
         factory=".dataimport.EditForm"/>
 
+  <!-- Edit Form: Analysis Service -->
+  <adapter
+      for="bika.lims.interfaces.IAnalysisService
+           zope.publisher.interfaces.browser.IBrowserRequest"
+      factory=".adapters.AnalysisServiceEditForm"/>
 
 </configure>
