@@ -6,7 +6,6 @@
        xmlns:five="http://namespaces.zope.org/five"
        i18n_domain="bika.extras">
 
-    <include file="reports.zcml"/>
     <!-- Listing widget for Sample Template-->
     <browser:page
         for="*"
