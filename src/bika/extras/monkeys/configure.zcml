@@ -27,5 +27,13 @@
     replacement=".analysisrequest.get_sampletype_queries"
     order="1001" />
 
+  <monkey:patch
+    description="Capture CCContact when hidden on the Sample add form"
+    class="bika.lims.browser.analysisrequest.add2.ajaxAnalysisRequestAddView"
+    original="ajax_submit"
+    ignoreOriginal="True"
+    replacement=".analysisrequest.ajax_submit"
+    order="1001" />
+
 </configure>
 
