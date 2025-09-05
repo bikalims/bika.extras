@@ -8,7 +8,7 @@ from zope.interface import implementer
 
 from .fields import ExtUIDReferenceField
 from bika.lims.interfaces import IAnalysisRequest
-from bika.lims.permissions import FieldEditBatch
+from senaite.core.permissions import FieldEditBatch
 from bika.extras import _
 from bika.extras.interfaces import IBikaExtrasLayer
 from senaite.core.browser.widgets import ReferenceWidget

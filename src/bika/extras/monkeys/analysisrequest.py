@@ -160,6 +160,7 @@ def ajax_submit(self):
                 msg = _("Contact does not belong to the selected client")
                 fielderrors["Contact"] = msg
 
+        # Auto add the CCContact if it is hidden on the Sample Add form
         if not record['CCContact'] and contact_obj:
             cc_contacts = contact_obj.getCCContact()
             if cc_contacts:

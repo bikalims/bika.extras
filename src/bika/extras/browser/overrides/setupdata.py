@@ -29,12 +29,12 @@ from zope.event import notify
 
 from bika.lims import logger
 from bika.lims.utils import tmpID
-from bika.lims.idserver import renameAfterCreation
 from senaite.core.catalog import SETUP_CATALOG
 from senaite.core.exportimport.setupdata import addDocument
 from senaite.core.exportimport.setupdata import read_file
 from senaite.core.exportimport.setupdata import Float
 from senaite.core.exportimport.setupdata import WorksheetImporter
+from senaite.core.idserver import renameAfterCreation
 
 
 class Analysis_Specifications(WorksheetImporter):
