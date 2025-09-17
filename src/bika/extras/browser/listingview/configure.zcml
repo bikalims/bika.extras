@@ -144,18 +144,26 @@
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".analysisservices.AnalysisServicesListingViewAdapter"/>
 
-    <!-- Worksheet List-->
+    <!-- Worksheet List -->
     <subscriber
             for="bika.lims.browser.worksheet.views.folder.FolderView
                  zope.interface.Interface"
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".worksheet.WorksheetsListingViewAdapter"/>
 
-    <!-- Methods-->
+    <!-- Methods -->
     <subscriber
             for="bika.lims.browser.methodfolder.MethodFolderContentsView
                  zope.interface.Interface"
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".methods.MethodsListingViewAdapter"/>
+
+    <!-- Batches -->
+    <subscriber
+            for="bika.lims.browser.batchfolder.BatchFolderContentsView
+                 zope.interface.Interface"
+            provides="senaite.app.listing.interfaces.IListingViewAdapter"
+            factory=".batches.BatchesListingViewAdapter"/>
+
 
 </configure>
