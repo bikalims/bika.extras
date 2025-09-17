@@ -35,5 +35,13 @@
     replacement=".analysisrequest.ajax_submit"
     order="1001" />
 
+  <monkey:patch
+    description="Batch Listing add Number of Samples Column"
+    class="bika.lims.content.batch.Batch"
+    original="getNumberOfSamples"
+    ignoreOriginal="True"
+    replacement=".batch.getNumberOfSamples"
+    order="1001" />
+
 </configure>
 
