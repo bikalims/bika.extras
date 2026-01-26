@@ -4,14 +4,6 @@
     i18n_domain="bika.extras">
 
   <monkey:patch
-    description="Capture CCContact when hidden on the Sample add form"
-    class="bika.lims.browser.analysisrequest.add2.ajaxAnalysisRequestAddView"
-    original="ajax_submit"
-    ignoreOriginal="True"
-    replacement=".analysisrequest.ajax_submit"
-    order="1001" />
-
-  <monkey:patch
     description="Batch Listing add Number of Samples Column"
     class="bika.lims.content.batch.Batch"
     original="getNumberOfSamples"
