@@ -3,9 +3,10 @@
 
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from bika.lims.interfaces import IBikaLIMS
+from senaite.core.interfaces import ISenaiteCore
 
 
-class IBikaExtrasLayer(IBikaLIMS):
+class IBikaExtrasLayer(IBikaLIMS, ISenaiteCore):
     """Marker interface that defines a Zope 3 browser layer.
     """
 

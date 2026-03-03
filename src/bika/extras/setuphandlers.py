@@ -2,10 +2,13 @@
 from Products.CMFPlone.interfaces import INonInstallable
 from zope.interface import implementer
 
-from bika.extras import PRODUCT_NAME
-from bika.extras import logger
+from bika.lims import api
 from senaite.core.catalog import SETUP_CATALOG, WORKSHEET_CATALOG
 from senaite.core.setuphandlers import setup_other_catalogs
+
+from bika.extras import _
+from bika.extras import PRODUCT_NAME
+from bika.extras import logger
 
 # Tuples of (catalog, index_name, index_attribute, index_type)
 INDEXES = [
@@ -39,6 +42,7 @@ def setup_handler(context):
 
     # Setup catalogs
     setup_catalogs(portal)
+    setup(portal)
 
     logger.info("{} setup handler [DONE]".format(PRODUCT_NAME.upper()))
 
@@ -56,3 +60,14 @@ def uninstall(context):
 def setup_catalogs(portal):
     """Setup catalogs"""
     setup_other_catalogs(portal, indexes=INDEXES, columns=COLUMNS)
+
+
+def setup(portal):
+    setup = portal['setup']
+    setup.title = _("BIKA Setup")
+    setup.reindexObject()
+
+    pt = api.get_tool("portal_types", context=portal)
+    fti = pt.get("Setup")
+    fti.title = _("BIKA Setup")
+    logger.info("BIKA.EXTRAS setup [DONE]")
