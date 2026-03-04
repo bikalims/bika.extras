@@ -15,4 +15,4 @@ class SetupEditView(SEV):
     def label(self):
         """Override to show 'SENAITE Setup' instead of 'Edit SENAITE Setup'
         """
-        return _(u"BIKA Setup")
+        return _(u"Bika Setup")

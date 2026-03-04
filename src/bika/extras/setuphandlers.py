@@ -64,10 +64,10 @@ def setup_catalogs(portal):
 
 def setup(portal):
     setup = portal['setup']
-    setup.title = _("BIKA Setup")
+    setup.title = _("Bika Setup")
     setup.reindexObject()
 
     pt = api.get_tool("portal_types", context=portal)
     fti = pt.get("Setup")
-    fti.title = _("BIKA Setup")
+    fti.title = _("Bika Setup")
     logger.info("BIKA.EXTRAS setup [DONE]")
