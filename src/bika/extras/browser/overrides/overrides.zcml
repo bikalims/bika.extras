@@ -137,6 +137,7 @@
           for="senaite.core.interfaces.ISetup"
           name="edit"
           class=".setup.SetupEditView"
+          template="./templates/edit.pt"
           permission="cmf.ModifyPortalContent"
           layer="bika.extras.interfaces.IBikaExtrasLayer"
           />
