@@ -133,15 +133,6 @@
         layer="bika.lims.interfaces.IBikaLIMS"
         />
 
-    <!-- Import View(Setupdata) -->
-    <browser:page
-        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-        name="import"
-        class=".setupdata.ImportView"
-        permission="senaite.core.permissions.ImportInstrumentResults"
-        layer="bika.extras.interfaces.IBikaExtrasLayer"
-        />
-
     <adapter
       name="Analysis_Specifications"
       factory="bika.extras.browser.overrides.setupdata.Analysis_Specifications"
