@@ -51,9 +51,8 @@ class ImportView(IV):
         for name, adapter in adapters:
             datasets.extend(adapter())
         for dataset in datasets:
-            if dataset['projectname'] == "bika.lims":
-                continue
-            new_datasets.append(dataset)
+            if dataset['projectname'] == "bika.extras":
+                new_datasets.append(dataset)
         return new_datasets
 
     def getProjectName(self):
