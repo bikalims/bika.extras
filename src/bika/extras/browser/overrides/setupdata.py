@@ -29,12 +29,39 @@ from zope.event import notify
 
 from bika.lims import logger
 from bika.lims.utils import tmpID
+from bika.lims.interfaces import ISetupDataSetList
 from senaite.core.catalog import SETUP_CATALOG
 from senaite.core.exportimport.setupdata import addDocument
 from senaite.core.exportimport.setupdata import read_file
 from senaite.core.exportimport.setupdata import Float
 from senaite.core.exportimport.setupdata import WorksheetImporter
+from senaite.core.exportimport.dataimport import ImportView as IV
 from senaite.core.idserver import renameAfterCreation
+from zope.component import getAdapters
+
+
+class ImportView(IV):
+    """Instrument/Setup Data Import
+    """
+
+    def getSetupDatas(self):
+        datasets = []
+        new_datasets = []
+        adapters = getAdapters((self.context, ), ISetupDataSetList)
+        for name, adapter in adapters:
+            datasets.extend(adapter())
+        for dataset in datasets:
+            if dataset['projectname'] == "bika.lims":
+                continue
+            new_datasets.append(dataset)
+        return new_datasets
+
+    def getProjectName(self):
+        adapters = getAdapters((self.context, ), ISetupDataSetList)
+        productnames = [name for name, adapter in adapters]
+        if len(productnames) == 1:
+            productnames[0] = 'bika.extras'
+        return productnames[len(productnames) - 1]
 
 
 class Analysis_Specifications(WorksheetImporter):
