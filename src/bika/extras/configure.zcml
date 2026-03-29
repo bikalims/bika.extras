@@ -53,5 +53,11 @@
       />
 
   <!-- -*- extra stuff goes here -*- -->
+  <adapter
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      factory="bika.extras.adapters.SetupDataSetList"
+      provides="bika.lims.interfaces.ISetupDataSetList"
+      name="bika.extras.setupdata"
+      />
 
 </configure>

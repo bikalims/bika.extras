@@ -41,6 +41,7 @@
         permission="zope2.View"
         layer="senaite.core.interfaces.ISenaiteCore"
         />
+
     <!-- Table Reference Results -->
     <browser:page
         for="*"
@@ -73,64 +74,64 @@
         layer="bika.lims.interfaces.IBikaLIMS"
         />
 
-      <!-- Analyses Classic View -->
-      <browser:page
-          for="bika.lims.interfaces.IWorksheet"
-          name="analyses_classic_view"
-          class="bika.extras.browser.overrides.worksheet.analyses.AnalysesView"
-          permission="senaite.core.permissions.ViewResults"
-          layer="bika.extras.interfaces.IBikaExtrasLayer"
-          />
+    <!-- Analyses Classic View -->
+    <browser:page
+        for="bika.lims.interfaces.IWorksheet"
+        name="analyses_classic_view"
+        class="bika.extras.browser.overrides.worksheet.analyses.AnalysesView"
+        permission="senaite.core.permissions.ViewResults"
+        layer="bika.extras.interfaces.IBikaExtrasLayer"
+        />
 
-      <browser:page
-          for="*"
-          name="sticker"
-          class="bika.extras.browser.overrides.stickers.Sticker"
-          permission="zope2.View"
-          layer="bika.lims.interfaces.IBikaLIMS"
-          />
+    <browser:page
+        for="*"
+        name="sticker"
+        class="bika.extras.browser.overrides.stickers.Sticker"
+        permission="zope2.View"
+        layer="bika.lims.interfaces.IBikaLIMS"
+        />
 
-      <browser:page
-          for="bika.lims.interfaces.IWorksheet"
-          name="attachments_view"
-          class=".attachments.AttachmentsView"
-          permission="zope.Public"
-          layer="senaite.core.interfaces.ISenaiteCore"
-          />
+    <browser:page
+        for="bika.lims.interfaces.IWorksheet"
+        name="attachments_view"
+        class=".attachments.AttachmentsView"
+        permission="zope.Public"
+        layer="senaite.core.interfaces.ISenaiteCore"
+        />
 
-      <browser:page
-          for="bika.lims.interfaces.IWorksheet"
-          name="manage_results"
-          class=".worksheet.results.ManageResultsView"
-          permission="senaite.core.permissions.ViewResults"
-          layer="bika.lims.interfaces.IBikaLIMS"
-          />
+    <browser:page
+        for="bika.lims.interfaces.IWorksheet"
+        name="manage_results"
+        class=".worksheet.results.ManageResultsView"
+        permission="senaite.core.permissions.ViewResults"
+        layer="bika.lims.interfaces.IBikaLIMS"
+        />
 
-      <browser:page
-          for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-          name="import"
-          class=".dataimport.ImportView"
-          permission="senaite.core.permissions.ImportInstrumentResults"
-          layer="senaite.core.interfaces.ISenaiteCore"
-          />
+    <browser:page
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        name="import"
+        class=".dataimport.ImportView"
+        permission="senaite.core.permissions.ImportInstrumentResults"
+        layer="senaite.core.interfaces.ISenaiteCore"
+        />
 
-      <!-- Table Lab Analyses -->
-      <browser:page
-          for="bika.lims.interfaces.IAnalysisRequest"
-          name="table_lab_analyses"
-          class=".analysisrequest.LabAnalysesTable"
-          permission="senaite.core.permissions.ManageAnalysisRequests"
-          layer="bika.lims.interfaces.IBikaLIMS"
-          />
+    <!-- Table Lab Analyses -->
+    <browser:page
+        for="bika.lims.interfaces.IAnalysisRequest"
+        name="table_lab_analyses"
+        class=".analysisrequest.LabAnalysesTable"
+        permission="senaite.core.permissions.ManageAnalysisRequests"
+        layer="bika.lims.interfaces.IBikaLIMS"
+        />
 
-      <!-- Table Field Analyses -->
-      <browser:page
-          for="bika.lims.interfaces.IAnalysisRequest"
-          name="table_field_analyses"
-          class=".analysisrequest.FieldAnalysesTable"
-          permission="senaite.core.permissions.ManageAnalysisRequests"
-          layer="bika.lims.interfaces.IBikaLIMS"
-          />
+    <!-- Table Field Analyses -->
+    <browser:page
+        for="bika.lims.interfaces.IAnalysisRequest"
+        name="table_field_analyses"
+        class=".analysisrequest.FieldAnalysesTable"
+        permission="senaite.core.permissions.ManageAnalysisRequests"
+        layer="bika.lims.interfaces.IBikaLIMS"
+        />
 
       <!-- Custom edit view for SENAITE Setup to remove 'Edit' from title -->
       <browser:page

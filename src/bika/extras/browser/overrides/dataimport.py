@@ -2,9 +2,12 @@
 
 import os
 from Products.Archetypes.public import DisplayList
+from zope.component import getAdapters
+
+from bika.lims import api
+from bika.lims.interfaces import ISetupDataSetList
 from senaite.core.exportimport.dataimport import ImportView as IV
 from senaite.core.browser.form.adapters.data_import import EditForm as EF
-from bika.lims import api
 
 
 class EditForm(EF):
@@ -21,6 +24,25 @@ class EditForm(EF):
 class ImportView(IV):
     """
     """
+
+    def getSetupDatas(self):
+        datasets = []
+        new_datasets = []
+        adapters = getAdapters((self.context, ), ISetupDataSetList)
+        for name, adapter in adapters:
+            datasets.extend(adapter())
+        for dataset in datasets:
+            if dataset['projectname'] == "bika.lims":
+                continue
+            new_datasets.append(dataset)
+        return new_datasets
+
+    def getProjectName(self):
+        adapters = getAdapters((self.context, ), ISetupDataSetList)
+        productnames = [name for name, adapter in adapters]
+        if len(productnames) == 1:
+            productnames[0] = 'bika.extras'
+        return productnames[len(productnames) - 1]
 
     def getInstruments(self):
         bsc = api.get_tool('senaite_catalog_setup')
