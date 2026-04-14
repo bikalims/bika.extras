@@ -64,6 +64,11 @@ def setup_catalogs(portal):
 
 def setup(portal):
     setup = portal['setup']
+    if not hasattr(setup, "CanChangeAnalysisKeyword"):
+        setup.CanChangeAnalysisKeyword = False
+    if not hasattr(setup, "WorksheetTitle"):
+        setup.WorksheetTitle = False
+
     setup.title = _("Bika Setup")
     setup.reindexObject()
 

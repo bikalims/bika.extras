@@ -10,8 +10,12 @@ class ManageResultsView(MRV):
     template = ViewPageTemplateFile("templates/results.pt")
 
     def getAnalysesCategories(self):
-        if not self.context.bika_setup.WorksheetTitle:
+        try:
+            if not self.context.bika_setup.WorksheetTitle:
+                return
+        except AttributeError:
             return
+
         query = {
             "UID": self.context.UID(),
         }
