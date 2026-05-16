@@ -1,0 +1,28 @@
+<tal:sticker define="portal_state context/@@plone_portal_state;
+                     portal_url portal_state/portal_url;
+                     item python:view.current_item;
+                     sample_id item/getId;
+                     batch_id item/getBatchID;
+                     client_sid item/ClientSampleID;
+                     sample_type item/getSampleTypeTitle;
+                     date_sampled python:view.ulocalized_time(item.getDateSampled());
+                     hazardous item/getHazardous">
+
+
+  <!-- Some additional info about the sample -->
+  <div class="sticker-inner">
+    <div class="sticker-labels">
+      <!-- Barcode -->
+      <div class="barcode" style="width:30mm"
+         tal:attributes="data-id sample_id;"
+         data-code="code39"
+         data-barHeight="12"
+         data-addQuietZone="true"
+         data-showHRI="false"
+         >
+      </div>
+      <div><strong tal:content="sample_id">Sample ID</strong></div>
+    </div>
+    <div class="placeholder-box"></div>
+  </div>
+</tal:sticker>
