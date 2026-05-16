@@ -10,19 +10,24 @@
 
 
   <!-- Some additional info about the sample -->
-  <div class="sticker-inner">
-    <div class="sticker-labels">
-      <!-- Barcode -->
-      <div class="barcode" style="width:30mm"
-         tal:attributes="data-id sample_id;"
-         data-code="code39"
-         data-barHeight="12"
-         data-addQuietZone="true"
-         data-showHRI="false"
-         >
+  <table class="sticker-table">
+  <tr>
+    <td class="label-cell">
+      <div class="barcode"
+           tal:attributes="data-id sample_id;"
+           data-code="code39"
+           data-barHeight="12"
+           data-addQuietZone="true"
+           data-showHRI="false">
       </div>
-      <div><strong tal:content="sample_id">Sample ID</strong></div>
-    </div>
-    <div class="placeholder-box"></div>
-  </div>
+      <div class="sample-id">
+        <strong tal:content="sample_id">CHW26-0025</strong>
+      </div>
+    </td>
+
+    <td class="box-cell">
+      <div class="placeholder-box"></div>
+    </td>
+  </tr>
+</table>
 </tal:sticker>
