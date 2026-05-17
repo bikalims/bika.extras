@@ -216,8 +216,8 @@ class Methods(WorksheetImporter):
         bsc = getToolByName(self.context, 'senaite_catalog_setup')
         for row in self.get_rows(3):
             if row['title']:
-                calculation = self.get_object(bsc, 'Calculation', row.get('Calculation_title'))
-                instrument = self.get_object(bsc, 'Instrument', Title=row.get('Instrument_title'))
+                calculation = self.get_object(bsc, 'Calculation', row.get('Calculation_title', ''))
+                instrument = self.get_object(bsc, 'Instrument', Title=row.get('Instrument_title', ''))
                 instruments = self.instrument_methods.get(row['title'], [])
                 if instrument:
                     instruments.append(instrument)
