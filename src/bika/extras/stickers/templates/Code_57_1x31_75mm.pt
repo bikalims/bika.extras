@@ -13,13 +13,6 @@
   <table class="sticker-table">
   <tr>
     <td class="label-cell">
-      <div class="barcode"
-           tal:attributes="data-id sample_id;"
-           data-code="code39"
-           data-barHeight="12"
-           data-addQuietZone="true"
-           data-showHRI="false">
-      </div>
       <div class="sample-id">
         <strong tal:content="sample_id">CHW26-0025</strong>
       </div>
@@ -27,6 +20,17 @@
 
     <td class="box-cell">
       <div class="placeholder-box"></div>
+    </td>
+  </tr>
+  <tr>
+    <td class="" colspan="2">
+      <div class="barcode"
+           tal:attributes="data-id sample_id;"
+           data-code="code39"
+           data-barHeight="12"
+           data-addQuietZone="true"
+           data-showHRI="false">
+      </div>
     </td>
   </tr>
 </table>

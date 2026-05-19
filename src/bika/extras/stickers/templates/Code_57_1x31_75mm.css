@@ -11,6 +11,7 @@ Sticker margins: 8mm, 1mm
     font-family: Helvetica, Arial, sans-serif;
     font-size: 7pt;
     overflow: hidden;
+    text-align: center;
 }
 
 .sticker .error {
@@ -46,20 +47,19 @@ Sticker margins: 8mm, 1mm
 
 /* Barcode */
 .sticker .barcode {
-    margin: 0 auto 1mm auto;
-    padding: 0 !important;
+    margin: 2mm;
+    padding: 2mm !important;
     overflow: hidden !important;
     text-align: center;
 }
 
 .sticker .barcode img {
-    width: 36mm !important;
     height: 4mm !important;
 }
 
 /* Sample ID */
 .sample-id {
-    font-size: 7pt;
+    font-size: 14pt;
     line-height: 1;
     color: #12325c;
 }
