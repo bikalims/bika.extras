@@ -66,16 +66,16 @@ class SamplesListingViewAdapter(object):
 
         batch = full_object.getBatch()
         # BatchTitle
-        if batch:
-            batch_title = batch.title
+        batch_title = batch.title
+        if batch_title:
             batch_url = batch.absolute_url()
             batch_link = get_link(batch_url, batch_title)
             item["BatchTitle"] = batch_title
             item["replace"]["BatchTitle"] = batch_link
 
         # ClientBatchID
-        if batch:
-            batch_title = batch.getClientBatchID()
+        batch_client_id = batch.getClientBatchID()
+        if batch_client_id:
             batch_url = batch.absolute_url()
             batch_link = get_link(batch_url, batch_title)
             item["ClientBatchID"] = batch_title
