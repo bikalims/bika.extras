@@ -2,27 +2,37 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="bika.extras">
 
     <adapter name='bika.extras'
              provides="archetypes.schemaextender.interfaces.ISchemaExtender"
-            factory=".analysisrequest.AnalysisRequestSchemaExtender"/>
-    <adapter name='bika.extras' factory=".attachment.AttachmentSchemaModifier" />
-    <adapter name='bika.extras' factory=".worksheettemplate.WorksheetTemplateSchemaModifier" />
+             zcml:condition="installed bika.extras"
+             factory=".analysisrequest.AnalysisRequestSchemaExtender"/>
+    <adapter name='bika.extras'
+             zcml:condition="installed bika.extras"
+             factory=".attachment.AttachmentSchemaModifier" />
+    <adapter name='bika.extras'
+             zcml:condition="installed bika.extras"
+             factory=".worksheettemplate.WorksheetTemplateSchemaModifier" />
 
     <adapter name='bika.extras.supplier'
              provides="archetypes.schemaextender.interfaces.ISchemaExtender"
+             zcml:condition="installed bika.extras"
              factory=".supplier.SupplierSchemaExtender"/>
     <adapter name='bika.extras.supplier.schemamodifier'
              provides="archetypes.schemaextender.interfaces.ISchemaModifier"
+             zcml:condition="installed bika.extras"
              factory=".supplier.SupplierSchemaModifier" />
 
     <adapter name='bika.extras.batch'
              provides="archetypes.schemaextender.interfaces.ISchemaExtender"
+             zcml:condition="installed bika.extras"
              factory=".batch.BatchSchemaExtender"/>
 
     <adapter name='bika.extras.bikasetup'
              provides="archetypes.schemaextender.interfaces.ISchemaExtender"
+             zcml:condition="installed bika.extras"
              factory=".bikasetup.BikaSetupSchemaExtender"/>
 
 </configure>
