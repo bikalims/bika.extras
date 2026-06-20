@@ -527,8 +527,6 @@ class Analysis_Services(WorksheetImporter):
                 Methods=methods,
                 ManualEntryOfResults=allowmanualentry,
                 InstrumentEntryOfResults=allowinstrentry,
-                Instrument=defaultinstrument,
-                Instruments=instruments,
                 Calculation=_calculation,
                 UseDefaultCalculation=usedefaultcalculation,
                 DuplicateVariation="%02f" % Float(row['DuplicateVariation']),
@@ -545,6 +543,10 @@ class Analysis_Services(WorksheetImporter):
             obj.unmarkCreationFlag()
             renameAfterCreation(obj)
             notify(ObjectInitializedEvent(obj))
+            obj.edit(
+                Instrument=defaultinstrument,
+                Instruments=instruments,
+                )
         self.load_result_options()
         self.load_service_uncertainties()
 
