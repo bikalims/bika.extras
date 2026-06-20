@@ -236,6 +236,8 @@ class Methods(WorksheetImporter):
                     MethodID=row.get('MethodID', ''),
                     Accredited=row.get('Accredited', True),
                     Supplier=supplier,
+                    Instruments=[inst.UID() for inst in instruments],
+
                 )
                 # Obtain all created methods
                 catalog = getToolByName(self.context, 'senaite_catalog_setup')
@@ -260,7 +262,6 @@ class Methods(WorksheetImporter):
                 obj.unmarkCreationFlag()
                 renameAfterCreation(obj)
                 notify(ObjectInitializedEvent(obj))
-                obj.edit(Instruments=[inst.UID() for inst in instruments])
 
 
 class Analysis_Categories(WorksheetImporter):
