@@ -184,6 +184,13 @@
       provides="bika.lims.interfaces.ISetupDataImporter"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
+    <adapter
+      name="Analysis_Profiles"
+      factory="bika.extras.browser.overrides.setupdata.Analysis_Profiles"
+      provides="bika.lims.interfaces.ISetupDataImporter"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
+
     <!-- Custom Form: Instrument Import -->
     <adapter
         name="data_import_form"

@@ -27,7 +27,8 @@ from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.utils import safe_unicode
 from zope.event import notify
 
-from bika.lims import logger
+from bika.extras.config import logger
+from bika.lims import api
 from bika.lims.utils import tmpID
 from senaite.core.catalog import SETUP_CATALOG
 from senaite.core.exportimport.setupdata import addDocument
@@ -711,3 +712,74 @@ class Supplier_Contacts(WorksheetImporter):
             obj.unmarkCreationFlag()
             renameAfterCreation(obj)
             notify(ObjectInitializedEvent(obj))
+
+
+class Analysis_Profiles(WorksheetImporter):
+
+    def load_analysis_profile_services(self):
+        sheetname = 'Analysis Profile Services'
+        worksheet = self.workbook[sheetname]
+        self.profile_services = {}
+        if not worksheet:
+            return
+        bsc = getToolByName(self.context, SETUP_CATALOG)
+        for row in self.get_rows(3, worksheet=worksheet):
+            if not row.get('Profile', '') or not row.get('Service', ''):
+                continue
+            if row['Profile'] not in self.profile_services.keys():
+                self.profile_services[row['Profile']] = []
+            # Here we match againts Keyword or Title.
+            # XXX We need a utility for this kind of thing.
+            service = self.get_object(
+                bsc, 'AnalysisService', row.get('Service'))
+            if not service:
+                service = bsc(portal_type='AnalysisService',
+                              getKeyword=row['Service'])[0].getObject()
+            self.profile_services[row['Profile']].append(service)
+
+    def load_analysis_profile_sampletyples(self):
+        sheetname = 'Analysis Profile Sample Types'
+        worksheet = self.workbook[sheetname]
+        self.analysisprofile_sampletypes = {}
+        bsc = getToolByName(self.context, 'senaite_catalog_setup')
+        if not worksheet:
+            return
+        for i, row in enumerate(self.get_rows(3, worksheet=worksheet)):
+            if not row.get('Profile', '') or not row.get('SampleType_title', ''):
+                continue
+            if row['Profile'] not in self.analysisprofile_sampletypes.keys():
+                self.analysisprofile_sampletypes[row['Profile']] = []
+            sampletype = self.get_object(bsc,
+                             'SampleType', title=row['SampleType_title'])
+            if sampletype:
+                self.analysisprofile_sampletypes[row['Profile']].append(sampletype)
+
+    def Import(self):
+        self.load_analysis_profile_services()
+        self.load_analysis_profile_sampletyples()
+        folder = self.context.setup.analysisprofiles
+        for row in self.get_rows(3):
+            title = row.get("title", "")
+            description = row.get("description", "")
+            profile_key = row.get("ProfileKey", "")
+            commercial_id = row.get("CommercialID", "")
+            analysis_profile_price = row.get("AnalysisProfilePrice")
+            analysis_profile_vat = row.get("AnalysisProfileVAT")
+            use_analysis_profile_price = row.get("UseAnalysisProfilePrice")
+            if title:
+                obj = api.create(folder, "AnalysisProfile")
+                api.edit(obj,
+                         title=api.safe_unicode(title),
+                         description=api.safe_unicode(description),
+                         profile_key=api.safe_unicode(profile_key),
+                         commercial_id=api.safe_unicode(commercial_id),
+                         analysis_profile_price=api.to_float(
+                             analysis_profile_price, 0.0),
+                         analysis_profile_vat=api.to_float(
+                             analysis_profile_vat, 0.0),
+                         use_analysis_profile_price=bool(
+                             use_analysis_profile_price))
+                # set the services
+                obj.setServices(self.profile_services[row["title"]])
+                if self.analysisprofile_sampletypes.get(row["title"]):
+                    obj.setSampleTypes(self.analysisprofile_sampletypes[row["title"]])
