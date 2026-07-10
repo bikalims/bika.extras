@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
+
 from Products.CMFPlone.interfaces import INonInstallable
 from zope.interface import implementer
 
 from bika.lims import api
 from senaite.core.catalog import SETUP_CATALOG, WORKSHEET_CATALOG
+from senaite.core.content.worksheettemplate import IWorksheetTemplateSchema
 from senaite.core.setuphandlers import setup_other_catalogs
 
 from bika.extras import _
@@ -75,4 +77,13 @@ def setup(portal):
     pt = api.get_tool("portal_types", context=portal)
     fti = pt.get("Setup")
     fti.title = _("Bika Setup")
+
+    fti = pt.get("WorksheetTemplate")
+    fti.title = u"Method"
+
+    # WorksheetTemplate
+    wt_schema = IWorksheetTemplateSchema
+    restrict_to_method_field = wt_schema["restrict_to_method"]
+    restrict_to_method_field.title = _("Method")
+
     logger.info("BIKA.EXTRAS setup [DONE]")

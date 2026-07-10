@@ -12,9 +12,6 @@
     <adapter name='bika.extras'
              zcml:condition="installed bika.extras"
              factory=".attachment.AttachmentSchemaModifier" />
-    <adapter name='bika.extras'
-             zcml:condition="installed bika.extras"
-             factory=".worksheettemplate.WorksheetTemplateSchemaModifier" />
 
     <adapter name='bika.extras.supplier'
              provides="archetypes.schemaextender.interfaces.ISchemaExtender"
