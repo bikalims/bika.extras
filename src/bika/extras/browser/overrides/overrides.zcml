@@ -67,7 +67,7 @@
     />
 
     <browser:page
-        for="bika.lims.interfaces.IWorksheet"
+        for="senaite.core.interfaces.IWorksheet"
         name="print"
         class="bika.extras.browser.overrides.worksheet.printview.PrintView"
         permission="senaite.core.permissions.ViewResults"
@@ -76,7 +76,7 @@
 
     <!-- Analyses Classic View -->
     <browser:page
-        for="bika.lims.interfaces.IWorksheet"
+        for="senaite.core.interfaces.IWorksheet"
         name="analyses_classic_view"
         class="bika.extras.browser.overrides.worksheet.analyses.AnalysesView"
         permission="senaite.core.permissions.ViewResults"
@@ -92,7 +92,7 @@
         />
 
     <browser:page
-        for="bika.lims.interfaces.IWorksheet"
+        for="senaite.core.interfaces.IWorksheet"
         name="attachments_view"
         class=".attachments.AttachmentsView"
         permission="zope.Public"
@@ -100,7 +100,7 @@
         />
 
     <browser:page
-        for="bika.lims.interfaces.IWorksheet"
+        for="senaite.core.interfaces.IWorksheet"
         name="manage_results"
         class=".worksheet.results.ManageResultsView"
         permission="senaite.core.permissions.ViewResults"

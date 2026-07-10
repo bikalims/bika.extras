@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from bika.lims.interfaces import IWorksheet
+from senaite.core.interfaces import IWorksheet
 from plone.indexer import indexer
 
 
