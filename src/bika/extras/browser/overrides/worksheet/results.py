@@ -2,7 +2,9 @@
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from bika.lims import api
-from bika.lims.browser.worksheet.views.results import ManageResultsView as MRV
+from senaite.core.browser.worksheets.worksheet.manage_results import (
+    ManageResultsView as MRV
+)
 from senaite.core.catalog import WORKSHEET_CATALOG
 
 

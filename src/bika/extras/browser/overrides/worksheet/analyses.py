@@ -4,7 +4,9 @@ from plone.memoize import view
 
 from bika.lims import api
 from bika.lims import bikaMessageFactory as _
-from bika.lims.browser.worksheet.views.analyses import AnalysesView as AV
+from senaite.core.browser.worksheets.worksheet.analyses_listing import (
+  AnalysesView as AV
+)
 from bika.lims.interfaces import IDuplicateAnalysis
 from bika.lims.interfaces import IReferenceAnalysis
 from bika.lims.interfaces import IRoutineAnalysis

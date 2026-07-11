@@ -8,7 +8,7 @@ from plone.resource.utils import queryResourceDirectory
 from zope.component import getUtility
 
 from bika.extras import _
-from bika.lims.browser.worksheet.views.printview import PrintView as PV
+from senaite.core.browser.worksheets.worksheet.printview import PrintView as PV
 from bika.lims.config import WS_TEMPLATES_ADDON_DIR
 
 LOGO = "/++plone++bika.coa.static/images/bikalimslogo.png"
