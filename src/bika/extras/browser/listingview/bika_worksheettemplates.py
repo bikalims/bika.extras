@@ -43,37 +43,50 @@ class WorksheetTemplatesListingViewAdapter(object):
         self.listing.columns.update(blanks)
         self.listing.columns.update(controls)
         self.listing.columns.update(number_of_duplicates)
+        for i in range(len(self.listing.review_states)):
+            self.listing.review_states[i]["columns"].append("NumberOfPositions")
+            self.listing.review_states[i]["columns"].append("Blanks")
+            self.listing.review_states[i]["columns"].append("Controls")
+            self.listing.review_states[i]["columns"].append("NumberOfDuplicates")
 
     def folder_item(self, obj, item, index):
         if not is_installed():
             return item
 
         obj = api.get_object(obj)
+        layout = obj.getTemplateLayout()
 
-        # NumberOfPostions
-        item["NumberOfPositions"] = len(obj.getLayout())
+        # NumberOfPositions
+        item["NumberOfPositions"] = len(layout)
 
-        Raw_layout = obj.getLayout()
         num = 0
         blanks = []
         controls = []
         controlUrls = []
         blankUrls = []
-        for position in Raw_layout:
+        for position in layout:
             if position.get('type') == "d":
                 num = num + 1
             if position.get('type') == "b":
                 blank_id = position.get('blank_ref')
+                if not blank_id:
+                    continue
+                if isinstance(blank_id, list):
+                    blank_id = blank_id[0] if blank_id else None
                 blank_obj = api.get_object_by_uid(blank_id)
-                blank_title = blank_obj.Title()
+                blank_title = api.get_title(blank_obj)
                 blank_url = api.get_url(blank_obj)
                 if blank_title not in blanks:
                     blanks.append(blank_title)
                     blankUrls.append(get_link(blank_url, blank_title))
             if position.get('type') == "c":
                 control_id = position.get('control_ref')
+                if not control_id:
+                    continue
+                if isinstance(control_id, list):
+                    control_id = control_id[0] if control_id else None
                 control_obj = api.get_object_by_uid(control_id)
-                control_title = control_obj.Title()
+                control_title = api.get_title(control_obj)
                 control_url = api.get_url(control_obj)
                 if control_title not in controls:
                     controls.append(control_title)

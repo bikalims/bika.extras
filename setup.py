@@ -11,7 +11,7 @@ long_description = '\n\n'.join([
     open('CHANGES.rst').read(),
 ])
 
-version = "1.0.3"
+version = "1.0.4"
 
 setup(
     name='bika.extras',
@@ -33,11 +33,11 @@ setup(
     keywords='Python Plone CMS',
     author='Lunga Baliwe',
     author_email='lunga001@gmail.com',
-    url='https://github.com/collective/bika.extras',
+    url='https://github.com/bikalims/bika.extras',
     project_urls={
         'PyPI': 'https://pypi.python.org/pypi/bika.extras',
-        'Source': 'https://github.com/collective/bika.extras',
-        'Tracker': 'https://github.com/collective/bika.extras/issues',
+        'Source': 'https://github.com/bikalims/bika.extras',
+        'Tracker': 'https://github.com/bikalims/bika.extras/issues',
         # 'Documentation': 'https://bika.extras.readthedocs.io/en/latest/',
     },
     license='GPL version 2',

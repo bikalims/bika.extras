@@ -111,7 +111,7 @@
 
     <!-- WorksheetTemplates list -->
     <subscriber
-            for="bika.lims.controlpanel.bika_worksheettemplates.WorksheetTemplates
+            for="senaite.core.browser.controlpanel.worksheettemplates.view.WorksheetTemplatesView
                  zope.interface.Interface"
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".bika_worksheettemplates.WorksheetTemplatesListingViewAdapter"/>
@@ -146,7 +146,7 @@
 
     <!-- Worksheet List -->
     <subscriber
-            for="bika.lims.browser.worksheet.views.folder.FolderView
+            for="senaite.core.browser.worksheets.view.WorksheetsView
                  zope.interface.Interface"
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".worksheet.WorksheetsListingViewAdapter"/>
