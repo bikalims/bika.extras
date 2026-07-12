@@ -20,7 +20,7 @@
 
 from bika.extras.config import PRODUCT_NAME
 from bika.extras.config import logger
-from bika.extras.setuphandlers import setup_handler
+from bika.extras.setuphandlers import setup
 from bika.lims import api
 from senaite.core.catalog import WORKSHEET_CATALOG
 from senaite.core.upgrade import upgradestep
@@ -42,7 +42,7 @@ def upgrade(tool):
 
     # -------- ADD YOUR STUFF BELOW --------
 
-    setup_handler(portal)
+    setup(portal)
     worksheet_catalog = api.get_tool(WORKSHEET_CATALOG)
     worksheet_catalog.clearFindAndRebuild()
 
