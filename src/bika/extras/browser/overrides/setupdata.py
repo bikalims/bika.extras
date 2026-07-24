@@ -19,6 +19,8 @@
 # Some rights reserved, see README and LICENSE.
 
 
+import re
+
 from pkg_resources import resource_filename
 
 from Products.Archetypes.event import ObjectInitializedEvent
@@ -30,12 +32,163 @@ from zope.event import notify
 from bika.extras.config import logger
 from bika.lims import api
 from bika.lims.utils import tmpID
+from senaite.core.catalog import CLIENT_CATALOG
 from senaite.core.catalog import SETUP_CATALOG
 from senaite.core.exportimport.setupdata import addDocument
 from senaite.core.exportimport.setupdata import read_file
 from senaite.core.exportimport.setupdata import Float
 from senaite.core.exportimport.setupdata import WorksheetImporter
 from senaite.core.idserver import renameAfterCreation
+
+
+def _as_text(value):
+    """Return a spreadsheet value as clean text.
+
+    Registration numbers are commonly stored as numeric cells. Avoid adding
+    the decimal suffix that openpyxl uses for whole-number floats.
+    """
+    if value is None:
+        return ""
+    if isinstance(value, float) and value.is_integer():
+        value = int(value)
+    value = safe_unicode(value)
+    if not hasattr(value, "strip"):
+        value = safe_unicode(str(value))
+    return value.strip()
+
+
+def _row_value(row, *names):
+    """Return the first value found for any of the supplied column names."""
+    for name in names:
+        if name in row:
+            return row.get(name)
+    return ""
+
+
+class Sample_Points(WorksheetImporter):
+    """Import sample points and provision their missing dependencies.
+
+    In addition to the regular SENAITE setup-data sheet, this accepts the
+    compact four-column layout:
+
+    Client | Sample Point | Registration number (...) | Sample Type
+    """
+
+    compact_headers = ("Client", "Sample Point", "Sample Type")
+
+    def is_compact_layout(self):
+        headers = [cell.value for cell in next(self.worksheet.iter_rows())]
+        return all(header in headers for header in self.compact_headers)
+
+    def get_client_id(self, title, catalog):
+        """Build a valid and unique Client ID from the client title."""
+        client_id = re.sub(r"[^A-Za-z0-9_-]+", "-", title).strip("-")
+        client_id = client_id or "client"
+        candidate = client_id
+        suffix = 2
+        while catalog(portal_type="Client", getClientID=candidate):
+            candidate = "%s-%s" % (client_id, suffix)
+            suffix += 1
+        return candidate
+
+    def get_or_create_client(self, title, catalog, cache):
+        key = title.lower()
+        if key in cache:
+            logger.info("Found cached Client '%s'", title)
+            return cache[key]
+
+        brains = catalog(portal_type="Client", getName=title)
+        if brains:
+            client = brains[0].getObject()
+            logger.info("Found existing Client '%s'", title)
+        else:
+            client = _createObjectByType(
+                "Client", self.context.clients, tmpID())
+            client.edit(
+                Name=title,
+                ClientID=self.get_client_id(title, catalog),
+                MemberDiscountApplies=False,
+                BulkDiscount=False,
+            )
+            client.unmarkCreationFlag()
+            renameAfterCreation(client)
+            notify(ObjectInitializedEvent(client))
+            client.reindexObject()
+            logger.info("Created missing Client '%s'", title)
+
+        cache[key] = client
+        return client
+
+    def get_or_create_sample_type(self, title, catalog, cache):
+        key = title.lower()
+        if key in cache:
+            logger.info("Found cached Sample Type '%s'", title)
+            return cache[key]
+
+        brains = catalog(portal_type="SampleType", title=title)
+        if brains:
+            sample_type = brains[0].getObject()
+            logger.info("Found existing Sample Type '%s'", title)
+        else:
+            sample_type = api.create(
+                self.context.setup.sampletypes, "SampleType", title=title)
+            sample_type.reindexObject()
+            logger.info("Created missing Sample Type '%s'", title)
+
+        cache[key] = sample_type
+        return sample_type
+
+    def Import(self):
+        setup_folder = self.context.setup.samplepoints
+        setup_catalog = getToolByName(self.context, SETUP_CATALOG)
+        client_catalog = getToolByName(self.context, CLIENT_CATALOG)
+        clients = {}
+        sample_types = {}
+        startrow = 1 if self.is_compact_layout() else 3
+
+        for row in self.get_rows(startrow):
+            title = _as_text(_row_value(row, "Sample Point", "title"))
+            if not title:
+                continue
+
+            client_title = _as_text(
+                _row_value(row, "Client", "Client_title"))
+            sample_type_title = _as_text(
+                _row_value(row, "Sample Type", "SampleType_title"))
+            registration_number = _as_text(_row_value(
+                row,
+                "Registration number\n(Alpha numeric)",
+                "Registration number (Alpha numeric)",
+                "Registration number",
+                "RegistrationNumber",
+            ))
+
+            folder = setup_folder
+            if client_title:
+                folder = self.get_or_create_client(
+                    client_title, client_catalog, clients)
+
+            sample_point = api.create(
+                folder,
+                "SamplePoint",
+                title=title,
+                description=_as_text(row.get("description", "")),
+            )
+            sample_point.setRegistrationNumber(registration_number)
+            sample_point.setComposite(self.to_bool(row.get("Composite", "")))
+            sample_point.setElevation(_as_text(row.get("Elevation", "")))
+
+            if sample_type_title:
+                sample_type = self.get_or_create_sample_type(
+                    sample_type_title, setup_catalog, sample_types)
+                sample_point.setSampleTypes([sample_type])
+
+            sample_point.reindexObject()
+            logger.info(
+                "Created Sample Point '%s' for Client '%s'",
+                title,
+                client_title or "laboratory",
+            )
 
 
 class Analysis_Specifications(WorksheetImporter):

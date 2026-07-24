@@ -190,6 +190,12 @@
       provides="bika.lims.interfaces.ISetupDataImporter"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
+    <adapter
+      name="Sample_Points"
+      factory="bika.extras.browser.overrides.setupdata.Sample_Points"
+      provides="bika.lims.interfaces.ISetupDataImporter"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
 
     <!-- Custom Form: Instrument Import -->
     <adapter
