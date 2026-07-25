@@ -65,6 +65,11 @@ def _row_value(row, *names):
     return ""
 
 
+def _title_key(value):
+    """Return a case- and whitespace-insensitive title key."""
+    return " ".join(_as_text(value).split()).lower()
+
+
 class Sample_Points(WorksheetImporter):
     """Import sample points and provision their missing dependencies.
 
@@ -138,12 +143,35 @@ class Sample_Points(WorksheetImporter):
         cache[key] = sample_type
         return sample_type
 
+    def get_sample_point_titles(self, folder, catalog, cache):
+        """Return cached Sample Point titles below the supplied folder."""
+        folder_path = "/".join(folder.getPhysicalPath())
+        key = folder_path
+        if key not in cache:
+            brains = catalog(
+                portal_type="SamplePoint",
+                path={
+                    "query": folder_path,
+                    "depth": 1,
+                },
+            )
+            cache[key] = set(_title_key(brain.Title) for brain in brains)
+
+            # Include uncatalogued direct children as a safeguard when a
+            # previous import did not finish its catalog rebuild.
+            cache[key].update(
+                _title_key(sample_point.Title())
+                for sample_point in folder.objectValues("SamplePoint")
+            )
+        return cache[key]
+
     def Import(self):
         setup_folder = self.context.setup.samplepoints
         setup_catalog = getToolByName(self.context, SETUP_CATALOG)
         client_catalog = getToolByName(self.context, CLIENT_CATALOG)
         clients = {}
         sample_types = {}
+        sample_points = {}
         startrow = 1 if self.is_compact_layout() else 3
 
         for row in self.get_rows(startrow):
@@ -168,6 +196,17 @@ class Sample_Points(WorksheetImporter):
                 folder = self.get_or_create_client(
                     client_title, client_catalog, clients)
 
+            titles = self.get_sample_point_titles(
+                folder, setup_catalog, sample_points)
+            title_key = _title_key(title)
+            if title_key in titles:
+                logger.info(
+                    "Skipping existing Sample Point '%s' for Client '%s'",
+                    title,
+                    client_title or "laboratory",
+                )
+                continue
+
             sample_point = api.create(
                 folder,
                 "SamplePoint",
@@ -184,6 +223,7 @@ class Sample_Points(WorksheetImporter):
                 sample_point.setSampleTypes([sample_type])
 
             sample_point.reindexObject()
+            titles.add(title_key)
             logger.info(
                 "Created Sample Point '%s' for Client '%s'",
                 title,
