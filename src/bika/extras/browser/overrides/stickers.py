@@ -97,3 +97,19 @@ class Sticker(SV):
 
     def get_today_now(self):
         return dtime.date_to_string(DateTime(), fmt="%H:%M:%S")
+
+    def get_analysis_date(self, sample, keyword):
+        """Return an analysis date result formatted for a sticker."""
+        keyword = keyword.lower()
+        analyses = sample.getAnalyses(full_objects=True)
+        for analysis in analyses:
+            analysis_keyword = getattr(analysis, "Keyword", "") or ""
+            if analysis_keyword.lower() == keyword:
+                result = analysis.getResult()
+                if not result:
+                    return ""
+                try:
+                    return DateTime(result).strftime("%Y-%m-%d")
+                except Exception:
+                    return result
+        return ""
