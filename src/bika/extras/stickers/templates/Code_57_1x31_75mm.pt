@@ -38,9 +38,11 @@
   <tr>
     <td class="" colspan="2">
       <div class="incubation-dates">
-        <span tal:content="incubation_start">ccyy-mm-dd</span>
-        <span> to </span>
-        <span tal:content="incubation_end">ccyy-mm-dd</span>
+        <span class="incubation-start"
+              tal:content="incubation_start">ccyy-mm-dd</span>
+        <span class="date-separator"> to </span>
+        <strong class="incubation-end"
+                tal:content="incubation_end">ccyy-mm-dd</strong>
       </div>
     </td>
   </tr>
