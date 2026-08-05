@@ -630,6 +630,12 @@ class Analysis_Services(WorksheetImporter):
                 'hours': self.to_int(row.get('MaxTimeAllowed_hours',0),0),
                 'minutes': self.to_int(row.get('MaxTimeAllowed_minutes',0),0),
             }
+            max_holding_time = {
+                'days': self.to_int(row.get('MaxHoldingTime_days', 0), 0),
+                'hours': self.to_int(row.get('MaxHoldingTime_hours', 0), 0),
+                'minutes': self.to_int(
+                    row.get('MaxHoldingTime_minutes', 0), 0),
+            }
             category = self.get_object(bsc, 'AnalysisCategory', row.get('AnalysisCategory_title'))
             department = self.get_object(bsc, 'Department', row.get('Department_title'))
             container = self.get_object(bsc, 'Container', row.get('Container_title'))
@@ -712,8 +718,17 @@ class Analysis_Services(WorksheetImporter):
                 ExponentialFormatPrecision=str(self.to_int(row.get('ExponentialFormatPrecision',7),7)),
                 LowerDetectionLimit='%06f' % self.to_float(row.get('LowerDetectionLimit', '0.0'), 0),
                 UpperDetectionLimit='%06f' % self.to_float(row.get('UpperDetectionLimit', '1000000000.0'), 1000000000.0),
+                LowerLimitOfQuantification='%06f' % self.to_float(
+                    row.get('LowerLimitOfQuantification',
+                            row.get('LowerDetectionLimit', '0.0')), 0),
+                UpperLimitOfQuantification='%06f' % self.to_float(
+                    row.get('UpperLimitOfQuantification',
+                            row.get('UpperDetectionLimit',
+                                    '1000000000.0')), 1000000000.0),
                 DetectionLimitSelector=self.to_bool(row.get('DetectionLimitSelector',0)),
                 MaxTimeAllowed=MTA,
+                MaxHoldingTime=max_holding_time,
+                ResultType=row.get('ResultType', 'numeric') or 'numeric',
                 Price="%02f" % Float(row['Price']),
                 BulkPrice="%02f" % Float(row['BulkPrice']),
                 VAT="%02f" % Float(row['VAT']),
