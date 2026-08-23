@@ -28,6 +28,9 @@ class AnalysisRequestAnalysesListViewAdapter(object):
     def folder_item(self, obj, item, index):
         if not is_installed():
             return item
+        item["created"] = self.listing.ulocalized_time(
+            obj.created, long_format=0
+        )
         return item
 
     def folderitems(self):
