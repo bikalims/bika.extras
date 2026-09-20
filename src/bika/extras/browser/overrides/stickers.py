@@ -22,6 +22,7 @@ from DateTime import DateTime
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
 
+from bika.lims import api
 from senaite.core.browser.stickers.view import StickerView as SV
 from senaite.core.api import dtime
 
@@ -113,3 +114,9 @@ class Sticker(SV):
                 except Exception:
                     return result
         return ""
+
+    @property
+    def laboratory(self):
+        # Laboratory was migrated to Dexterity in senaite.core 2.7 and
+        # now lives under `portal.setup` instead of `portal.bika_setup`.
+        return api.get_senaite_setup().laboratory

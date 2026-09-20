@@ -88,7 +88,7 @@
         name="sticker"
         class="bika.extras.browser.overrides.stickers.Sticker"
         permission="zope2.View"
-        layer="bika.lims.interfaces.IBikaLIMS"
+        layer="bika.extras.interfaces.IBikaExtrasLayer"
         />
 
     <browser:page
