@@ -71,7 +71,7 @@
         name="print"
         class="bika.extras.browser.overrides.worksheet.printview.PrintView"
         permission="senaite.core.permissions.ViewResults"
-        layer="bika.lims.interfaces.IBikaLIMS"
+        layer="senaite.core.interfaces.ISenaiteCore"
         />
 
     <!-- Analyses Classic View -->
@@ -88,7 +88,7 @@
         name="sticker"
         class="bika.extras.browser.overrides.stickers.Sticker"
         permission="zope2.View"
-        layer="bika.lims.interfaces.IBikaLIMS"
+        layer="bika.extras.interfaces.IBikaExtrasLayer"
         />
 
     <browser:page
@@ -187,6 +187,12 @@
     <adapter
       name="Analysis_Profiles"
       factory="bika.extras.browser.overrides.setupdata.Analysis_Profiles"
+      provides="bika.lims.interfaces.ISetupDataImporter"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
+    <adapter
+      name="Sample_Points"
+      factory="bika.extras.browser.overrides.setupdata.Sample_Points"
       provides="bika.lims.interfaces.ISetupDataImporter"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 

@@ -47,8 +47,8 @@ Sticker margins: 8mm, 1mm
 
 /* Barcode */
 .sticker .barcode {
-    margin: 2mm;
-    padding: 2mm !important;
+    margin: 0.5mm 0;
+    padding: 0 !important;
     overflow: hidden !important;
     text-align: center;
 }
@@ -61,6 +61,33 @@ Sticker margins: 8mm, 1mm
 .sample-id {
     font-size: 14pt;
     line-height: 1;
+    color: #12325c;
+}
+
+/* Project ID may use up to three lines for long client identifiers. */
+.project-id {
+    max-height: 3.15em;
+    margin-top: 0.4mm;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+    font-size: 10.5pt;
+    font-weight: 600;
+    line-height: 1.05;
+}
+
+/* Incubation dates must remain readable while plates are in the incubator. */
+.incubation-dates {
+    white-space: nowrap;
+    font-size: 12pt;
+    line-height: 1;
+}
+
+.date-separator {
+    font-size: 9pt;
+}
+
+.incubation-end {
+    font-size: 14pt;
     color: #12325c;
 }
 

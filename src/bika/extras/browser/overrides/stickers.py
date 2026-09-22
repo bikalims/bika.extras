@@ -22,6 +22,7 @@ from DateTime import DateTime
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
 
+from bika.lims import api
 from senaite.core.browser.stickers.view import StickerView as SV
 from senaite.core.api import dtime
 
@@ -97,3 +98,25 @@ class Sticker(SV):
 
     def get_today_now(self):
         return dtime.date_to_string(DateTime(), fmt="%H:%M:%S")
+
+    def get_analysis_date(self, sample, keyword):
+        """Return an analysis date result formatted for a sticker."""
+        keyword = keyword.lower()
+        analyses = sample.getAnalyses(full_objects=True)
+        for analysis in analyses:
+            analysis_keyword = getattr(analysis, "Keyword", "") or ""
+            if analysis_keyword.lower() == keyword:
+                result = analysis.getResult()
+                if not result:
+                    return ""
+                try:
+                    return DateTime(result).strftime("%Y-%m-%d")
+                except Exception:
+                    return result
+        return ""
+
+    @property
+    def laboratory(self):
+        # Laboratory was migrated to Dexterity in senaite.core 2.7 and
+        # now lives under `portal.setup` instead of `portal.bika_setup`.
+        return api.get_senaite_setup().laboratory

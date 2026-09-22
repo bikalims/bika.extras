@@ -2,22 +2,24 @@
                      portal_url portal_state/portal_url;
                      item python:view.current_item;
                      sample_id item/getId;
-                     batch_id item/getBatchID;
+                     batch item/getBatch|nothing;
+                     project_id batch/getClientBatchID|nothing;
+                     incubation_start python:view.get_analysis_date(item, 'LegionellaIncubationStart');
+                     incubation_end python:view.get_analysis_date(item, 'ProjectedIncubationED');
                      client_sid item/ClientSampleID;
                      sample_type item/getSampleTypeTitle;
                      date_sampled python:view.ulocalized_time(item.getDateSampled());
                      hazardous item/getHazardous">
 
 
-  <!-- Some additional info about the sample -->
   <table class="sticker-table">
   <tr>
     <td class="label-cell">
       <div class="sample-id">
         <strong tal:content="sample_id">CHW26-0025</strong>
       </div>
+      <div class="project-id" tal:content="project_id">Project ID</div>
     </td>
-
     <td class="box-cell">
       <div class="placeholder-box"></div>
     </td>
@@ -33,5 +35,16 @@
       </div>
     </td>
   </tr>
-</table>
+  <tr>
+    <td class="" colspan="2">
+      <div class="incubation-dates">
+        <span class="incubation-start"
+              tal:content="incubation_start">ccyy-mm-dd</span>
+        <span class="date-separator"> to </span>
+        <strong class="incubation-end"
+                tal:content="incubation_end">ccyy-mm-dd</strong>
+      </div>
+    </td>
+  </tr>
+  </table>
 </tal:sticker>
