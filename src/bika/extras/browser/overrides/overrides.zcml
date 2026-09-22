@@ -71,7 +71,7 @@
         name="print"
         class="bika.extras.browser.overrides.worksheet.printview.PrintView"
         permission="senaite.core.permissions.ViewResults"
-        layer="bika.lims.interfaces.IBikaLIMS"
+        layer="senaite.core.interfaces.ISenaiteCore"
         />
 
     <!-- Analyses Classic View -->
