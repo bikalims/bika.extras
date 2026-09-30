@@ -153,7 +153,7 @@
 
     <!-- Methods -->
     <subscriber
-            for="bika.lims.browser.methodfolder.MethodFolderContentsView
+            for="senaite.core.browser.controlpanel.methods.view.MethodsView
                  zope.interface.Interface"
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".methods.MethodsListingViewAdapter"/>
