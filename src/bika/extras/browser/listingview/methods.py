@@ -29,9 +29,10 @@ class MethodsListingViewAdapter(object):
         ]
         self.listing.columns.update(method_id)
         self.listing.columns.update(subcontractor)
-        for i in range(len(self.listing.review_states)):
-            self.listing.review_states[i]["columns"].append("MethodID")
-            self.listing.review_states[i]["columns"].append("Subcontractor")
+        for state in self.listing.review_states:
+            for column in ("MethodID", "Subcontractor"):
+                if column not in state["columns"]:
+                    state["columns"].append(column)
 
     def folder_item(self, obj, item, index):
         if not is_installed():
@@ -45,9 +46,17 @@ class MethodsListingViewAdapter(object):
             item["MethodID"] = method_id
             item["replace"]["MethodID"] = method_id_link
         # Subcontractor
-        supplier_uid = obj["Supplier"]
-        if supplier_uid:
-            supplier_obj = api.get_object_by_uid(supplier_uid)
+        supplier_obj = None
+        if api.is_dexterity_content(obj):
+            field = api.get_fields(obj).get("supplier")
+            if field is not None:
+                supplier_obj = field.get(obj)
+        else:
+            accessor = getattr(obj, "getSupplier", None)
+            if accessor:
+                supplier_obj = accessor()
+        item["Subcontractor"] = ""
+        if supplier_obj:
             subcontractor_title = supplier_obj.Title()
             subcontractor_url = supplier_obj.absolute_url()
             subcontractor_link = get_link(

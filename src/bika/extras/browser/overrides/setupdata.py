@@ -22,6 +22,7 @@
 import re
 
 from pkg_resources import resource_filename
+from plone.namedfile.file import NamedBlobFile
 
 from Products.Archetypes.event import ObjectInitializedEvent
 from Products.CMFCore.utils import getToolByName
@@ -389,12 +390,14 @@ class Methods(WorksheetImporter):
 
     def load_instrument_methods(self):
         sheetname = 'Instrument Methods'
-        worksheet = self.workbook[sheetname]
         self.instrument_methods = {}
+        if sheetname not in self.workbook.sheetnames:
+            return
+        worksheet = self.workbook[sheetname]
         bsc = getToolByName(self.context, 'senaite_catalog_setup')
         if not worksheet:
             return
-        for i, row in enumerate(self.get_rows(3, worksheet=worksheet)):
+        for row in self.get_rows(3, worksheet=worksheet):
             if not row.get('Instrument_title', '') or not row.get('Method_title', ''):
                 continue
             if row['Method_title'] not in self.instrument_methods.keys():
@@ -406,55 +409,68 @@ class Methods(WorksheetImporter):
 
     def Import(self):
         self.load_instrument_methods()
-        folder = self.context.methods
-        bsc = getToolByName(self.context, 'senaite_catalog_setup')
+        folder = self.context.setup.methods
+        bsc = getToolByName(self.context, SETUP_CATALOG)
+        method_ids = set(_as_text(brain.getObject().getMethodID())
+                         for brain in bsc(portal_type="Method"))
         for row in self.get_rows(3):
-            if row['title']:
-                calculation = self.get_object(bsc, 'Calculation', row.get('Calculation_title'))
-                instrument = self.get_object(bsc, 'Instrument', Title=row.get('Instrument_title'))
-                instruments = self.instrument_methods.get(row['title'], [])
-                if instrument:
-                    instruments.append(instrument)
-                supplier = self.get_object(bsc, 'Supplier',Title=row.get('Subcontractor_title'))
+            if not row.get("title"):
+                continue
+            calculation = self.get_object(
+                bsc, "Calculation", row.get("Calculation_title"))
+            instrument = self.get_object(
+                bsc, "Instrument", title=row.get("Instrument_title"))
+            instruments = list(self.instrument_methods.get(row["title"], []))
+            if instrument and instrument not in instruments:
+                instruments.append(instrument)
+            supplier = self.get_object(
+                bsc, "Supplier", title=row.get("Subcontractor_title"))
 
-                if calculation:
-                    calculation = calculation.UID()
-                obj = _createObjectByType("Method", folder, tmpID())
-                obj.edit(
-                    title=row['title'],
-                    description=row.get('description', ''),
-                    Instructions=row.get('Instructions', ''),
-                    ManualEntryOfResults=row.get('ManualEntryOfResults', True),
-                    Calculations=[calculation],
-                    Calculation=calculation,
-                    MethodID=row.get('MethodID', ''),
-                    Accredited=row.get('Accredited', True),
-                    Supplier=supplier,
-                )
-                # Obtain all created methods
-                catalog = getToolByName(self.context, 'senaite_catalog_setup')
-                methods_brains = catalog.searchResults({'portal_type': 'Method'})
-                # If a the new method has the same MethodID as a created method, remove MethodID value.
-                for methods in methods_brains:
-                    if methods.getObject().get('MethodID', '') != '' and methods.getObject.get('MethodID', '') == obj['MethodID']:
-                        obj.edit(MethodID='')
+            # Preserve the legacy duplicate-ID policy without treating a DX
+            # Method as a dictionary or comparing the new object to itself.
+            method_id = _as_text(row.get("MethodID", ""))
+            if method_id and method_id in method_ids:
+                logger.warning("Duplicate Method ID '%s' for '%s'; clearing ID",
+                               method_id, row["title"])
+                method_id = u""
+            obj = api.create(
+                folder, "Method",
+                title=row["title"],
+                description=row.get("description", ""),
+                method_id=method_id,
+                accredited=self.to_bool(row.get("Accredited", True)),
+                calculation=calculation,
+            )
+            if method_id:
+                method_ids.add(method_id)
+            if calculation:
+                obj.setCalculations([api.get_uid(calculation)])
+            if row.get("Instructions"):
+                obj.setInstructions(_as_text(row["Instructions"]))
+            if supplier:
+                supplier_field = api.get_fields(obj).get("supplier")
+                if supplier_field is None:
+                    raise ValueError(
+                        "Enable the bika.coa Method Supplier behavior before "
+                        "importing subcontracted methods (run the bika.coa "
+                        "2.7.1 upgrade).")
+                supplier_field.set(obj, supplier)
+            if instruments:
+                obj.setInstruments(list(set(api.get_uid(inst)
+                                            for inst in instruments)))
 
-                if row['MethodDocument']:
-                    path = resource_filename(
-                        self.dataset_project,
-                        "setupdata/%s/%s" % (self.dataset_name,
-                                             row['MethodDocument'])
-                    )
-                    try:
-                        file_data = read_file(path)
-                        obj.setMethodDocument(file_data)
-                    except Exception as msg:
-                        logger.warning(msg[0] + " Error on sheet: " + self.sheetname)
-
-                obj.unmarkCreationFlag()
-                renameAfterCreation(obj)
-                notify(ObjectInitializedEvent(obj))
-                obj.edit(Instruments=[inst.UID() for inst in instruments])
+            if row.get("MethodDocument"):
+                path = resource_filename(
+                    self.dataset_project,
+                    "setupdata/%s/%s" % (self.dataset_name,
+                                         row["MethodDocument"]))
+                try:
+                    obj.setMethodDocument(NamedBlobFile(
+                        data=read_file(path),
+                        filename=_as_text(row["MethodDocument"])))
+                except (IOError, OSError) as msg:
+                    logger.warning("%s Error on sheet: %s", msg, self.sheetname)
+            obj.reindexObject()
 
 
 class Analysis_Categories(WorksheetImporter):
