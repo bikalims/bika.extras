@@ -20,6 +20,7 @@
 
 
 import re
+import math
 
 from pkg_resources import resource_filename
 from plone.namedfile.file import NamedBlobFile
@@ -787,10 +788,75 @@ class Analysis_Services(WorksheetImporter):
 
 
 class AR_Templates(WorksheetImporter):
+    """Import templates including optional mining defaults."""
+
+    def get_rows(self, startrow=3, worksheet=None):
+        worksheet = worksheet if worksheet is not None else self.worksheet
+        rows = worksheet.iter_rows()
+        headers = [cell.value for cell in next(rows)]
+        next(rows, None)
+        labels = [cell.value for cell in next(rows, [])]
+        # Existing workbooks may put labels for extra columns only in row 3.
+        missing = [(index, label) for index, label in enumerate(labels)
+                   if label and not headers[index]]
+        base_rows = super(AR_Templates, self).get_rows(startrow, worksheet)
+        cells = worksheet.iter_rows(min_row=startrow + 1)
+        for row, values in zip(base_rows, cells):
+            for index, label in missing:
+                row[label] = values[index].value
+            yield row
+
+    def extra_value(self, row, *names):
+        normalized = {_title_key(name).replace("_", " "): value
+                      for name, value in row.items() if name}
+        for name in names:
+            key = _title_key(name).replace("_", " ")
+            if key in normalized:
+                return _as_text(normalized[key])
+        return u""
+
+    def get_extra_values(self, row):
+        composite = self.extra_value(row, "Composite", "Composite Y/N")
+        value = self.extra_value(row, "Target TAT", "Target TAT (h)", "target_tat_h")
+        result = {"matrix_reference": self.extra_value(row, "Matrix Reference")}
+        if composite:
+            normalized = composite.lower()
+            if normalized not in ("y", "yes", "true", "1", "n", "no", "false", "0"):
+                raise ValueError("Invalid Composite value '%s'" % composite)
+            result["composite"] = normalized in ("y", "yes", "true", "1")
+        if value:
+            try:
+                tat = float(value)
+            except ValueError:
+                raise ValueError("Invalid Target TAT '%s'" % value)
+            if tat < 0 or math.isnan(tat) or math.isinf(tat):
+                raise ValueError("Target TAT must be finite and non-negative")
+            result["target_tat"] = tat
+        return result
+
+    def set_extra_values(self, obj, values, catalog):
+        fields = api.get_fields(obj)
+        for name in ("composite", "target_tat"):
+            if name not in values:
+                continue
+            if name not in fields:
+                raise ValueError("Sample Template does not support '%s'" % name)
+            fields[name].set(obj, values[name])
+        title = values["matrix_reference"]
+        if title:
+            if "matrix_reference" not in fields:
+                raise ValueError("Install the mining template behavior to import Matrix Reference")
+            matrix = self.get_object(catalog, "MatrixReference", title)
+            if matrix is not None:
+                fields["matrix_reference"].set(obj, matrix)
+            else:
+                self.defer(src_obj=obj, src_field="matrix_reference",
+                           dest_catalog=SETUP_CATALOG,
+                           dest_query={"portal_type": "MatrixReference", "title": title})
 
     def load_artemplate_analyses(self):
         sheetname = 'AR Template Analyses'
-        worksheet = self.workbook[sheetname]
+        worksheet = self.workbook[sheetname] if sheetname in self.workbook.sheetnames else None
         self.artemplate_analyses = {}
         if not worksheet:
             return
@@ -806,13 +872,13 @@ class AR_Templates(WorksheetImporter):
                 self.artemplate_analyses[row['ARTemplate']] = []
             self.artemplate_analyses[row['ARTemplate']].append(
                 {'uid': service.UID(),
-                 'partition': row['partition']
+                 'part_id': row.get('partition') or row.get('part_id') or 'part-1'
                  }
             )
 
     def load_artemplate_partitions(self):
         sheetname = 'AR Template Partitions'
-        worksheet = self.workbook[sheetname]
+        worksheet = self.workbook[sheetname] if sheetname in self.workbook.sheetnames else None
         self.artemplate_partitions = {}
         bsc = getToolByName(self.context, 'senaite_catalog_setup')
         if not worksheet:
@@ -826,22 +892,21 @@ class AR_Templates(WorksheetImporter):
                                            row.get('preservation'))
             self.artemplate_partitions[row['ARTemplate']].append({
                 'part_id': row['part_id'],
-                'Container': container.Title() if container else None,
-                'container_uid': container.UID() if container else None,
-                'Preservation': preservation.Title() if preservation else None,
-                'preservation_uid': preservation.UID()} if preservation else None)
+                'container': container.UID() if container else '',
+                'preservation': preservation.UID() if preservation else ''})
 
     def Import(self):
         self.load_artemplate_analyses()
         self.load_artemplate_partitions()
-        container = self.context.setup.sampletemplates
+        container = api.get_senaite_setup().sampletemplates
         scs = getToolByName(self.context, 'senaite_catalog_setup')
         scc = getToolByName(self.context, 'senaite_catalog_client')
         for row in self.get_rows(3):
             if not row['title']:
                 continue
-            analyses = self.artemplate_analyses[row['title']]
-            client_title = row['Client_title'] or 'lab'
+            analyses = self.artemplate_analyses.get(row['title'], [])
+            extra_values = self.get_extra_values(row)
+            client_title = row.get('Client_title') or 'lab'
             if row['title'] in self.artemplate_partitions:
                 partitions = self.artemplate_partitions[row['title']]
             else:
@@ -850,7 +915,7 @@ class AR_Templates(WorksheetImporter):
                                'preservation': ''}]
 
             if client_title == 'lab':
-                container = self.context.setup.sampletemplates
+                container = api.get_senaite_setup().sampletemplates
             else:
                 container = scc(portal_type='Client',
                             getName=client_title)[0].getObject()
@@ -860,16 +925,16 @@ class AR_Templates(WorksheetImporter):
             samplepoint = self.get_object(scs, 'SamplePoint',
                                          row.get('SamplePoint_title'))
 
-            obj = _createObjectByType("SampleTemplate", container, tmpID())
-            obj.edit(
-                title=str(row['title']),
-                description=row.get('description', ''),)
+            obj = api.create(container, "SampleTemplate",
+                             title=_as_text(row["title"]),
+                             description=_as_text(row.get("description")))
             obj.setSampleType(sampletype)
             obj.setSamplePoint(samplepoint)
             obj.setPartitions(partitions)
             obj.setServices(analyses)
-            renameAfterCreation(obj)
+            self.set_extra_values(obj, extra_values, scs)
             notify(ObjectInitializedEvent(obj))
+            obj.reindexObject()
 
 
 class Reference_Definitions(WorksheetImporter):
