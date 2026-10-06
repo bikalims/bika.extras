@@ -39,6 +39,7 @@ from senaite.core.exportimport.setupdata import addDocument
 from senaite.core.exportimport.setupdata import read_file
 from senaite.core.exportimport.setupdata import Float
 from senaite.core.exportimport.setupdata import WorksheetImporter
+from senaite.core.exportimport.setupdata import Sample_Types as BaseSampleTypes
 from senaite.core.idserver import renameAfterCreation
 
 
@@ -69,6 +70,15 @@ def _row_value(row, *names):
 def _title_key(value):
     """Return a case- and whitespace-insensitive title key."""
     return " ".join(_as_text(value).split()).lower()
+
+
+class Sample_Types(BaseSampleTypes):
+    """Default a missing Hazardous column to false."""
+
+    def get_rows(self, startrow=3, worksheet=None):
+        for row in super(Sample_Types, self).get_rows(startrow, worksheet):
+            row.setdefault("Hazardous", False)
+            yield row
 
 
 class Sample_Points(WorksheetImporter):

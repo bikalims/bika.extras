@@ -19,6 +19,7 @@ from senaite.core.tests.layers import BASE_LAYER_FIXTURE
 
 from bika.extras.browser.overrides.setupdata import Analysis_Services
 from bika.extras.browser.overrides.setupdata import Methods
+from bika.extras.browser.overrides.setupdata import Sample_Types
 
 
 class MethodSupplierLayer(PloneSandboxLayer):
@@ -42,6 +43,46 @@ class Loader(object):
 
     def __init__(self, context):
         self.context = context
+
+
+class TestSampleTypeSetupDataImport(unittest.TestCase):
+    layer = BASE_TESTING
+
+    def setUp(self):
+        self.portal = self.layer["portal"]
+        setRoles(self.portal, TEST_USER_ID, ["Manager"])
+
+    def import_sample_type(self, headers, values):
+        workbook = Workbook()
+        sheet = workbook.active
+        sheet.title = "Sample Types"
+        sheet.append(headers)
+        sheet.append(["Column descriptions"])
+        sheet.append(["Column types"])
+        sheet.append(values)
+        Sample_Types(self.portal)(Loader(self.portal), workbook,
+                                 "bika.extras", "uploaded")
+        catalog = getToolByName(self.portal, "senaite_catalog_setup")
+        return catalog(portal_type="SampleType", title=values[0])[0].getObject()
+
+    def test_missing_hazardous_column(self):
+        sample_type = self.import_sample_type(
+            ["title", "Prefix", "MinimumVolume", "RetentionPeriod"],
+            ["Minimal type", "MT", "250 g", 30])
+        self.assertFalse(sample_type.getHazardous())
+        self.assertEqual({"days": 30, "hours": 0, "minutes": 0},
+                         sample_type.getRetentionPeriod())
+
+    def test_explicit_optional_values_are_preserved(self):
+        sample_type = self.import_sample_type(
+            ["title", "Hazardous", "Prefix", "MinimumVolume",
+             "RetentionPeriod"],
+            ["Hazardous type", "True", "HZ", "10 ml", 7])
+        self.assertTrue(sample_type.getHazardous())
+        self.assertEqual("HZ", sample_type.getPrefix())
+        self.assertEqual("10 ml", sample_type.getMinimumVolume())
+        self.assertEqual({"days": 7, "hours": 0, "minutes": 0},
+                         sample_type.getRetentionPeriod())
 
 
 class TestMethodSetupDataImport(unittest.TestCase):
