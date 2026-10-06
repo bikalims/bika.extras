@@ -854,6 +854,34 @@ class AR_Templates(WorksheetImporter):
                            dest_catalog=SETUP_CATALOG,
                            dest_query={"portal_type": "MatrixReference", "title": title})
 
+    def get_object(self, catalog, portal_type, title=None, **kwargs):
+        if portal_type != "SampleType" or not title:
+            return super(AR_Templates, self).get_object(
+                catalog, portal_type, title, **kwargs)
+        # The title index searches words; Solution also matches Solution (water).
+        matches = {}
+        for brain in catalog(portal_type=portal_type, title=_as_text(title), **kwargs):
+            obj = brain.getObject()
+            if _title_key(obj.Title()) == _title_key(title):
+                matches[obj.UID()] = obj
+        if len(matches) == 1:
+            return next(iter(matches.values()))
+        if not matches:
+            raise ValueError("AR Templates: Sample Type '%s' was not found" % title)
+        raise ValueError("AR Templates: multiple Sample Types have the exact title '%s'; resolve the duplicate records" % title)
+
+    def get_template_container(self, row, catalog):
+        client_title = _as_text(row.get("Client_title")) or "lab"
+        if client_title.lower() == "lab":
+            return api.get_senaite_setup().sampletemplates
+        clients = list(catalog(portal_type="Client", getName=client_title))
+        if len(clients) == 1:
+            return clients[0].getObject()
+        title = _as_text(row.get("title"))
+        if not clients:
+            raise ValueError("AR Template '%s': Client '%s' was not found; use an existing client name or import the client first" % (title, client_title))
+        raise ValueError("AR Template '%s': multiple Clients match '%s'; resolve the duplicate records" % (title, client_title))
+
     def load_artemplate_analyses(self):
         sheetname = 'AR Template Analyses'
         worksheet = self.workbook[sheetname] if sheetname in self.workbook.sheetnames else None
@@ -901,12 +929,18 @@ class AR_Templates(WorksheetImporter):
         container = api.get_senaite_setup().sampletemplates
         scs = getToolByName(self.context, 'senaite_catalog_setup')
         scc = getToolByName(self.context, 'senaite_catalog_client')
-        for row in self.get_rows(3):
+        rows = [row for row in self.get_rows(3) if row.get("title")]
+        containers = {}
+        for row in rows:
+            client_title = _as_text(row.get("Client_title")) or "lab"
+            if client_title not in containers:
+                containers[client_title] = self.get_template_container(row, scc)
+        for row in rows:
             if not row['title']:
                 continue
             analyses = self.artemplate_analyses.get(row['title'], [])
             extra_values = self.get_extra_values(row)
-            client_title = row.get('Client_title') or 'lab'
+            client_title = _as_text(row.get('Client_title')) or 'lab'
             if row['title'] in self.artemplate_partitions:
                 partitions = self.artemplate_partitions[row['title']]
             else:
@@ -914,11 +948,7 @@ class AR_Templates(WorksheetImporter):
                                'container': '',
                                'preservation': ''}]
 
-            if client_title == 'lab':
-                container = api.get_senaite_setup().sampletemplates
-            else:
-                container = scc(portal_type='Client',
-                            getName=client_title)[0].getObject()
+            container = containers[client_title]
 
             sampletype = self.get_object(scs, 'SampleType',
                                          row.get('SampleType_title'))

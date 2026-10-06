@@ -12,6 +12,9 @@ class Record(object):
     def UID(self):
         return self.uid
 
+    def Title(self):
+        return self.title
+
     def reindexObject(self):
         self.reindexed = True
 
@@ -165,3 +168,42 @@ class TestARTemplateImport(unittest.TestCase):
                 self.assertIs(obj.matrix_reference, self.matrix)
             if "composite" in expected:
                 self.assertEqual(obj.composite, expected["composite"])
+
+    def test_missing_client_is_reported_before_any_template_creation(self):
+        workbook = self.workbook()
+        workbook["AR Templates"]["B5"] = "Envirnonment"
+        setupdata.getToolByName = lambda *args: lambda **query: []
+        with self.assertRaisesRegexp(ValueError, "SM-02.*Envirnonment.*not found"):
+            self.import_workbook(workbook)
+        self.assertEqual(self.created, [])
+
+    def test_ambiguous_client_is_reported(self):
+        catalog = lambda **query: [object(), object()]
+        with self.assertRaisesRegexp(ValueError, "multiple Clients.*Plant"):
+            self.importer.get_template_container(
+                {"title": "SM-01", "Client_title": "Plant"}, catalog)
+
+    def test_sample_type_uses_exact_title_not_word_matches(self):
+        exact = Record(title="Solution", uid="exact")
+        other = Record(title="Solution (water)", uid="water")
+        catalog = lambda **query: [Record(getObject=lambda: exact),
+                                  Record(getObject=lambda: other)]
+        result = setupdata.AR_Templates.get_object(
+            self.importer, catalog, "SampleType", "Solution")
+        self.assertIs(result, exact)
+
+    def test_true_duplicate_sample_types_are_reported(self):
+        first = Record(title="Solution", uid="one")
+        second = Record(title="Solution", uid="two")
+        catalog = lambda **query: [Record(getObject=lambda: first),
+                                  Record(getObject=lambda: second)]
+        with self.assertRaisesRegexp(ValueError, "multiple Sample Types.*Solution"):
+            setupdata.AR_Templates.get_object(
+                self.importer, catalog, "SampleType", "Solution")
+
+    def test_duplicate_catalog_entries_for_same_uid_are_deduplicated(self):
+        exact = Record(title="Solution", uid="one")
+        catalog = lambda **query: [Record(getObject=lambda: exact)] * 2
+        result = setupdata.AR_Templates.get_object(
+            self.importer, catalog, "SampleType", "Solution")
+        self.assertIs(result, exact)
