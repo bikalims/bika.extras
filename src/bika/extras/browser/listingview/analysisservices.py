@@ -81,6 +81,14 @@ class AnalysisServicesListingViewAdapter(object):
         self.listing.columns.update(hidden)
         self.listing.columns.update(instruments)
 
+        limits = ["LLOD", "LLOQ", "ULOQ", "ULOD"]
+        for limit in limits:
+            self.listing.columns[limit] = {
+                "toggle": False,
+                "sortable": False,
+                "title": _(limit),
+            }
+
         for i in range(len(self.listing.review_states)):
             self.listing.review_states[i]["columns"].append("Description")
             self.listing.review_states[i]["columns"].append("CommercialID")
@@ -91,12 +99,19 @@ class AnalysisServicesListingViewAdapter(object):
             self.listing.review_states[i]["columns"].append("BulkPrice")
             self.listing.review_states[i]["columns"].append("Hidden")
             self.listing.review_states[i]["columns"].append("Instruments")
+            self.listing.review_states[i]["columns"].extend(limits)
 
     def folder_item(self, obj, item, index):
         if not is_installed():
             return item
 
         obj = api.get_object(obj)
+
+        # Detection and quantification limits (including zero values)
+        item["LLOD"] = obj.getLowerDetectionLimit()
+        item["LLOQ"] = obj.getLowerLimitOfQuantification()
+        item["ULOQ"] = obj.getUpperLimitOfQuantification()
+        item["ULOD"] = obj.getUpperDetectionLimit()
 
         # Description
         description = obj.Description()
