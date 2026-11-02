@@ -5,9 +5,8 @@ from plone.registry.interfaces import IRecordModifiedEvent
 
 
 def restore_logo(instance, event):
-    """Event handler when a new Client was created
-    """
-    if not event.__providedBy__(IRecordModifiedEvent):
+    """Preserve site branding when profiles reset registry defaults."""
+    if not IRecordModifiedEvent.providedBy(event):
         return
 
     record_name = event.record.__name__
@@ -20,8 +19,9 @@ def restore_logo(instance, event):
 
     if record_name == "senaite.toolbar_logo":
         senaite_logo = "/++plone++senaite.core.static/images/senaite.svg"
-        site_logo = "/logo.png"
-        if event.newValue == senaite_logo and event.oldValue == site_logo:
+        # Theme and custom logo paths must survive core registry imports.
+        if (event.newValue == senaite_logo and event.oldValue
+                and event.oldValue != senaite_logo):
             api.portal.set_registry_record(record_name, event.oldValue)
             return
 
