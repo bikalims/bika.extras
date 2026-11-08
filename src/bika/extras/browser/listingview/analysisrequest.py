@@ -28,7 +28,7 @@ class AnalysisRequestAnalysesListViewAdapter(object):
         if not is_installed():
             return item
         item["created"] = self.listing.ulocalized_time(
-            obj.created, long_format=1
+            obj.created, long_format=0
         )
         return item
 
