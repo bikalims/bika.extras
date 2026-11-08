@@ -21,7 +21,6 @@ class AnalysisRequestAnalysesListViewAdapter(object):
             return
         self.do_cats = self.context.bika_setup.getCategoriseAnalysisServices()
         if self.do_cats:
-            self.listing.contentFilter["sort_on"] = "category_sort_key"
             self.listing.show_categories = True
             self.listing.expand_all_categories = False
 
@@ -29,7 +28,7 @@ class AnalysisRequestAnalysesListViewAdapter(object):
         if not is_installed():
             return item
         item["created"] = self.listing.ulocalized_time(
-            obj.created, long_format=0
+            obj.created, long_format=1
         )
         return item
 

@@ -76,6 +76,18 @@
 
     <!-- analysisrequest list -->
     <subscriber
+            for="bika.lims.browser.analysisrequest.tables.LabAnalysesTable
+                 zope.interface.Interface"
+            provides="senaite.app.listing.interfaces.IListingViewAdapter"
+            factory=".analysisrequest.AnalysisRequestAnalysesListViewAdapter"/>
+
+    <subscriber
+            for="bika.lims.browser.analysisrequest.tables.FieldAnalysesTable
+                 zope.interface.Interface"
+            provides="senaite.app.listing.interfaces.IListingViewAdapter"
+            factory=".analysisrequest.AnalysisRequestAnalysesListViewAdapter"/>
+
+    <subscriber
             for="bika.lims.browser.analysisrequest.AnalysisRequestAnalysesView
                  zope.interface.Interface"
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
