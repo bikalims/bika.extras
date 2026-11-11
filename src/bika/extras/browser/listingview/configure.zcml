@@ -107,6 +107,13 @@
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".artemplateanalyseswidget.ARTemplateAnalysesListingViewAdapter"/>
 
+    <!-- Reference Definitions list -->
+    <subscriber
+            for="bika.lims.controlpanel.bika_referencedefinitions.ReferenceDefinitionsView
+                 zope.interface.Interface"
+            provides="senaite.app.listing.interfaces.IListingViewAdapter"
+            factory=".bika_referencedefinitions.ReferenceDefinitionsListingViewAdapter"/>
+
     <!-- ReferenceResults list -->
     <subscriber
             for="bika.lims.browser.widgets.referenceresultswidget.ReferenceResultsView
