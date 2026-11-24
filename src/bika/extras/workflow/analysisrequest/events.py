@@ -135,10 +135,11 @@ def get_invalidation_email(samples):
               mapping={"client_batch_id": client_batch_id},))
 
     setup = api.get_setup()
-    lab_name = setup.laboratory.Title()
-    lab_url = setup.laboratory.absolute_url()
-    lab_email = setup.laboratory.getEmailAddress()
-    lab_address = setup.laboratory.getPrintAddress()
+    laboratory = api.get_senaite_setup().laboratory
+    lab_name = laboratory.Title()
+    lab_url = laboratory.absolute_url()
+    lab_email = laboratory.getEmailAddress()
+    lab_address = laboratory.getPrintAddress()
     number_of_samples = len(samples)
     client_name = batch.getClient().Title() if batch.getClient() else ""
     batch_id = api.get_id(batch)

@@ -7,8 +7,7 @@
                      sampling_date python:view.ulocalized_time(item.getSamplingDate());
                      client_sample_id item/getClientSampleID|nothing;
                      client_order_num item/getClientOrderNumber|nothing;
-                     ar python:view.context;
-                     lab_title python:ar.bika_setup.laboratory.Title;
+                     lab_title view/laboratory/Title;
                      portal_state context/@@plone_portal_state;
                      portal_url portal_state/portal_url;
                      composite item/getComposite|nothing;
